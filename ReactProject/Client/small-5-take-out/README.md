@@ -12,7 +12,7 @@
 
 
         import 'antd-mobile/dist/antd-mobile.css';
-
+---
 ## react router
 
   一般情况下，只有Router 的component组件能够自动带有三个属性 history location match,没有在router的组件需要通过 
@@ -96,3 +96,47 @@
 
         在 2.x、3.x原路由配置为集中思想 ,而React-Router4.x则是路由组件化分布，存在于布局和 UI 之间
     
+---
+## redux
+
+  * 状态管理库，简化api,行为完全可预测。redux有flux演化而来。
+
+    需要被管理的状态有：服务器响应、缓存数据、本地生成尚未持久化到服务器的数据，也包括 UI 状态，如激活的路由，被选中的标签，是否显示加载动效或者分页器等等。
+
+    > component --> dispatch(action) --> reducer --> subscribe --> getState --> component
+
+    redux包括：state ，action,reducer
+    
+    store的方法：
+
+      1. dispatch:
+
+      2. subscribe：
+
+      3. getState：
+
+      4. replaceReducer:
+
+    一般来会通过 store.dispatch() 将 action 传到 store。它是 store 数据的唯一来源。,通过在组件中引入action和store,调用store.dispatch() 进行修改。
+
+  * 三大原则
+
+    1. 单一数据流
+
+        整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。
+    1. State 是只读的
+
+       唯一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。
+
+    1. 使用纯函数来执行修改
+
+        为了描述 action 如何改变 state tree ，你需要编写 reducers。
+
+
+---
+
+
+
+## 获取定位需要申请获取百度api的密钥
+
+  > http://lbsyun.baidu.com/index.php?title=jspopular/guide/getkey

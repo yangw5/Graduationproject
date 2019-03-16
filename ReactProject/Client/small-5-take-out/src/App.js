@@ -20,7 +20,6 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
   renderContent(pageText) {
     return (
       <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-        <div style={{ paddingTop: 60 }}>Clicked “{pageText}” tab， show “{pageText}” information</div>   
         <div>
             <Route  path="/V1/homepage" component={HomePage}/>
             <Route  path="/V1/mycar" component={MyCar}/>
@@ -28,8 +27,8 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
             <Route  path="/V1/myinf" component={MyInf}/>
         </div>
         <div >
-          app组件标签跳转
-          <Link to="/myinf" replace>link 跳转 去我的</Link>
+          {/* app组件标签跳转
+          <Link to="/myinf" replace>link 跳转 去我的</Link> */}
         </div>      
       </div>
     );

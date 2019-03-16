@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- 设置移动端尺寸 见antd -->
   <!-- set `maximum-scale` for some compatibility issues -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
   <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
-  <script>
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WQ4zZc7RusQurl1AoFbMEpNFwkNztyID"></script>
+  <!-- 定位地址 -->
+ <script>
     if ('addEventListener' in document) {
       document.addEventListener('DOMContentLoaded', function() {
         FastClick.attach(document.body);
@@ -13,9 +16,70 @@
     if(!window.Promise) {
       document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
     }
+
+    //获取地址ip
+    var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+          var mk = new BMap.Marker(r.point);
+          console.log(r.point);
+          window.lat=r.point.lat;   //window.lat是在其他页面设置的全局变量
+          window.lng=r.point.lng;   //window.lng是在其他页面设置的全局变量
+          fip();
+        }
+        else {
+          alert('failed'+this.getStatus());
+        }        
+      },{enableHighAccuracy: true});
+
+    function fip(){
+          //ip逆地址解析
+          var map = new BMap.Map("l-map");      
+            map.centerAndZoom(new BMap.Point( window.lng,window.lat), 11);      
+            // 创建地理编码实例      
+            var myGeo = new BMap.Geocoder();      
+            // 根据坐标得到地址描述    
+            myGeo.getLocation(new BMap.Point(window.lng,window.lat), function(result){      
+                if (result){      
+                console.log(result.address);  
+                    
+                }      
+            });
+    
+    }
+  
+        
+
+    //获取天气
+    // var BMap = window.BMap;//取出window中的BMap对象
+    //     var myCity = new BMap.LocalCity();
+    //     let WeatherLists = {};
+    //     myCity.get(function (result) {
+    //         console.log(result.name);          //城市名称
+    //         if (result.name) {
+    //             /*通过当前位置城市信息获取天气*/
+    //             axios.get('https://free-api.heweather.com/v5/weather?key=b6ijUcOuseND3UILkt3m2CPF68RgYxch', {
+    //                 params: {
+    //                     city: result.name
+    //                 }
+    //             }).then(function (res) {
+    //                 WeatherLists = res.data.HeWeather5[0];
+    //                 console.log(WeatherLists);
+    //             });
+    //         }
+    //     });
+//http://api.map.baidu.com/telematics/v3/weather?location=%E5%8C%97%E4%BA%AC&output=json&ak=b6ijUcOuseND3UILkt3m2CPF68RgYxch
+
   </script>
 </head>
 <body>
-    <div id="root"></div>
+    <div >
+      <div id="l-map" style="height:0px">
+        地址
+      </div>
+      <div id="root">
+
+      </div>
+  </div>
   </body>
 </html>
