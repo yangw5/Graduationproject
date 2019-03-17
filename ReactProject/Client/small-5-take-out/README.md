@@ -3,6 +3,13 @@
 ## 项目技术栈
 
    通过 creact-react-app搭建项目，使用Ant Design Mobile of React 作为移动端UI框架，
+
+   1. react
+   1. Ant Design Mobile
+   1. react router
+   1. redux
+   1. 百度api
+   1. axios
    
 ## 技术配置
    
@@ -132,8 +139,117 @@
 
         为了描述 action 如何改变 state tree ，你需要编写 reducers。
 
+  * actions对象：描述修改store的动作
+           
+        export function SavePlace(txt) {
+        return {
+              type:'SAVE',
+              place:txt
+            }
+          }
+  * reducers 动作的具体描述
+
+        const changepalce= (state=initValue,action)=>{ //接收一个state和action
+          //state具体的更新逻辑
+            switch (action.type) {
+                case "SAVE":
+                //拷贝一个对象
+                    return Object.assign({}, state, {
+                      id:0,
+                      place:action.place
+                    })
+                default:
+                    return state
+            }
+        }
+
+
+
+  * store 状态对象
+
+        const initValue={id:0,place:'北京'};
+        //创建初始store
+        const store = createStore(changepalce,initValue)
+        //createStore的第一个参数是一个reducer，第二个可选参数用于设置 state 初始状态
+        export  default store;
+  
+  * 引入使用
+
+        import { SavePlace } from '../../redux/Actions';
+        import store from '../../redux/Redux';
+        store.getState()
+        store.dispatch(SavePlace(text));
 
 ---
+## 异步请求
+
+  1. 原生 ajax (XMLHttpRequest)
+
+          var xhr = new XMLHttpRequest(); 
+          xhr.open("GET", url); 
+          xhr.responseType = 'json'; 
+          xhr.onload = function(){ 
+          console.log(xhr.response); 
+          }; 
+          xhr.onerror = function(){ 
+          console.log("error") 
+          } 
+          xhr.send();
+  1.  fetch
+
+      fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象。fetch 是一个新的游览器对象 
+
+      fetch请求默认是不带cookie的，需要设置fetch(url, {credentials: 'include'})
+      服务器返回400,500这样的错误码时不会reject,只有网络错误这些导致请求不能完成时，fetch才会被reject.
+
+          fetch(url, options).then(function(response) { 
+          // handle HTTP response 
+          }, function(error) { 
+          // handle network error 
+          })
+
+  1. async/await (Promise)
+
+  1. axios
+
+      Axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。是对XHR的封装
+
+      如果您的环境不支持ES6 Promises，您可以使用polyfill。
+
+      shim是一个库,它将一个新的API引入到一个旧的环境中,而且仅靠旧环境中已有的手段实现 polyfill就是一个用在浏览器API上的shim
+      Polyfill是一个js库，主要抚平不同浏览器之间对js实现的差异
+
+          // get向具有指定ID的用户发出请求
+          axios.get('/user?ID=12345'
+          <!-- {
+            params: {
+            ID: 12345
+            }
+          } -->
+          
+          )
+          .then(function (response) {
+          console.log(response);
+          })
+          .catch(function (error) {
+          console.log(error);
+          });
+
+          //post
+          axios.post('/user', {
+          firstName: 'Fred',
+          lastName: 'Flintstone'
+          })
+          .then(function (response) {
+          console.log(response);
+          })
+          .catch(function (error) {
+          console.log(error);
+          });
+          
+
+
+
 
 
 

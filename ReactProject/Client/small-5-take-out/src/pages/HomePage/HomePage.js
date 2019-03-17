@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter,Link } from 'react-router-dom';
 import HomeHeard from './HomeHeard';
-import { Button } from 'antd-mobile';
+import { SearchBar } from 'antd-mobile';
 import './css/HomePage.css';
 
 
@@ -16,7 +16,7 @@ class HomePage extends Component {
   }
   goto=()=>{
     alert("走你。。。");
-     this.props.history.push('/myinf');
+     this.props.history.push('/search');
   }
   render() {
     return (
@@ -25,7 +25,9 @@ class HomePage extends Component {
         <HomeHeard />
        </div>
        <div className="home-container">
-        内容
+       <div>
+          <SearchBar placeholder="星选好点8元红包" onFocus={this.goto} maxLength={8} />
+      </div>
        </div>
        <br/>    
        {/* <a href='#/myinf'>a 跳转 去我的</a>

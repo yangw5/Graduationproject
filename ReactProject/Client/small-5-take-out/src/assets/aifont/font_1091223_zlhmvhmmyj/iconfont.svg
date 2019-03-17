@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2013-9-30: Created.
+-->
+<svg>
+<metadata>
+Created by iconfont
+</metadata>
+<defs>
+
+<font id="iconfont" horiz-adv-x="1024" >
+  <font-face
+    font-family="iconfont"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1024"
+    ascent="896"
+    descent="-128"
+  />
+    <missing-glyph />
+    
+    <glyph glyph-name="dizhi" unicode="&#58932;" d="M512-128S119.466667 299.946667 119.466667 512 295.253333 896 512 896c216.797867 0 392.533333-171.946667 392.533333-384S512-128 512-128z m0 896c-144.503467 0-261.6832-114.6368-261.6832-256s117.162667-256 261.6832-256c144.4864 0 261.6832 114.6368 261.6832 256S656.503467 768 512 768zM512 384c-72.2432 0-130.833067 57.2928-130.833067 128 0 70.690133 58.589867 128 130.833067 128 72.277333 0 130.8672-57.309867 130.8672-128 0-70.7072-58.606933-128-130.8672-128z m0 0"  horiz-adv-x="1024" />
+
+    
+
+
+  </font>
+</defs></svg>

@@ -1,5 +1,5 @@
 import React ,{ Component} from 'react';
-import { NavBar, Icon,Button } from 'antd-mobile';
+import { NavBar, Icon,Button, } from 'antd-mobile';
 import './css/HomeHeard.css';
 import { SavePlace } from '../../redux/Actions';
 import store from '../../redux/Redux';
@@ -29,10 +29,11 @@ class HomeHeard extends Component {
           icon={<Icon type="left" />}
           onLeftClick={() => console.log('onLeftClick')}
           rightContent={[
-            <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
+            // <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
             <Icon key="1" type="ellipsis" />,
           ]}
         >
+        <span class="iconfont icondizhi"></span>
         <Button onClick={this.obtn}>获取地址</Button>
         </NavBar>
       </div>
