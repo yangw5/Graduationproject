@@ -1,0 +1,39 @@
+.header{
+  /* background-color: blue; */
+}
+.onlodeing{
+  width: 100%;
+  height: 150px;
+  padding-top: 35px;
+}
+.myinftype{
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+.mitype{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap:wrap;
+  justify-content:space-around; 
+}
+.mitype li{
+  border-right: 1px solid #eeeeee;
+  width: 33.3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fdtype-div{
+  width: 44px;
+  height: 64px;
+}
+.fdtype-div span{
+  height: 20px;
+  line-height: 20px;
+}
+.fdtype-div img{
+  width: 44px;
+  height: 44px;
+}

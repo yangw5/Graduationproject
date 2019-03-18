@@ -1,0 +1,18 @@
+.App{
+  overflow: hidden;
+}
+.lodeing{
+  width:80%;
+  margin: 100px auto;
+  border-radius: 10px;
+}
+.lodeing img{
+  width: 100%;
+  /* opacity: 0.6; */
+  
+}
+.tips{
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
