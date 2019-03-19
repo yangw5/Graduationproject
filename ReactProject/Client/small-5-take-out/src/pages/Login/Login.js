@@ -1,12 +1,17 @@
 import React,{Component} from 'react';
 import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toast} from 'antd-mobile';
-import './css/login.css'
+import './css/login.css';
+import { Saveuser } from '../../redux/Actions';
+import store from '../../redux/Redux';
 
 class Login extends Component{
   constructor(props){
     super(props);
     this.state = {
-      value: '美食'
+      value: '',
+      hasError: true,
+      value1:'获取验证码',
+      number:60
     };
 
   }
@@ -24,6 +29,7 @@ class Login extends Component{
 
   componentDidMount(){
     // this.showShareActionSheet();
+    
   }
 
   showShareActionSheet = () => {
@@ -41,6 +47,44 @@ class Login extends Component{
       });
     });
   }
+  onChange = (value) => {
+    if (value.replace(/\s/g, '').length < 11) {
+      this.setState({
+        hasError: true,
+      });
+    } else {
+      this.setState({
+        hasError: false,
+      });
+    }
+    this.setState({
+      value,
+    });
+  }
+  gotonum=()=>{
+    alert("获取验证码");
+    store.dispatch(Saveuser(this.state.value));
+    console.log(store.getState());
+    this.setState({
+      hasError: true,
+    });
+    let count = this.state.number;
+    console.log(count);
+    const timer =setInterval(()=>{
+      this.setState({
+        number:(count--),
+        value1:'已发送（'+count+'s)',
+      });
+      console.log(count);
+      if (count === 0) {
+	      clearInterval(timer);
+	      this.setState({
+          number: 60,
+          value1:'获取验证码',
+	      })
+	    }
+    },1000);
+  }
   render(){
     return (
       <div>
@@ -56,15 +100,26 @@ class Login extends Component{
             ]}
           >登录/注册</NavBar>
           <div className='register'>
-          <InputItem
-            type="phone"
-            placeholder="186 1234 1234"
-          >手机号码</InputItem>
+          <div className='register-phone'>
+            <InputItem
+              type="phone"
+              className='phone'
+              clear
+              placeholder="手机号码 :"
+              onChange={this.onChange}
+              value={this.state.value}
+            ></InputItem>
+            <Button type="primary" onClick={this.gotonum} className='pnumber' inline size="small" disabled={this.state.hasError}>{this.state.value1}</Button>
+          </div>
+
           <InputItem
             type="digit"
-            placeholder=""
-          >验证码</InputItem>
+            className='yzm'
+            placeholder="验证码 :"
+          ></InputItem>
           </div>
+          <br/>
+          <br/>
           <span className='tips'>温馨提示:未注册的饿了么的手机账号，登录时将自动注册，且代表您已同意《用户服务协议》《隐私政策》</span>
           <Button type="primary" onClick={this.showShareActionSheet}>立即登录</Button>
       </div>

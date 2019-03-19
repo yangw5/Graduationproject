@@ -3,9 +3,11 @@ import { withRouter,Link } from 'react-router-dom';
 import HomeHeard from './HomeHeard';
 import { SearchBar,Tag,Accordion, List} from 'antd-mobile';
 import './css/HomePage.css';
+import store from '../../redux/Redux';
 
 
 import imgURL from './images/fenxiang.png';
+import imgURL1 from './images/shop.jpg';
 import lodeing from './images/1.jpg';
 
 
@@ -16,7 +18,7 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      user:true
     };
   }
   goto=()=>{
@@ -28,6 +30,16 @@ class HomePage extends Component {
   }
   onChange1 = (key) => {
     console.log(key);
+  }
+  foodinf=() =>{
+    var user=store.getState();
+    if(user.user){
+      alert("欢迎你"+user.user);
+    }
+    else{
+      alert('请登录');
+    }
+    
   }
   render() {
     return (
@@ -42,7 +54,7 @@ class HomePage extends Component {
         <div>
           <ul className="fdtype">
             <li>
-              <div className='fdtype-div'>
+              <div className='fdtype-div' onClick={this.foodinf}>
               <img src={imgURL}  alt="饿呢" />
               <span>炸鸡</span>
               </div>
@@ -137,12 +149,45 @@ class HomePage extends Component {
             </Tag>           */}
              <Tag onChange={this.onChange}>新店</Tag>
           </div>
-          <div className='list-reading'>
-            <div className='reading-img'>
-              <img src={lodeing}  alt=''/>
+          { this.state.user ?
+            <div className='shop-list'>
+              <div className='shop-item'>
+                <div className='shop-item-heard'>
+                  <div className='shop-item-img'>
+                    <img src={imgURL1} alt='' />
+                  </div>
+                  <div className='shop-item-inf'>
+                    <div className='inf-title'>华莱士（西华大学店）</div>
+                    <div className='inf-number'>
+                      <div className='inf-number-v1'>4.6 月售2012</div>
+                      <div className='inf-number-v2'>准时送达 蜂鸟专送</div>
+                    </div>
+                    <div className='inf-money'>
+                      <div className='inf-money-v1'>起送￥15 夜间配送￥2</div>
+                      <div className='inf-money-v2'>25分钟 464m</div>
+                    </div>
+                  </div>
+                </div>
+                <div className='shop-item-yh'>
+                  <div className='yh-title'>'外卖套餐特别优惠'</div>
+                  <div className='yh-inf'>
+                    <span> 首单减16</span>
+                    <span> 8减6</span>
+                    <span> 20减9</span>
+                    <span> 30减16</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div></div>
+            :
+            <div className='list-reading' >
+              <div className='reading-img'>
+                <img src={lodeing}  alt=''/>
+              </div>
+            </div>
+          }
+          
+         
 
 
         </div>

@@ -106,3 +106,98 @@
   width: 100%;
 
 }
+
+/* shop-list */
+.shop-item{
+
+}
+.shop-item{
+  width: 100%;
+  height: 160px;
+  border-bottom: #e0e0e0 1px solid;
+}
+.shop-item-heard{
+  width:100%;
+  height: 60%;
+}
+.shop-item-img{
+  width: 20%;
+  /* overflow: hidden; */
+  height: 100%;
+  padding: 5px;
+  float: left;
+  
+}
+.shop-item-img img{
+  width: 100%;
+  height: 100%;
+}
+.shop-item-inf{
+  width: 80%;
+  height: 100%;
+  float: left;
+}
+.inf-title{
+  width: 100%;
+  height: 30%;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: left;
+  padding-left: 20px;
+  padding: 10px;
+}
+.inf-number{
+  margin-top: 5px;
+  height:35%;
+  width: 100%;
+  padding: 10px;
+}
+.inf-number-v1{
+  width: 60%;
+  float: left;
+  text-align: left;
+}
+.inf-number-v2{
+  width: 40%;
+  font-size: 10px;
+  color: blue;
+  float: left;
+}
+.inf-money{
+  margin-top: -10px;
+  height: 35%;
+  padding: 10px;
+}
+.inf-money-v1{
+  width: 60%;
+  float: left;
+  text-align: left;
+}
+.inf-money-v2{
+  width: 40%;
+  font-size: 10px;
+  float: left;
+}
+
+.shop-item-yh{
+  width:80%;
+  float: right;
+}
+.yh-title{
+  width: 50%;
+  text-align: center;
+  color: coral;
+  padding: 5px;
+  background-color: greenyellow;
+}
+.yh-inf{
+  width: 100%;
+}
+.yh-inf span{
+  margin-top: 5px;
+  color: red;
+  border: 1px solid #e0e0e0;
+  float: left;
+  padding: 5px;
+  margin-right: 5px;
+}

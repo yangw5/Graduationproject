@@ -4,3 +4,9 @@ export function SavePlace(txt) {
         place:txt
        }
     }
+export function Saveuser(txt){
+  return {
+    type:'SAVEUSER',
+    user:txt
+   }
+}

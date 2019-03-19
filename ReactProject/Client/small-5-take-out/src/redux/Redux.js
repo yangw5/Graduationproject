@@ -16,7 +16,7 @@ import {createStore} from 'redux'
 //定义一个reducer
 
 /*初始化状态树*/
-const initValue={id:0,place:'北京'};
+const initValue={id:0,place:'北京',user:false};
 
 const changepalce= (state=initValue,action)=>{ //接收一个state和action
 	//state具体的更新逻辑
@@ -24,9 +24,12 @@ const changepalce= (state=initValue,action)=>{ //接收一个state和action
         case "SAVE":
         //拷贝一个对象
             return Object.assign({}, state, {
-              id:0,
               place:action.place
-            })
+            });
+          case 'SAVEUSER':
+            return Object.assign({}, state, {
+            user:action.user
+          });
         default:
             return state
     }
