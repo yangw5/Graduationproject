@@ -18,7 +18,18 @@
   >https://mobile.ant.design/docs/react/introduce-cn#3.-%E4%BD%BF%E7%94%A8
 
 
-        import 'antd-mobile/dist/antd-mobile.css';
+    import 'antd-mobile/dist/antd-mobile.css';
+
+  修改antd的默认样式 找到爷爷级 向下到需要修改的元素 进行样式设置 或者父元素自定义类名 向下设置元素样式
+
+     .onlodeing .am-list-item{
+       background-color: #108ee9;
+       color: #ffffff;
+       border: 0px;
+      }
+      .am-list-item .am-list-line .am-list-content{
+        color: #ffffff;
+     }
 ---
 ## react router
 
@@ -256,7 +267,7 @@
 ---
 
 ## 生命周期
-  
+
 
 ---
 

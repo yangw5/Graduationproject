@@ -1,39 +1,79 @@
 .header{
-  /* background-color: blue; */
+  background-color:  #108ee9;
+  color: #ffffff;
+  margin-top: -1px;
 }
+
 .onlodeing{
   width: 100%;
-  height: 150px;
+  height: 130px;
   padding-top: 35px;
 }
+
+.onlodeing .am-list-item{
+  background-color: #108ee9;
+  color: #ffffff;
+  border: 0px;
+}
+.onlodeing .am-list-item .am-list-line .am-list-content{
+  color: #ffffff;
+
+}
+.onlodeing .am-list-item .am-list-line  .am-list-brief{
+  color: #ffffff;
+  font-size: 10px;
+}
+
+.onlodeing .am-list-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
 .myinftype{
-  margin-top: 20px;
+  /* padding-top: 20px; */
   margin-bottom: 20px;
+  border-bottom: 1px solid #eeeeee;
 
 }
 .mitype{
   width: 100%;
+  height: 80px;
   display: flex;
   align-items: center;
   flex-wrap:wrap;
   justify-content:space-around; 
 }
+
 .mitype li{
   border-right: 1px solid #eeeeee;
   width: 33.3%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.fdtype-div{
-  width: 44px;
+.mitype .fdtype-div{
+  width: 68px !important;
   height: 64px;
+  font-size: 16px;
 }
-.fdtype-div span{
+.mitype .fdtype-div span{
   height: 20px;
   line-height: 20px;
 }
-.fdtype-div img{
+.mitype .fdtype-div  .unit{
+  font-size: 8px;
+  margin-left: 1px;
+}
+.mitype .fdtype-div .moneyType{
+  display: inline-block;
+  margin-top: 10px;
+}
+.mitype .fdtype-div img{
   width: 44px;
   height: 44px;
+}
+.my-list .am-list-item .am-list-line .am-list-content{
+  color: #000;
 }

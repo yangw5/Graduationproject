@@ -2,6 +2,7 @@ import React from 'react';
 import {HashRouter, Route, Switch} from 'react-router-dom';
 // import HomePage from '../pages/HomePage/HomePage'
 import MyInf from '../pages/MyInf/MyInf'
+import InfItem from '../pages/MyInf/InfItem/InfItem'
 import Search from '../pages/Search/Search'
 import Login from '../pages/Login/Login'
 // import MyCar from '../pages/MyCar/MyCar'
@@ -16,6 +17,7 @@ const Router = () => (
             <Route  path="/V1" component={App}/>
             <Route  path="/search" component={Search}/>
             <Route  path="/login" component={Login}/>
+            <Route  path="/infitem" component={InfItem}/>
             {/* <Route exact path="/mycar" component={MyCar}/>
             <Route exact path="/myorder" component={MyOrder}/>
             <Route exact path="/myinf" component={MyInf}/> */}

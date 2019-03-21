@@ -16,7 +16,7 @@ import {createStore} from 'redux'
 //定义一个reducer
 
 /*初始化状态树*/
-const initValue={id:0,place:'北京',user:false};
+const initValue={id:0,place:'北京',user:'15208192473'};
 
 const changepalce= (state=initValue,action)=>{ //接收一个state和action
 	//state具体的更新逻辑
