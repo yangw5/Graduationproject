@@ -79,6 +79,42 @@ class MyInf extends Component {
               </li>
             </ul>
         </div>
+        <div>
+          <List  className="my-list">
+            <Item
+                arrow="horizontal"
+                thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                multipleLine
+                onClick={() => {}}
+              >
+                我的收藏
+              </Item>
+            <Item
+                arrow="horizontal"
+                thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                multipleLine
+                onClick={() => {}}
+              >
+                金币商城
+              </Item>
+              <Item
+                arrow="horizontal"
+                thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                multipleLine
+                onClick={() => {}}
+              >
+                我的客服
+              </Item>
+              <Item
+                arrow="horizontal"
+                thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
+                multipleLine
+                onClick={() => {}}
+              >
+                加盟合作 
+              </Item>
+            </List>
+        </div>
         </div>
         :
         <div>

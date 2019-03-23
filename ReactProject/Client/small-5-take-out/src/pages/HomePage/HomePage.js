@@ -9,6 +9,7 @@ import store from '../../redux/Redux';
 import imgURL from './images/fenxiang.png';
 import imgURL1 from './images/shop.jpg';
 import lodeing from './images/1.jpg';
+import xx from './images/xx.png'
 
 
 
@@ -116,6 +117,7 @@ class HomePage extends Component {
           </ul>
         </div>
         <div className='shop-list'>
+        <p style={{float:'left',fontSize:'21px',marginTop:'20px',marginLeft:'10px',fontWeight:'800'}}>推荐商家</p>
           <div className=' shop-title'>
             <div className='title-search shop-title-item'>
               <Accordion accordion openAnimation={{}} className="my-accordion" onChange={this.onChange1}>
@@ -151,6 +153,47 @@ class HomePage extends Component {
           </div>
           { this.state.user ?
             <div className='shop-list'>
+              <div className='shop-item' onClick={()=>{
+                this.props.history.push('/shops')
+              }}>
+                <div className='shop-item-heard'>
+                  <div className='shop-item-img'>
+                    <img src={imgURL1} alt='' />
+                  </div>
+                  <div className='shop-item-inf'>
+                    <div className='inf-title'>华莱士（西华大学店）</div>
+                    <div className='inf-number'>
+                      <div className='inf-number-v1'>
+                        <img  src={xx} alt='' /><span className='px'> 4.6</span>
+                        <span>月售2012</span>
+                      </div>
+                      <div className='inf-number-v2'> 
+                        <span className='v2-sp1'>准时送达</span>
+                        <span className='v2-sp2'>蜂鸟专送</span>
+                      </div>
+                    </div>
+                    <div className='inf-money'>
+                      <div className='inf-money-v1'>
+                        <span>起送￥15 </span>
+                        <span>夜间配送￥2</span>
+                     </div>
+                      <div className='inf-money-v2'> 
+                        <span>25分钟 </span>
+                        <span>464m</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className='shop-item-yh'>
+                  <div className='yh-title'>'外卖套餐特别优惠'</div>
+                  <div className='yh-inf'>
+                    <span> 首单减16</span>
+                    <span> 8减6</span>
+                    <span> 20减9</span>
+                    <span> 30减16</span>
+                  </div>
+                </div>
+              </div>
               <div className='shop-item'>
                 <div className='shop-item-heard'>
                   <div className='shop-item-img'>
@@ -159,12 +202,24 @@ class HomePage extends Component {
                   <div className='shop-item-inf'>
                     <div className='inf-title'>华莱士（西华大学店）</div>
                     <div className='inf-number'>
-                      <div className='inf-number-v1'>4.6 月售2012</div>
-                      <div className='inf-number-v2'>准时送达 蜂鸟专送</div>
+                      <div className='inf-number-v1'>
+                        <img  src={xx} alt='' /><span className='px'> 4.6</span>
+                        <span>月售2012</span>
+                      </div>
+                      <div className='inf-number-v2'> 
+                        <span className='v2-sp1'>准时送达</span>
+                        <span className='v2-sp2'>蜂鸟专送</span>
+                      </div>
                     </div>
                     <div className='inf-money'>
-                      <div className='inf-money-v1'>起送￥15 夜间配送￥2</div>
-                      <div className='inf-money-v2'>25分钟 464m</div>
+                      <div className='inf-money-v1'>
+                        <span>起送￥15 </span>
+                        <span>夜间配送￥2</span>
+                     </div>
+                      <div className='inf-money-v2'> 
+                        <span>25分钟 </span>
+                        <span>464m</span>
+                      </div>
                     </div>
                   </div>
                 </div>

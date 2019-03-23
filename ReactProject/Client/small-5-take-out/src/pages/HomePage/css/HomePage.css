@@ -19,6 +19,7 @@
   width: 100%;
   display: flex;
   align-items: center;
+  padding-top: 10px;
   flex-wrap:wrap;
   justify-content:space-around; 
 }
@@ -93,7 +94,9 @@
   margin-bottom: 9px;
   z-index: 10;
 }
-
+.tag-container .am-tag-normal {
+  background: #eeeeee;
+}
 
 .list-reading{
 
@@ -111,20 +114,24 @@
 .shop-item{
 
 }
+
+
 .shop-item{
   width: 100%;
   height: 160px;
-  border-bottom: #e0e0e0 1px solid;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  border-top: #e0e0e0 1px solid;
 }
 .shop-item-heard{
   width:100%;
   height: 60%;
 }
 .shop-item-img{
-  width: 20%;
+  width: 25%;
   /* overflow: hidden; */
   height: 100%;
-  padding: 5px;
+  padding: 10px;
   float: left;
   
 }
@@ -133,14 +140,14 @@
   height: 100%;
 }
 .shop-item-inf{
-  width: 80%;
+  width: 75%;
   height: 100%;
   float: left;
 }
 .inf-title{
   width: 100%;
   height: 30%;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 800;
   text-align: left;
   padding-left: 20px;
@@ -148,25 +155,53 @@
 }
 .inf-number{
   margin-top: 5px;
-  height:35%;
+  height:40%;
   width: 100%;
   padding: 10px;
+  line-height: 16px;
+  color:  #5d4f4f;
 }
 .inf-number-v1{
   width: 60%;
   float: left;
   text-align: left;
 }
+.inf-number-v1 img{
+  height: 16px;
+}
+.inf-number-v1  .px{
+  color: rgb(254, 80, 1);
+  padding-right: 5px;
+}
 .inf-number-v2{
   width: 40%;
   font-size: 10px;
-  color: blue;
   float: left;
 }
+.inf-number-v2 .v2-sp1{
+  color: blue;
+  width: 50%;
+  border: 1px solid blue;
+  padding: 2px;
+
+}
+.inf-number-v2 .v2-sp2{
+  color: white;
+  background: blue;
+  padding: 2px;
+  font-size: 10px;
+
+}
+
 .inf-money{
   margin-top: -10px;
-  height: 35%;
+  height: 38%;
   padding: 10px;
+  line-height: 16px;
+  color:  #5d4f4f;
+}
+.inf-money span{
+  padding-right: 5px;
 }
 .inf-money-v1{
   width: 60%;
@@ -175,20 +210,21 @@
 }
 .inf-money-v2{
   width: 40%;
-  font-size: 10px;
+  font-size: 15px;
   float: left;
 }
 
 .shop-item-yh{
-  width:80%;
+  width:75%;
   float: right;
+  padding-left: 10px;
 }
 .yh-title{
   width: 50%;
   text-align: center;
-  color: coral;
+  color: #ee541c;
   padding: 5px;
-  background-color: greenyellow;
+  background-color: #f4c8b8;
 }
 .yh-inf{
   width: 100%;
@@ -196,7 +232,7 @@
 .yh-inf span{
   margin-top: 5px;
   color: red;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #f2a5a5;
   float: left;
   padding: 5px;
   margin-right: 5px;

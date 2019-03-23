@@ -1,0 +1,36 @@
+.register{
+  margin-top: 20px;
+}
+.register :after{
+  clear: both;
+  zoom: 1;
+}
+
+/* .register-phone */
+.am-list-item.am-input-item {
+  line-height: 44px;
+}
+
+.phone{
+  width: 64%;
+  float: left;
+  display: block;
+}
+.pnumber{
+  width: 32%;
+  float: right;
+  height: 44px;
+  line-height: 44px;
+}
+.yzm{
+  width: 100%;
+  display: block;
+  float: left;
+}
+
+.resave{
+  width: 100%;
+  margin-top: 20px !important;
+  overflow: hidden;
+
+}

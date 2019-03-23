@@ -14,3 +14,6 @@
     1. justify-content: 决定item在主轴上的对齐方式
     1. align-items: 决定了item在交叉轴上的对齐方式
     1. align-content: 该属性定义了当有多根主轴时，即item不止一行时，多行在交叉轴轴上的对齐方式。
+
+
+    * inline-block设置margin无效，而且有边距 在要转换为inline-block的元素之间加入注释符 将结束标签与下一个开始标签写在一起，这样，他们之间的空格也会被清除掉
