@@ -31,6 +31,41 @@
         color: #ffffff;
      }
 ---
+## 基本知识
+
+1. 获取原生dom 设置Refs，在通过 this.refs.xxx进行访问
+
+        ref='item1'
+
+        this.refs.item1.style.background = 'white';
+
+    使用refs需要注意的地方： 
+    1. Refs是访问组件内部DOM节点唯一看可靠的方法 
+
+    2. Refs会自动销毁对组件的引用 
+
+    3. 不要在render或者render之前对Refs进行调用 
+
+    4. 不要滥用Refs(会影响性能)
+
+1. 事件绑定获取当前绑定dom ，匿名函数传递e,事件函数 通过e.target/currentTarget获取当前dom元素
+      
+        onClick={(e)=>{this.gotofood(e，"aaa")}}//可传递参数
+
+        gotofood(e,a){
+        //e.target/currentTarget
+        alert(e.target.id);
+        }
+1. 数组循环页面数据渲染 
+
+        this.state.foodstype.map(function(value,index){
+          return (
+            <li> <li>
+              <div  className='type-item'  id='item1' key={index} onClick={(e)=>{this.gotofood(e)}}>{value}</div>
+           </li>
+        }
+
+---
 ## react router
 
   一般情况下，只有Router 的component组件能够自动带有三个属性 history location match,没有在router的组件需要通过 

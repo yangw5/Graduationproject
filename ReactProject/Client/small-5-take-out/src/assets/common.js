@@ -134,7 +134,61 @@ const Rxports ={
 //深拷贝
   cloneState:function (state) {
     return JSON.parse(JSON.stringify(state));
-  }
+  },
+    /**
+    * 给元素添加Class属性
+    */
+  addClass (el, cls) {
+  	if (!el) {
+      return;
+    }
+  	let curClass = el.className;
+  	let classes = (cls || '').split(' ');
+
+  	for (let i = 0, j = classes.length; i < j; i++) {
+  		let clsName = classes[i];
+  		if (!clsName) {
+        continue;
+      }
+  		if (el.classList) {
+  			el.classList.add(clsName);
+  		} else {
+  			if (!this.hasClass(el, clsName)) {
+  				curClass += ' ' + clsName;
+  			}
+  		}
+  	}
+  	if (!el.classList) {
+  		el.className = curClass;
+  	}
+  },
+  /**
+    * 移除某元素的Class属性
+    */
+   removeClass (el, cls) {
+  	if (!el || !cls) {
+      return;
+    }
+  	let classes = cls.split(' ');
+  	let curClass = ' ' + el.className + ' ';
+
+  	for (let i = 0, j = classes.length; i < j; i++) {
+  		let clsName = classes[i];
+  		if (!clsName) {
+        continue;
+      }
+  		if (el.classList) {
+  			el.classList.remove(clsName);
+  		} else {
+  			if (this.hasClass(el, clsName)) {
+  				curClass = curClass.replace(' ' + clsName + ' ', ' ');
+  			}
+  		}
+  	}
+  	if (!el.classList) {
+  		 el.className = curClass.replace(/^\s+|\s+$/gm,'');
+  	}
+  },
 
 }
 export default Rxports;

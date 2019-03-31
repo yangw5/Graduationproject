@@ -3,6 +3,7 @@ import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toa
 import './css/login.css';
 import { Saveuser } from '../../redux/Actions';
 import store from '../../redux/Redux';
+import M from '../../assets/common'
 
 class Login extends Component{
   constructor(props){
@@ -33,19 +34,41 @@ class Login extends Component{
   }
 
   showShareActionSheet = () => {
-    ActionSheet.showShareActionSheetWithOptions({
-      options: this.dataList,
-      // title: 'title',
-      message: '三方登录',
-    },
-    (buttonIndex) => {
-      this.setState({ clicked1: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' });
-      // also support Promise
-      return new Promise((resolve) => {
-        Toast.info('closed after 1000ms');
-        setTimeout(resolve, 1000);
+    
+
+      M.ajax({
+        type: 'GET',
+        url: '/mysql',
+        headers: {
+        },
+        params: {}
+      }).then((value)=>{
+        if (value.status === 200) {
+          this.data = value.data.data;
+          store.dispatch(Saveuser(this.data.phone));
+          console.log(store.getState());
+          console.log(this.data);
+          this.props.history.go(-1);
+        }
+      }).catch((error)=>{
+        if (error.response && error.response.status === 400) {
+          this.msg = `${error.response.data.error}!`;
+        }
       });
-    });
+ 
+    // ActionSheet.showShareActionSheetWithOptions({
+    //   options: this.dataList,
+    //   // title: 'title',
+    //   message: '三方登录',
+    // },
+    // (buttonIndex) => {
+    //   this.setState({ clicked1: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' });
+    //   // also support Promise
+    //   return new Promise((resolve) => {
+    //     Toast.info('closed after 1000ms');
+    //     setTimeout(resolve, 1000);
+    //   });
+    // });
   }
   onChange = (value) => {
     if (value.replace(/\s/g, '').length < 11) {
@@ -63,8 +86,6 @@ class Login extends Component{
   }
   gotonum=()=>{
     alert("获取验证码");
-    store.dispatch(Saveuser(this.state.value));
-    console.log(store.getState());
     this.setState({
       hasError: true,
     });

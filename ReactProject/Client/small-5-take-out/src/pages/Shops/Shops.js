@@ -67,10 +67,11 @@ class Shops extends Component{
         <div style={{ height: '370px', backgroundColor: '#fff' }}> 
           <Foods />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '420px', backgroundColor: '#fff' }}>
+        <div style={{  height: '420px', backgroundColor: '#fff' }}>
           <Comments />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '420px', backgroundColor: '#fff' }}>
+        {/* display: 'flex', alignItems: 'center', justifyContent: 'center', */}
+        <div style={{  height: '420px', backgroundColor: '#fff' }}>
           <Business />
         </div>
       </Tabs>

@@ -5,6 +5,8 @@ import { SearchBar,Tag,Accordion, List} from 'antd-mobile';
 import './css/HomePage.css';
 import store from '../../redux/Redux';
 
+import M from '../../assets/common.js';
+
 
 import imgURL from './images/fenxiang.png';
 import imgURL1 from './images/shop.jpg';
@@ -33,8 +35,48 @@ class HomePage extends Component {
     console.log(key);
   }
   foodinf=() =>{
+    
     var user=store.getState();
+    // M.ajax({
+    //   type: 'GET',
+    //   url: '/start',
+    //       headers: {
+    //       },
+    //       params: {
+    //         name:123123
+    //       }
+    //     }).then((value)=>{
+    //       if (value.status === 0) {
+    //         this.data = value.data;
+    //         console.log(this.data);
+    //       }
+    //     }).catch((error)=>{
+    //       if (error.response && error.response.status == 400) {
+    //         this.msg = `${error.response.data.error}!`;
+    //       }
+    // });
+
+    M.ajax({
+      type: 'POST',
+      url: '/upload',
+          headers: {
+          },
+          data: {
+            name:"123123"
+          }
+        }).then((value)=>{
+          if (value.status === 0) {
+            this.data = value.data;
+            console.log(this.data);
+          }
+        }).catch((error)=>{
+          if (error.response && error.response.status == 400) {
+            this.msg = `${error.response.data.error}!`;
+          }
+    });
+
     if(user.user){
+
       alert("欢迎你"+user.user);
     }
     else{

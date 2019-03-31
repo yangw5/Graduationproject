@@ -33,7 +33,7 @@ class HomeHeard extends Component {
             <Icon key="1" type="ellipsis" />,
           ]}
         >
-        <span class="iconfont icondizhi"></span>
+        <span className="iconfont icondizhi"></span>
         <Button onClick={this.obtn}>获取地址</Button>
         </NavBar>
       </div>
