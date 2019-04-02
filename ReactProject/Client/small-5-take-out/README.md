@@ -303,6 +303,38 @@
 
 ## 生命周期
 
+* 初始化
+
+  1. getDefaultProps() getInitialState()
+
+      设置默认的props，也可以用dufaultProps设置组件的默认属性.
+
+      在使用es6的class语法时是没有这个钩子函数的，可以直接在constructor中定义this.state。此时可以访问this.props
+
+  1. componentWillMount() 
+    
+      组件初始化时只调用，以后组件更新不调用，整个生命周期只调用一次，此时可以修改state。
+
+  1. render()
+
+      react最重要的步骤，创建虚拟dom，进行diff算法，更新dom树都在此进行。此时就不能更改state了  
+  
+  1. componentDidMount()
+
+      组件渲染之后调用，只调用一次。
+
+* 更新
+
+  1. componentWillReceiveProps(nextProps)
+
+    
+  1. 
+  1. 
+
+
+* 卸载
+
+
 
 ---
 

@@ -5,6 +5,7 @@ import MyInf from '../pages/MyInf/MyInf'
 import InfItem from '../pages/MyInf/InfItem/InfItem'
 import ItemName from '../pages/MyInf/InfItem/ItemName'
 import ItemPhone from '../pages/MyInf/InfItem/ItemPhone'
+import ItemImage from '../pages/MyInf/InfItem/ItemImage'
 import Search from '../pages/Search/Search'
 import Login from '../pages/Login/Login'
 import Shops from '../pages/Shops/Shops'
@@ -24,6 +25,7 @@ const Router = () => (
             <Route  path="/infitem" component={InfItem}/>
             <Route  path="/itemname" component={ItemName}/>
             <Route  path="/itemphone" component={ItemPhone}/>
+            <Route  path="/itemimage" component={ItemImage}/>
             {/* <Route exact path="/mycar" component={MyCar}/>
             <Route exact path="/myorder" component={MyOrder}/>
             <Route exact path="/myinf" component={MyInf}/> */}

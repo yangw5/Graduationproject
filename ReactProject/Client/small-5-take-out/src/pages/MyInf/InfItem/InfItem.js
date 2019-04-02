@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import { NavBar, Icon ,List} from 'antd-mobile';
 import '../css/infitem.css';
 import imgURL from '../images/userlogo.jpg';
+import M from '../../../assets/common';
+// import im from 'E:/Graduationproject/ReactProject/Server/imgs/yang5/1554102490957.png';
 const Item = List.Item;
 
 
@@ -10,9 +12,59 @@ class InfItem extends Component{
   constructor(props){
     super(props)
     this.state={
-
+      img:imgURL
     }
   }
+  componentWillMount(){
+    let that=this;
+    //获取数据
+    M.ajax({
+      type: 'GET',
+      url: '/userinf',
+      headers: {
+      },
+      params: {
+        phone:"15208192473"
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+       let data = value.data.data;
+       //获取头像图片
+      //  that.getimg(data.himg);
+       that.setState({
+         img:'http://localhost:8888/getimg?himg='+data.himg
+       })
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
+  }
+
+  getimg(imgurl){
+    M.ajax({
+      type: 'GET',
+      url: '/getimg',
+      headers: {
+      },
+      params: {
+        url:imgurl
+      }
+    }).then((value)=>{
+      console.log(value);  
+      if (value.status === 200) {
+      //  let data = value.data.data;
+      console.log( );
+
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
+  }
+    
   render(){
     return(
       <div className='infitem'>
@@ -25,10 +77,10 @@ class InfItem extends Component{
           >个人资料</NavBar>
           <div>
             <List renderHeader={() => '基本信息'} className="my-list">
-              <Item extra={<img src={imgURL} alt="" />}
+              <Item extra={<img src={this.state.img} alt="" />}
                 arrow="horizontal"
                 onClick={() => {
-                  this.props.history.push('/itemname');
+                  this.props.history.push('/itemimage');
                 }}
               >头像</Item>
               <Item extra={'杨文伍'}
@@ -59,7 +111,7 @@ class InfItem extends Component{
                 thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
                 arrow="horizontal"
               >支付宝</Item>
-              
+             
             </List>
           </div>
       </div>
