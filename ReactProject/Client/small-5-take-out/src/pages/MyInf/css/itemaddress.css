@@ -1,0 +1,38 @@
+.adrs{
+  height: 80px;
+  width: 100%;
+  background: white;
+  margin-top: 10px;
+}
+.adrs-item{
+  width: 80%;
+  height: 100%;
+  float: left;
+  padding-left: 20px;
+  margin-right: -20px;
+}
+.adrs-item1{
+  height: 30px;
+  font-size: 14px;
+  line-height:30px;
+  font-weight: 800;
+}
+.adrs-item2{
+  height: 20px;
+  line-height: 20px;
+}
+.adrs-item3{
+  height: 30px;
+  line-height:30px;
+}
+.adrs-item3 span{
+  margin-right: 20px;
+}
+.adre-do{
+  width: 20%;
+  height: 100%;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

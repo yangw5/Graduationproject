@@ -16,13 +16,22 @@ class ItemImage extends Component{
     }
   }
   onChange = (files, type, index) => {
-    console.log(files, type, index);
     let flag=!this.state.hasError;
-    this.setState({
-      hasError:flag,
-      image:files[0].url,
-      files,
-    });
+    console.log(files, type, index);
+    if(type ==='add'){
+      this.setState({
+        hasError:flag,
+        image:files[0].url,
+        files,
+      });
+    }else{
+      this.setState({
+        hasError:flag,
+        files,
+      });
+    }
+
+
   }
   saveimg=()=>{
     console.log(this.state.image);
@@ -45,9 +54,7 @@ class ItemImage extends Component{
         if (error.response && error.response.status === 400) {
           this.msg = `${error.response.data.error}!`;
         }
-      });
-      
-      
+      }); 
   }
   // onSegChange = (e) => {
   //   const index = e.nativeEvent.selectedSegmentIndex;

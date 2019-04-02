@@ -9,6 +9,9 @@ handle["/mysql"] = requestHandlers.mysql;
 handle["/upload"] = requestHandlers.upload;//图片上传
 handle["/getimg"] = requestHandlers.getimg;//图片下载
 handle["/userinf"] = requestHandlers.userinf;//个人信息
+handle["/revisename"]=requestHandlers.revisename;//修改用户名
+handle["/revisephone"]=requestHandlers.revisephone;//修改手机号
+
 
 
 

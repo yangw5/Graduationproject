@@ -5,7 +5,7 @@ import './css/myinf.css';
 import imgURL from './images/fenxiang.png';
 import userlogo from './images/userlogo.jpg'
 
-import { SavePlace } from '../../redux/Actions';
+// import { SavePlace } from '../../redux/Actions';
 import store from '../../redux/Redux';
 
 const Item = List.Item;
@@ -47,7 +47,7 @@ class MyInf extends Component {
                 thumb={userlogo}
                 multipleLine
                 onClick={() => {
-                    this.props.history.push('/infitem');
+                  this.props.history.push({pathname:"/infitem/" + user});
                 }}
                 >
                 我是新用户 <Brief>{user}</Brief>

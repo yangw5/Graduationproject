@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import { NavBar, Icon ,List} from 'antd-mobile';
 import '../css/infitem.css';
 import imgURL from '../images/userlogo.jpg';
+
+
 import M from '../../../assets/common';
 // import im from 'E:/Graduationproject/ReactProject/Server/imgs/yang5/1554102490957.png';
 const Item = List.Item;
@@ -12,10 +14,14 @@ class InfItem extends Component{
   constructor(props){
     super(props)
     this.state={
+      name:'',
+      phone:'',
+      address:'',
       img:imgURL
     }
   }
   componentWillMount(){
+    //alert(this.props.match.params.id);
     let that=this;
     //获取数据
     M.ajax({
@@ -24,14 +30,16 @@ class InfItem extends Component{
       headers: {
       },
       params: {
-        phone:"15208192473"
+        phone:this.props.match.params.id
       }
     }).then((value)=>{  
       if (value.status === 200) {
        let data = value.data.data;
        //获取头像图片
-      //  that.getimg(data.himg);
        that.setState({
+         name:data.name,
+         phone:data.phone,
+         address:data.address,
          img:'http://localhost:8888/getimg?himg='+data.himg
        })
       }
@@ -40,31 +48,7 @@ class InfItem extends Component{
         this.msg = `${error.response.data.error}!`;
       }
     });
-  }
-
-  getimg(imgurl){
-    M.ajax({
-      type: 'GET',
-      url: '/getimg',
-      headers: {
-      },
-      params: {
-        url:imgurl
-      }
-    }).then((value)=>{
-      console.log(value);  
-      if (value.status === 200) {
-      //  let data = value.data.data;
-      console.log( );
-
-      }
-    }).catch((error)=>{
-      if (error.response && error.response.status === 400) {
-        this.msg = `${error.response.data.error}!`;
-      }
-    });
-  }
-    
+  }   
   render(){
     return(
       <div className='infitem'>
@@ -83,20 +67,23 @@ class InfItem extends Component{
                   this.props.history.push('/itemimage');
                 }}
               >头像</Item>
-              <Item extra={'杨文伍'}
+              <Item extra={this.state.name}
                 arrow="horizontal"
                 onClick={() => {
                   this.props.history.push('/itemname');
                 }}
               >姓名</Item>
-              <Item extra={'四川省成都市郫县西华大学'}
+              <Item extra={this.state.address}
                arrow="horizontal" 
+               onClick={() => {
+                this.props.history.push('/itemaddress');
+              }}
               >收货地址 </Item>
             </List>
           </div>
           <div className='zh'>
             <List renderHeader={() => '账号绑定'} className="my-list">
-              <Item extra={'15208192473'}
+              <Item extra={this.state.phone}
                 thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
                 arrow="horizontal"
                 onClick={() => {

@@ -1,5 +1,5 @@
 var querystring = require("querystring"),//用于处理query字符串的模块
-    mysqlc=require("./mysqlc"),
+    // mysqlc=require("./mysqlc"),
     mysql1= require('./mysql'),
     readImg=require('./saveimg')
     saveimage=require('./saveimg')
@@ -70,10 +70,10 @@ function mysql(response, postData,params) {
 function userinf(response, postData,params){
   console.log("Request handler 'userinf' was called.");
   (async ()=>{
-    console.log(params.phone);
+    // console.log(params.phone);
     let str='select * from user where phone= "'+ params.phone +'"';
     let s = await mysql1.FIRST(str,'');
-    console.log(s);
+    // console.log(s);
     var data={
       status:200,
       data:{
@@ -90,7 +90,6 @@ function userinf(response, postData,params){
 //图片上传
 function upload(response, postData) {
   console.log("Request handler 'upload' was called.");
-
   // response.write("You've sent the text: "+postData.data);
   // console.log(img.data);
       (async ()=>{
@@ -107,6 +106,43 @@ function upload(response, postData) {
 
 }
 
+//修改用户姓名
+function revisename(response, postData,params){
+  console.log("Request handler 'revisename' was called.");
+  (async ()=>{
+      let user=JSON.parse(postData);//json转化为对象
+      let name=user.name;
+      let str='update user set name="'+ name +'" where id= 1 '
+      let result = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data: result 
+        }
+      }
+      returnjson(data,response);
+  })()
+}
+
+//修改手机号
+function revisephone(response, postData,params){
+  console.log("Request handler 'revisephone' was called.");
+  (async ()=>{
+      let user=JSON.parse(postData);//json转化为对象
+      let phone=user.phone;
+          phone=phone.replace(/\s*/g,"");//去除字符串的空格
+      let str='update user set phone="'+ phone +'" where id= 1 '
+      let result = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data: result 
+        }
+      }
+      returnjson(data,response);
+  })()
+}
+
 //获取图片信息
 function getimg(response, postData,params){
   (async ()=>{
@@ -119,8 +155,18 @@ function getimg(response, postData,params){
 
 }
 
+//返回json数据
+function returnjson(data,response){
+  response.writeHead(200, {"Content-Type": "application/json"});
+  var json = JSON.stringify(data);//对象转化为字符串
+  response.write(json);
+  response.end();
+}
+
 exports.start = start;
 exports.upload = upload;
 exports.mysql = mysql;
 exports.userinf=userinf;
 exports.getimg=getimg;
+exports.revisename=revisename;
+exports.revisephone=revisephone;

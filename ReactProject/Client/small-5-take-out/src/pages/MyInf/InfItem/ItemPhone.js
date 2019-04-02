@@ -1,8 +1,13 @@
 import React,{Component} from 'react'
 import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toast,List} from 'antd-mobile';
 import '../css/itemphone.css'
+
+import M from '../../../assets/common';
+
 import { Saveuser } from '../../../redux/Actions';
 import store from '../../../redux/Redux';
+
+
 const Item = List.Item;
 
 const Brief = Item.Brief;
@@ -14,10 +19,12 @@ class ItemPhone extends Component{
     this.state={
       value: '',
       hasError: true,
+      flag:true,
       value1:'获取验证码',
       number:60
     }
   }
+  //输入手机号变化
   onChange = (value) => {
     if (value.replace(/\s/g, '').length < 11) {
       this.setState({
@@ -32,12 +39,13 @@ class ItemPhone extends Component{
       value,
     });
   }
+  //获取验证码
   gotonum=()=>{
-    alert("获取验证码");
     store.dispatch(Saveuser(this.state.value));
     console.log(store.getState());
     this.setState({
       hasError: true,
+      flag:false,
     });
     let count = this.state.number;
     console.log(count);
@@ -55,6 +63,28 @@ class ItemPhone extends Component{
 	      })
 	    }
     },1000);
+  }
+  revisephone=()=>{
+    M.ajax({
+      type: 'POST',
+      url: '/revisephone',
+      headers: {
+      },
+      data: {
+        phone:this.state.value
+      }
+    }).then((value)=>{
+      console.log(value);  
+      if (value.status === 200) {
+        let phone=this.state.value.replace(/\s*/g,"");
+        this.props.history.push({pathname:"/infitem/" + phone});
+
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
   }
   render(){
     return(
@@ -86,7 +116,7 @@ class ItemPhone extends Component{
           ></InputItem>
           </div>
          </div>
-         <Button className='resave' type="primary" >通过验证获取新手机号</Button>
+         <Button className='resave' type="primary" disabled={this.state.flag}  onClick={this.revisephone}>通过验证获取新手机号</Button>
       </div>
     )
   }
