@@ -155,6 +155,78 @@ function getimg(response, postData,params){
 
 }
 
+//获取地址
+function getaddress(response, postData,params){
+  console.log("Request handler 'getaddress' was called.");
+  (async ()=>{
+    console.log(params.usernumber);
+    let str='select * from address where usernumber= "'+ params.usernumber +'"';
+    let resault= await mysql1.ROW(str,'');
+    // console.log(s);
+    var data={
+      status:200,
+      data:{
+        data: resault
+      }
+    }
+    returnjson(data,response);
+  })()
+}
+//新增地址
+function addaddress(response, postData,params){
+  console.log("Request handler 'addaddress' was called.");
+  (async ()=>{
+      let pdata=JSON.parse(postData);//json转化为对象
+      pdata=pdata.data;
+      console.log(pdata);
+      let str='INSERT INTO address (name,sex,phone,address,street,usernumber) VALUES ("'+pdata.name+'",'+pdata.sex+',"'+pdata.phone+'","'+pdata.address+'","'+pdata.street+'","'+pdata.usernumber+'")'
+      let s = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data: s 
+        }
+      }
+      returnjson(data,response);
+
+  })()
+  
+}
+//修改地址
+function updataaddress(){
+  console.log("Request handler 'updataaddress' was called.");
+  (async ()=>{
+      let user=JSON.parse(postData);//json转化为对象
+      let name=user.name;
+      let str='update address set name="'+ name +'" where id= 1 '
+      let result = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data: result 
+        }
+      }
+      returnjson(data,response);
+  })()
+  
+}
+//删除地址
+function deleteaddress(){
+  console.log("Request handler 'deleteaddress' was called.");
+  (async ()=>{
+    let  str='delete from address where id = 5';
+    let s = await mysql1.EXECUTE(str,'');
+    var data={
+      status:200,
+      data:{
+        data: resault
+      }
+    }
+    returnjson(data,response)
+  })()
+}
+
+
 //返回json数据
 function returnjson(data,response){
   response.writeHead(200, {"Content-Type": "application/json"});
@@ -170,3 +242,8 @@ exports.userinf=userinf;
 exports.getimg=getimg;
 exports.revisename=revisename;
 exports.revisephone=revisephone;
+exports.getaddress=getaddress;
+exports.addaddress=addaddress;
+exports.updataaddress=updataaddress;
+exports.deleteaddress=deleteaddress;
+

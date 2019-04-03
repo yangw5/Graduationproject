@@ -43,10 +43,10 @@ function start(route,handle){
 
 		//注册了“data”事件的监听器,用于收集每次接收到的新数据块，并将其赋值给postData 变量
     request.addListener("data", function(postDataChunk) {
-			console.log(postDataChunk);
+			// console.log(postDataChunk);
       postData = postDataChunk;
-      console.log("Received POST data chunk '"+
-      postDataChunk + "'.");
+      // console.log("Received POST data chunk '"+
+      // postDataChunk + "'.");
 		});
 		
 		//请求路由的调用移到end事件处理程序中，以确保它只会当所有数据接收完毕后才触发，并且只触发一次

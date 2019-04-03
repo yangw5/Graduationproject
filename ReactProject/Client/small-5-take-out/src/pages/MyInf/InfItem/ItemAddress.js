@@ -1,22 +1,66 @@
 import React,{Component} from 'react'
-import {Route} from 'react-router-dom';
-import Address from './Address';
-import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toast,List} from 'antd-mobile';
+import { NavBar, Icon ,} from 'antd-mobile';
+import M from '../../../assets/common'
 
 import '../css/itemaddress.css'
-
-const Item = List.Item;
-const Brief = Item.Brief;
-
 
 class ItemAddress extends Component{
   constructor(props){
     super(props)
     this.state={
-
+      address:[]
     }
   }
+  componentDidMount(){
+    M.ajax({
+      type:'GET',
+      url:'/getaddress',
+      headers: {
+      },
+      params:{
+        usernumber:'user_01'
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+        console.log(value.data.data);
+        this.setState({
+          address:value.data.data
+        })
+
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
+  }
+  updataaddress(value,e){
+    this.props.history.push({ pathname:'/address',state:{address: value} });
+  }
   render(){
+    let _this = this;
+    var showArr=[];
+     this.state.address.map(function(value,key){
+         return showArr.push(
+          <div className='adrs' key={key}>
+          <div className='adrs-item'>
+            <div className='adrs-item1'>{value.street}</div>
+            <div className='adrs-item2'>{value.address}</div>
+            <div className='adrs-item3'>
+              <span>
+             {value.name}{value.sex ? "( 先生 )" : "( 女士 )"}
+              </span>
+              <span>
+              {value.phone}
+              </span>
+            </div>
+          </div>
+          <div className='adre-do'>
+            <Icon onClick={(e)=>{_this.updataaddress(e,value)}} type="ellipsis" size='xs' />
+          </div>
+        </div>
+         )
+     })
     return(
       <div>
           <NavBar
@@ -32,24 +76,8 @@ class ItemAddress extends Component{
             ]}
           >收获地址</NavBar>
          <div>
-         <div className='adrs'>
-            <div className='adrs-item'>
-              <div className='adrs-item1'>德馨苑</div>
-              <div className='adrs-item2'>一栋248</div>
-              <div className='adrs-item3'>
-                <span>
-                杨(先生)
-                </span>
-                <span>
-                15208192473
-                </span>
-              </div>
-            </div>
-            <div className='adre-do'>
-              <Icon type="ellipsis" size='xs' />
-            </div>
+         {showArr}
          </div>
-      </div>
 
       </div>
     )

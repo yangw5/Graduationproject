@@ -60,10 +60,62 @@
 
         this.state.foodstype.map(function(value,index){
           return (
-            <li> <li>
+            <li> 
               <div  className='type-item'  id='item1' key={index} onClick={(e)=>{this.gotofood(e)}}>{value}</div>
            </li>
         }
+1. 事件绑定
+
+    如果在map渲染中进行事件绑定，需要先进 jsx保存在数组中 在添加到return中 
+
+          updataaddress=()=>{
+            
+            this.props.history.push("/address");
+          }
+          render(){
+            let _this = this;
+            var showArr=[];
+            this.state.address.map(function(value,key){
+                return showArr.push(
+                  <div className='adrs' key={key}>
+                  <div className='adrs-item'>
+                    <div className='adrs-item1'>{value.street}</div>
+                    <div className='adrs-item2'>{value.address}</div>
+                    <div className='adrs-item3'>
+                      <span>
+                    {value.name}{value.sex ? "( 先生 )" : "( 女士 )"}
+                      </span>
+                      <span>
+                      {value.phone}
+                      </span>
+                    </div>
+                  </div>
+                  <div className='adre-do'>
+                    <Icon onClick={_this.updataaddress} type="ellipsis" size='xs' />
+                  </div>
+                </div>
+                )
+            })
+            return(
+              <div>
+                  <NavBar
+                    mode="light"
+                    icon={<Icon type="left" />}
+                    onLeftClick={() => {
+                      this.props.history.go(-1);
+                    }}
+                    rightContent={[
+                      <span key='1' onClick={()=>{
+                        this.props.history.push('/address')
+                      }}>新增地址</span>
+                    ]}
+                  >收获地址</NavBar>
+                <div>
+                {showArr}
+                </div>
+
+              </div>
+            )
 
 ---
 ## react router
@@ -173,7 +225,7 @@
                   <link to="web/departManange?tenantId=12121212">xxx</Link>
                   this.props.history.push({pathname:"/web/departManange?tenantId" + row.tenantId});
                   读取参数用: this.props.location.search
-                  
+
               优缺点同params
 
     4. 嵌套路由

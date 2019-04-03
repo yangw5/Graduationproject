@@ -1,22 +1,29 @@
 import React,{Component} from 'react'
 import { NavBar, Icon ,InputItem, Tag, WhiteSpace, Button,List} from 'antd-mobile';
+import M from '../../../assets/common'
 import '../css/address.css'
 const Item = List.Item;
 const Brief = Item.Brief;
 
 
 class Address extends Component{
-  constructor(props){
-    super(props)
+  constructor(props,context){
+    super(props,context)
     this.state={
         name:'',
         phone:'',
         sex:false,
         address:'',
         street:'',
+        usernumber:'user_01',
         flog:false
 
     }
+  }
+  componentDidMount(){
+
+    console.log(this.props.location.state.address);
+    
   }
   inputchange1=(value)=>{
     this.setState({
@@ -25,7 +32,7 @@ class Address extends Component{
   }
   inputchange2=(e)=>{
     alert(e.target.getAttribute('class'));
-    
+
   }
   inputchange3=(value)=>{
     this.setState({
@@ -43,9 +50,26 @@ class Address extends Component{
     });
   }
 
-  putaddress=()=>{
+  postaddress=()=>{
 
     console.log(this.state);
+    M.ajax({
+      type:'POST',
+      url:'/addaddress',
+      headers: {
+      },
+      data:{
+        data:this.state
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+        this.props.history.go(-1);
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
 
   }
   render(){
@@ -99,7 +123,7 @@ class Address extends Component{
 
             </div>
             <div>
-              <Button type="primary" disabled={this.state.flog}  onClick={this.putaddress}>保存</Button><WhiteSpace />
+              <Button type="primary" disabled={this.state.flog}  onClick={this.postaddress}>保存</Button><WhiteSpace />
             </div>
 
          </div>
