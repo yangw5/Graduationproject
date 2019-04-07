@@ -12,6 +12,7 @@ class Address extends Component{
     this.state={
         name:'',
         phone:'',
+        id:'',
         sex:false,
         address:'',
         street:'',
@@ -21,9 +22,20 @@ class Address extends Component{
     }
   }
   componentDidMount(){
-
-    console.log(this.props.location.state.address);
-    
+    console.log(this.state);
+    let value=this.props.location.state.raddress;
+    if(value){
+      this.setState({
+        name:value.name,
+        phone:value.phone,
+        sex:value.sex,
+        address:value.address,
+        street:value.street,
+        usernumber:value.usernumber,
+        id:value.id,
+        flog:false
+      })
+    }  
   }
   inputchange1=(value)=>{
     this.setState({
@@ -51,11 +63,16 @@ class Address extends Component{
   }
 
   postaddress=()=>{
-
+    let url=''
+    if(this.props.location.state.raddress){
+      url='/updataaddress'
+    }else{
+      url='/addaddress'
+    }
     console.log(this.state);
     M.ajax({
       type:'POST',
-      url:'/addaddress',
+      url:url,
       headers: {
       },
       data:{
@@ -72,6 +89,25 @@ class Address extends Component{
     });
 
   }
+  deleteaddress=()=>{
+    M.ajax({
+      type:'GET',
+      url:'/deleteaddress',
+      headers: {
+      },
+      params:{
+        id:this.state.id
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+        this.props.history.go(-1);
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
+  }
   render(){
     return(
       <div>
@@ -82,9 +118,10 @@ class Address extends Component{
               this.props.history.go(-1);
             }}
             rightContent={[
-              <Icon key="1" type="ecross" />,
+              <Icon key="1" type={this.props.location.state.raddress ? "cross" : "" } onClick={this.props.location.state.raddress ? this.deleteaddress : ''} />,
             ]}
-          >新增/修改地址</NavBar>
+          >{this.props.location.state.raddress ? "修改" : "新增" }地址
+          </NavBar>
          <div>
          <div>
             <div className='address-item'>

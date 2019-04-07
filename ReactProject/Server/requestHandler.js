@@ -8,11 +8,11 @@ var querystring = require("querystring"),//用于处理query字符串的模块
 
 function start(response, postData,params) {
   console.log("Request handler 'start' was called.");
-  if(params.name){
-    console.log(params.name);//get数据
-  }
+  // if(params.name){
+  //   console.log(params.name);//get数据
+  // }
     response.writeHead(200, {"Content-Type": "text/html"});
-    response.write(params.name);
+  // response.write(params.name);
     response.end();
 }
 
@@ -193,12 +193,12 @@ function addaddress(response, postData,params){
   
 }
 //修改地址
-function updataaddress(){
+function updataaddress(response, postData,params){
   console.log("Request handler 'updataaddress' was called.");
   (async ()=>{
-      let user=JSON.parse(postData);//json转化为对象
-      let name=user.name;
-      let str='update address set name="'+ name +'" where id= 1 '
+      postData=JSON.parse(postData).data;//json转化为对象
+      let str='update address set name="'+ postData.name +'" ,sex="'+ postData.sex +'" ,phone="'+ postData.phone +'" ,address="'+ postData.address +'" ,street="'+ postData.street +'"  where id = "' + postData.id +'"';
+      console.log(str);
       let result = await mysql1.EXECUTE(str,'');
       var data={
         status:200,
@@ -211,15 +211,16 @@ function updataaddress(){
   
 }
 //删除地址
-function deleteaddress(){
+function deleteaddress(response, postData,params){
   console.log("Request handler 'deleteaddress' was called.");
   (async ()=>{
-    let  str='delete from address where id = 5';
+    let  str='delete from address  where id = "' + params.id +'"';
+    console.log(str);
     let s = await mysql1.EXECUTE(str,'');
     var data={
       status:200,
       data:{
-        data: resault
+        data: s
       }
     }
     returnjson(data,response)
@@ -235,6 +236,29 @@ function returnjson(data,response){
   response.end();
 }
 
+
+//商家后台处理
+function shop(response, postData,params){
+  console.log("Request handler 'shop' was called.");
+  (async ()=>{
+    console.log(postData);
+    let pdata=JSON.parse(postData).data;//json转化为对象
+
+    let str='INSERT INTO shops (shopname,shoptype,shopphone,uname,uphone,shopimage,address) VALUES ("'+pdata.shopname+'","'+pdata.shoptype+'","'+pdata.shopphone+'","'+pdata.uname+'","'+pdata.uphone+'","'+pdata.shopimage+'","'+pdata.address+'")'
+    console.log(str)
+    let s = await mysql1.EXECUTE(str,'');
+
+    var data={
+      status:200,
+      data:{
+        data: s
+      }
+    }
+    returnjson(data,response)
+  })()
+}
+
+
 exports.start = start;
 exports.upload = upload;
 exports.mysql = mysql;
@@ -247,3 +271,5 @@ exports.addaddress=addaddress;
 exports.updataaddress=updataaddress;
 exports.deleteaddress=deleteaddress;
 
+
+exports.shop=shop;

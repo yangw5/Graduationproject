@@ -34,8 +34,9 @@ class ItemAddress extends Component{
       }
     });
   }
-  updataaddress(value,e){
-    this.props.history.push({ pathname:'/address',state:{address: value} });
+  updataaddress(key,value,e){
+    console.log(value);
+    this.props.history.push({ pathname:'/address',state:{raddress: value} });
   }
   render(){
     let _this = this;
@@ -56,7 +57,7 @@ class ItemAddress extends Component{
             </div>
           </div>
           <div className='adre-do'>
-            <Icon onClick={(e)=>{_this.updataaddress(e,value)}} type="ellipsis" size='xs' />
+            <Icon onClick={(e)=>{_this.updataaddress(e,value,key)}} type="ellipsis" size='xs' />
           </div>
         </div>
          )
@@ -71,7 +72,7 @@ class ItemAddress extends Component{
             }}
             rightContent={[
               <span key='1' onClick={()=>{
-                this.props.history.push('/address')
+                this.props.history.push({ pathname:'/address',state:{raddress: false} })
               }}>新增地址</span>
             ]}
           >收获地址</NavBar>
