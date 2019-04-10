@@ -157,7 +157,35 @@
       }
 
 
+###  blob和base64之间的相互转换
 
+           /**
+          * base64  to blob二进制
+          */
+          dataURItoBlob(dataURI) {
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // mime类型
+            var byteString = atob(dataURI.split(',')[1]); //base64 解码
+            var arrayBuffer = new ArrayBuffer(byteString.length); //创建缓冲数组
+            var intArray = new Uint8Array(arrayBuffer); //创建视图
+
+            for (var i = 0; i < byteString.length; i++) {
+                intArray[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([intArray], {type: mimeString});
+          },
+
+        /**
+        * 
+        * blob二进制 to base64
+        **/
+          blobToDataURI(blob, callback) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  callback(e.target.result);
+              }
+              reader.readAsDataURL(blob);
+          },
+          
 
 
   

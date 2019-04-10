@@ -14,16 +14,40 @@ import lodeing from './images/1.jpg';
 import xx from './images/xx.png'
 
 
-
-
-
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user:true
+      user:true,
+      data:[]
     };
   }
+  componentDidMount(){
+    M.ajax({
+      type: 'GET',
+      url: '/getshop',
+          headers: {
+          },
+          data: {
+          }
+        }).then((value)=>{
+          if (value.status === 200) {
+            let sdata = value.data;
+           this.setState({
+             data:sdata.data
+           })
+
+           console.log(this.state);
+           console.log(this.state.data[0].shopimage)
+          }
+        }).catch((error)=>{
+          if (error.response && error.response.status == 400) {
+            this.msg = `${error.response.data.error}!`;
+          }
+    });
+  }
+
+
   goto=()=>{
     alert("走你。。。");
      this.props.history.push('/search');
@@ -84,7 +108,57 @@ class HomePage extends Component {
     }
     
   }
+  gotoshop(){
+    this.props.history.push('/shops');
+  }
   render() {
+    let _this=this;
+    let shopitem=[];
+    this.state.data.map(function(value,key){
+      return shopitem.push(
+        <div className='shop-item' key={key} 
+        onClick={()=>{_this.gotoshop()}}
+        >
+          <div className='shop-item-heard'>
+            <div className='shop-item-img'>
+              <img  src={'http://localhost:8888/getimg?himg='+value.shopimage} alt='' />
+            </div>
+            <div className='shop-item-inf'>
+              <div className='inf-title'>{value.shopname}</div>
+              <div className='inf-number'>
+                <div className='inf-number-v1'>
+                  <img  src={xx} alt='' /><span className='px'> 4.6</span>
+                  <span>月售2012</span>
+                </div>
+                <div className='inf-number-v2'> 
+                  <span className='v2-sp1'>准时送达</span>
+                  <span className='v2-sp2'>蜂鸟专送</span>
+                </div>
+              </div>
+              <div className='inf-money'>
+                <div className='inf-money-v1'>
+                  <span>起送￥15 </span>
+                  <span>夜间配送￥2</span>
+               </div>
+                <div className='inf-money-v2'> 
+                  <span>25分钟 </span>
+                  <span>464m</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='shop-item-yh'>
+            <div className='yh-title'>'外卖套餐特别优惠'</div>
+            <div className='yh-inf'>
+              <span> 首单减16</span>
+              <span> 8减6</span>
+              <span> 20减9</span>
+              <span> 30减16</span>
+            </div>
+          </div>
+        </div>
+      )
+    })
     return (
       <div className="home-body">
         <div className="hompheard">
@@ -195,47 +269,7 @@ class HomePage extends Component {
           </div>
           { this.state.user ?
             <div className='shop-list'>
-              <div className='shop-item' onClick={()=>{
-                this.props.history.push('/shops')
-              }}>
-                <div className='shop-item-heard'>
-                  <div className='shop-item-img'>
-                    <img src={imgURL1} alt='' />
-                  </div>
-                  <div className='shop-item-inf'>
-                    <div className='inf-title'>华莱士（西华大学店）</div>
-                    <div className='inf-number'>
-                      <div className='inf-number-v1'>
-                        <img  src={xx} alt='' /><span className='px'> 4.6</span>
-                        <span>月售2012</span>
-                      </div>
-                      <div className='inf-number-v2'> 
-                        <span className='v2-sp1'>准时送达</span>
-                        <span className='v2-sp2'>蜂鸟专送</span>
-                      </div>
-                    </div>
-                    <div className='inf-money'>
-                      <div className='inf-money-v1'>
-                        <span>起送￥15 </span>
-                        <span>夜间配送￥2</span>
-                     </div>
-                      <div className='inf-money-v2'> 
-                        <span>25分钟 </span>
-                        <span>464m</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='shop-item-yh'>
-                  <div className='yh-title'>'外卖套餐特别优惠'</div>
-                  <div className='yh-inf'>
-                    <span> 首单减16</span>
-                    <span> 8减6</span>
-                    <span> 20减9</span>
-                    <span> 30减16</span>
-                  </div>
-                </div>
-              </div>
+            {shopitem}
               <div className='shop-item'>
                 <div className='shop-item-heard'>
                   <div className='shop-item-img'>
@@ -284,9 +318,6 @@ class HomePage extends Component {
             </div>
           }
           
-         
-
-
         </div>
        </div>
        <br/>    

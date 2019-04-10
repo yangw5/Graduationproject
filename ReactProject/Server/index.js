@@ -15,11 +15,19 @@ handle['/getaddress']=requestHandlers.getaddress;//获取地址
 handle['/addaddress']=requestHandlers.addaddress;//新增地址
 handle['/updataaddress']=requestHandlers.updataaddress;//修改地址
 handle['/deleteaddress']=requestHandlers.deleteaddress//删除地址
+handle['/getshop']=requestHandlers.getshop;//获取的店铺
 
 
 
 //商家后台接口
 handle['/shop']=requestHandlers.shop;
+handle['/foodtype']=requestHandlers.foodtype//获取商品分类
+handle['/postfood']=requestHandlers.postfood//上传商品
+handle['/getfood']=requestHandlers.getfood//获取商品信息
+handle['/shopfoodtype']=requestHandlers.shopfoodtype//获取已有food类型
+handle['/upadtafood']=requestHandlers.upadtafood//修改food商品信息
+handle['/deletefood']=requestHandlers.deletefood//删除food商品信息
+
 
 
 

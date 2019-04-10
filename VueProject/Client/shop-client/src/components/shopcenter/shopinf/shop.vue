@@ -1,38 +1,42 @@
 <template>
   <div class="item">  
+    <div class="dosomething">
+        <el-button @click="flog=!flog">{{flog? '修改':"取消"}}</el-button>
+    </div>
     <el-form ref="form" :rules="rules" :model="form" label-width="300px" class="demo-ruleForm" size='medium '>
         <div>
           <el-form-item label="门店名称 : " prop="shopname">
-            <el-input v-model="form.shopname"  placeholder="请与门店照片上的名字一致" required="true"></el-input>
+            <el-input v-model="form.shopname"  placeholder="请与门店照片上的名字一致" required="true" :disabled='this.flog'></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="外卖电话 : " prop="shopphone">
-            <el-input v-model="form.shopphone" required="true"></el-input>
+            <el-input v-model="form.shopphone" required="true" :disabled='this.flog'></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="联系人姓名 : " prop="uname">
-            <el-input v-model="form.uname" required="true"></el-input>
+            <el-input v-model="form.uname" required="true" :disabled='this.flog'></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="联系人电话 : " prop="uphone">
-            <el-input v-model="form.uphone" required="true"></el-input>
+            <el-input v-model="form.uphone" required="true" :disabled='this.flog'></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="门店分类:">
-            <el-select v-model="form.shoptype" placeholder="请选择活门店分类">
+            <el-select v-model="form.shoptype" placeholder="请选择活门店分类" :disabled='this.flog'>
               <el-option label="快餐" value="快餐"></el-option>
               <el-option label="外卖" value="外卖"></el-option>
             </el-select>
           </el-form-item>
         </div>  
         <div>
-          <el-form-item label="城市 : " prop="address">
+          <el-form-item label="城市 : " prop="address" >
             <!-- <el-input v-model="form.address" required="true"></el-input> -->
             <el-cascader
+              :disabled='this.flog'
               :options="options2"
               @active-item-change="handleItemChange"
               :props="props"
@@ -41,12 +45,13 @@
         </div>
         <div>
           <el-form-item label="门店地址: " prop="address">
-            <el-input v-model="form.address" required="true"></el-input>
+            <el-input v-model="form.address" required="true" :disabled='this.flog'></el-input>
           </el-form-item>
         </div>
         <div>
           <el-form-item label="门店照片 : " prop="shopimage">
           <el-upload
+           :disabled='this.flog'
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false"
@@ -60,21 +65,19 @@
         <div>
           <el-form-item label="门店logo : " prop="shoplogo">
             <el-upload
+              :disabled='this.flog'
+              class="avatar-uploader"
               action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-remove="handleRemove">
-              <i class="el-icon-plus"></i>
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess1"
+              :before-upload="beforeAvatarUpload1">
+              <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
           </el-form-item>
         </div>
         <div>            
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交进入下一步</el-button>
-          </el-form-item>
+
         </div>
       </el-form>
   </div>
@@ -83,9 +86,9 @@
 export default {
   data(){
     return{
+      flog:true,
       imageUrl:'',
-      dialogImageUrl: '',
-      dialogVisible: false,
+      imageUrl1:'',
       form: {
         shopname: '叫了只鸡',
         shopphone:'15208192473',
@@ -148,25 +151,9 @@ export default {
       //图片上传获取地址和上传规则
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
-        
-      },
-       /**
-     * 
-     * blob二进制 to base64
-     **/
-      blobToDataURI(blob, callback) {
-          var reader = new FileReader();
-          reader.onload = function (e) {
-              callback(e.target.result);
-          }
-          reader.readAsDataURL(blob);
+        this.form.shopimage=this.imageUrl;
       },
       beforeAvatarUpload(file) {
-         let _this=this;
-         let base64=this.blobToDataURI(file,(url)=>{
-            _this.form.shopimage=url;
-            return url;
-          } );
       //   const isJPG = file.type === 'image/jpeg';
       //   const isLt2M = file.size / 1024 / 1024 < 2;
       //   if (!isJPG) {
@@ -178,14 +165,12 @@ export default {
       //   return isJPG && isLt2M;
       // }
       },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+       handleAvatarSuccess1(res, file) {
+        this.imageUrl1 = URL.createObjectURL(file.raw);
+        this.form.shoplogo=this.imageUrl1;
       },
-      handlePictureCardPreview(file) {
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
+      beforeAvatarUpload1(file) {
       }
-      
 
     }
 }
@@ -244,6 +229,10 @@ export default {
     height: 178px;
     display: block;
   }
+.dosomething{
+  text-align: right;
+  margin-bottom: 20px;
+}
 
 </style>
 

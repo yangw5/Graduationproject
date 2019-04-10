@@ -8,6 +8,9 @@ import registeritem2 from '../components/login/register/registeritem2'
 
 import shopcenter from '../components/shopcenter/index'
 import shopinf from '../components/shopcenter/shopinf/index'
+import shop from '../components/shopcenter/shopinf/shop'
+import food from '../components/shopcenter/shopinf/food'
+import fooditem from '../components/shopcenter/shopinf/fooditem'
 
 Vue.use(Router)
 
@@ -38,9 +41,22 @@ export default new Router({
       name: 'shopcenter',
       component: shopcenter,
       children:[{
-          path:"",
+          path:"/",
           component:shopinf,
-      }]
+          children:[{
+              path:"",
+              component:shop,
+          },
+          {
+            path:"food",
+            component:food,
+        },
+        {
+          path:"fooditem",
+          component:fooditem
+        }]
+      },
+     ]
     },
     
   ]

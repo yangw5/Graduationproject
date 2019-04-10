@@ -28,7 +28,7 @@ function start(route,handle){
 		var postData = "";
 		var params = url.parse(request.url, true).query//get 获取数据对象
 		var pathname = url.parse(request.url).pathname;//获取url 中 /.. 信息
-    console.log("Request for " + pathname + " received.");
+    // console.log("Request for " + pathname + " received.");
 
 		
 		request.setEncoding("utf8");//设置了接收数据的编码格式为UTF-8

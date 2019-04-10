@@ -13,11 +13,9 @@
       </div>
     </div>
     <div class="inf">
-       	
       <A v-if="flog1" :switchcp='switchcp' ></A>
       <B v-if="flog2" @switchcpB="switchcpB" ></B>
       <C v-if="flog3" @switchcpC='switchcpC'></C>
-
     </div>
   </div>
 </template>

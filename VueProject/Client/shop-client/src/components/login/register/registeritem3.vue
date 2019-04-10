@@ -4,7 +4,7 @@
         <div>            
           <el-form-item>
             <el-button type="primary" @click="onSubmit(false)">返回下一步</el-button>
-            <el-button type="primary" @click="onSubmit(true)">提交进入下一步</el-button>
+            <el-button type="primary" @click="onSubmit(true)">提交</el-button>
           </el-form-item>
         </div>
       </el-form>
