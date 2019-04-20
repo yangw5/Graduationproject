@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import { NavBar, Icon ,InputItem, Tag, WhiteSpace, Button,List} from 'antd-mobile';
 import M from '../../../assets/common'
+import store from '../../../redux/Redux'
 import '../css/address.css'
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -16,7 +17,7 @@ class Address extends Component{
         sex:false,
         address:'',
         street:'',
-        usernumber:'user_01',
+        usernumber:store.getState().userid,
         flog:false
 
     }
@@ -26,13 +27,13 @@ class Address extends Component{
     let value=this.props.location.state.raddress;
     if(value){
       this.setState({
-        name:value.name,
-        phone:value.phone,
-        sex:value.sex,
-        address:value.address,
-        street:value.street,
-        usernumber:value.usernumber,
-        id:value.id,
+        name:value.ad_name,
+        phone:value.ad_phone,
+        sex:value.ad_sex,
+        address:value.ad_address,
+        street:value.ad_street,
+        usernumber:value.ad_usernumber,
+        id:value.ad_id,
         flog:false
       })
     }  
@@ -76,7 +77,9 @@ class Address extends Component{
       headers: {
       },
       data:{
-        data:this.state
+        data:this.state,
+        userid:store.getState().userid
+
       }
     }).then((value)=>{  
       if (value.status === 200) {

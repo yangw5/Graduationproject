@@ -11,7 +11,7 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'redTab',
+      selectedTab: 'blueTab',
       hidden: false,
       fullScreen: false,
     };

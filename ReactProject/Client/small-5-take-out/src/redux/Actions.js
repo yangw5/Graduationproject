@@ -10,3 +10,15 @@ export function Saveuser(txt){
     user:txt
    }
 }
+export function Saveuserid(txt){
+  return {
+    type:'SAVEUSERID',
+    userid:txt
+   }
+}
+export function Saveshopid(txt){
+  return {
+    type:'SAVESHOPID',
+    shopid:txt
+   }
+}

@@ -39,7 +39,7 @@ class InfItem extends Component{
        that.setState({
          name:data.name,
          phone:data.phone,
-         address:data.address,
+         address:data.ad_address+data.ad_street,
          img:'http://localhost:8888/getimg?himg='+data.himg
        })
       }

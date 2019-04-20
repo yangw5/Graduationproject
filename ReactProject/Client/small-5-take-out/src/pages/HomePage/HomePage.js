@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { withRouter,Link } from 'react-router-dom';
+import { withRouter, } from 'react-router-dom';
 import HomeHeard from './HomeHeard';
-import { SearchBar,Tag,Accordion, List} from 'antd-mobile';
+import { SearchBar,Tag,Accordion, List,Toast, WhiteSpace, WingBlank, Button} from 'antd-mobile';
 import './css/HomePage.css';
 import store from '../../redux/Redux';
 
@@ -19,13 +19,18 @@ class HomePage extends Component {
     super(props);
     this.state = {
       user:true,
+      type:[
+        '炸鸡','炸鸡','炸鸡','炸鸡','炸鸡',
+        '炸鸡','炸鸡','炸鸡','炸鸡','炸鸡'
+      ],
       data:[]
     };
   }
   componentDidMount(){
+    //获取shop数据
     M.ajax({
       type: 'GET',
-      url: '/getshop',
+      url: '/getallshop',
           headers: {
           },
           data: {
@@ -46,10 +51,12 @@ class HomePage extends Component {
           }
     });
   }
-
-
+  //轻提示
+  showToast(value) {
+    Toast.info(value, 1);
+  }
+  //查询店铺
   goto=()=>{
-    alert("走你。。。");
      this.props.history.push('/search');
   }
   onChange = (selected) =>{
@@ -80,44 +87,59 @@ class HomePage extends Component {
     //       }
     // });
 
-    M.ajax({
-      type: 'POST',
-      url: '/upload',
-          headers: {
-          },
-          data: {
-            name:"123123"
-          }
-        }).then((value)=>{
-          if (value.status === 0) {
-            this.data = value.data;
-            console.log(this.data);
-          }
-        }).catch((error)=>{
-          if (error.response && error.response.status == 400) {
-            this.msg = `${error.response.data.error}!`;
-          }
-    });
+    // M.ajax({
+    //   type: 'POST',
+    //   url: '/upload',
+    //       headers: {
+    //       },
+    //       data: {
+    //         name:"123123"
+    //       }
+    //     }).then((value)=>{
+    //       if (value.status === 0) {
+    //         this.data = value.data;
+    //         console.log(this.data);
+    //       }
+    //     }).catch((error)=>{
+    //       if (error.response && error.response.status == 400) {
+    //         this.msg = `${error.response.data.error}!`;
+    //       }
+    // });
 
     if(user.user){
-
       alert("欢迎你"+user.user);
     }
     else{
-      alert('请登录');
+      this.showToast('你尚未登录，请登录')
     }
     
   }
-  gotoshop(){
-    this.props.history.push('/shops');
+  //进入具体的商店
+  gotoshop(id){
+    // this.props.history.push('/shops');
+    this.props.history.push({ pathname:'/shops',state:{shopid: id}});
   }
   render() {
     let _this=this;
     let shopitem=[];
+    let shoptype=[];
+
+    this.state.type.map(function(item,key){
+      return shoptype.push(
+        <li key={key}>
+          <div className='fdtype-div' onClick={_this.foodinf}>
+            <img src={imgURL}  alt="饿呢" />
+            <span>{ item }</span>
+          </div>
+      </li>
+      )
+    })
+
+
     this.state.data.map(function(value,key){
       return shopitem.push(
         <div className='shop-item' key={key} 
-        onClick={()=>{_this.gotoshop()}}
+        onClick={()=>{_this.gotoshop(value.id)}}
         >
           <div className='shop-item-heard'>
             <div className='shop-item-img'>
@@ -170,66 +192,7 @@ class HomePage extends Component {
         </div>
         <div>
           <ul className="fdtype">
-            <li>
-              <div className='fdtype-div' onClick={this.foodinf}>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
-            <li>
-              <div className='fdtype-div'>
-              <img src={imgURL}  alt="饿呢" />
-              <span>炸鸡</span>
-              </div>
-            </li>
+           {shoptype}
           </ul>
         </div>
         <div className='shop-list'>

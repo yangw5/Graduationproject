@@ -1,5 +1,4 @@
 .shops-heard{
-
   width: 100%;
   background-color: white;
   display: flex;
@@ -50,10 +49,10 @@
 
 .shop-cart{
   width: 100%;
-  height: 80px;
   background: #625f5f;
   position: absolute;
   bottom: 0px;
+  z-index: 10000;
 }
 .cart-yh{
   height: 30px;
@@ -100,4 +99,84 @@
 .shop-inf-money span{
   color: white;
   font-size: 21px;
+}
+.foodmenu{
+  display: none;
+}
+.foodmenu1{
+  display: block;
+}
+.inf-title{
+  height: 30px;
+}
+.inf-title1{
+  float: left;
+  display: inline-block;
+}
+.inf-title2{
+  float: right;
+  display: inline-block;
+  margin-right: 20px;
+
+}
+
+
+.fooditem{
+  overflow: hidden;
+  height: 50px;
+  text-align: left;
+  padding-left: 20px;
+  background-color: white;
+  line-height: 50px;
+}
+.fooditem span{
+  display: inline-block;
+  text-align: left;
+}
+.fooditem1{
+  width: 50%;
+  height: 100%;
+}
+.fooditem2{
+  width: 10%;
+  color: #df3f3f;
+}
+.fooditem3{
+  width: 40%;
+}
+
+
+.add1{
+  margin-top: 12px;
+  height: 25px;
+  width: 25px;
+  float: right;
+  margin-right: 10px;
+}
+.delete1{
+  margin-top: 12px;
+  height: 25px;
+  width: 25px;
+  float: right;
+  margin-right: 10px;
+}
+.sl1{
+  color: blue;
+  font-size: 18px;
+  font-weight: 400;
+  height: 25px;
+  width: 25px;
+  float: right;
+}
+.BB{
+  height: 25px;
+  float: right;
+
+}
+.popup-list .am-list-body {
+  height: 210px;
+  overflow: auto;
+}
+.am-modal-popup-slide-up{
+  bottom: 50px;
 }

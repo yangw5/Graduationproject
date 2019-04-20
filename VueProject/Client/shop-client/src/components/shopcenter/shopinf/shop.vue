@@ -83,6 +83,7 @@
   </div>
 </template>
 <script>
+import M from '../../../assets/js/common.js';
 export default {
   data(){
     return{

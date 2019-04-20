@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import { NavBar, Icon ,InputItem,ImagePicker, WingBlank, SegmentedControl , WhiteSpace, Button, Toast,List} from 'antd-mobile';
 import M from '../../../assets/common'
+import store from '../../../redux/Redux'
 const Item = List.Item;
 const Brief = Item.Brief;
 
@@ -43,7 +44,8 @@ class ItemImage extends Component{
         headers: {
         },
         data: {
-          data:img
+          data:img,
+          userid:store.getState().userid
         }
       }).then((value)=>{
         that.props.history.go(-1);

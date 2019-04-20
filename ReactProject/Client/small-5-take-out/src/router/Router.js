@@ -12,6 +12,9 @@ import Address from '../pages/MyInf/InfItem/Address'
 import Search from '../pages/Search/Search'
 import Login from '../pages/Login/Login'
 import Shops from '../pages/Shops/Shops'
+import neworder from '../pages/Shops/NewOrder'
+import Remarks  from '../pages/Shops/Remarks'
+import Evaluate from '../pages/MyOrder/Evaluate'
 // import MyCar from '../pages/MyCar/MyCar'
 // import MyOrder from '../pages/MyOrder/MyOrder'
 import App from '../App'
@@ -31,6 +34,9 @@ const Router = () => (
             <Route  path="/itemimage" component={ItemImage}/>
             <Route  path="/itemaddress" component={ItemAddress}/>
             <Route  path="/address" component={Address}/>
+            <Route  path="/neworder" component={neworder}/>
+            <Route  path="/remarks" component={Remarks}/>
+            <Route  path="/evaluate" component={Evaluate}/>
             {/* <Route exact path="/mycar" component={MyCar}/>
             <Route exact path="/myorder" component={MyOrder}/>
             <Route exact path="/myinf" component={MyInf}/> */}

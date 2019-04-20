@@ -1,0 +1,126 @@
+
+/* shop-list */
+.sshop-item{
+
+}
+
+.sshop-item{
+  width: 100%;
+  height: 160px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  border-top: #e0e0e0 1px solid;
+}
+.sshop-item-heard{
+  width:100%;
+  height: 60%;
+  overflow: hidden;
+}
+.sshop-item-img{
+  width: 25%;
+  /* overflow: hidden; */
+  height: 100%;
+  float: left;
+  
+}
+.sshop-item-img img{
+  width: 100%;
+  height: 100%;
+}
+.sshop-item-inf{
+  width: 75%;
+  height: 100%;
+  float: left;
+}
+.sinf-title{
+  width: 100%;
+  height: 30%;
+  font-size: 21px;
+  font-weight: 800;
+  text-align: left;
+  padding-left: 10px;
+}
+.sinf-number{
+  margin-top: 5px;
+  height:40%;
+  width: 100%;
+  padding-left: 10px;
+  line-height: 36px;
+  color:  #5d4f4f;
+}
+.sinf-number-v1{
+  width: 58%;
+  float: left;
+  text-align: left;
+}
+.sinf-number-v1 img{
+  height: 16px;
+}
+.sinf-number-v1  .spx{
+  color: rgb(254, 80, 1);
+  padding-right: 5px;
+}
+.sinf-number-v2{
+  width: 40%;
+  font-size: 10px;
+  float: left;
+}
+.sinf-number-v2 .sv2-sp1{
+  color: blue;
+  width: 50%;
+  border: 1px solid blue;
+  padding: 2px;
+
+}
+.sinf-number-v2 .sv2-sp2{
+  color: white;
+  background: blue;
+  padding: 2px;
+  font-size: 10px;
+
+}
+
+.sinf-money{
+  margin-top: -10px;
+  height: 38%;
+  padding: 10px;
+  line-height: 16px;
+  color:  #5d4f4f;
+}
+.sinf-money span{
+  padding-right: 5px;
+}
+.sinf-money-v1{
+  width: 60%;
+  float: left;
+  text-align: left;
+}
+.sinf-money-v2{
+  width: 40%;
+  font-size: 15px;
+  float: left;
+}
+
+.sshop-item-yh{
+  width:75%;
+  float: right;
+  padding-left: 10px;
+}
+.syh-title{
+  width: 50%;
+  text-align: center;
+  color: #ee541c;
+  padding: 5px;
+  background-color: #f4c8b8;
+}
+.syh-inf{
+  width: 100%;
+}
+.syh-inf span{
+  margin-top: 5px;
+  color: red;
+  border: 1px solid #f2a5a5;
+  float: left;
+  padding: 5px;
+  margin-right: 5px;
+}

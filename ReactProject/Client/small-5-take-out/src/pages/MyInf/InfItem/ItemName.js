@@ -1,8 +1,10 @@
 import React,{Component} from 'react'
-import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toast,List} from 'antd-mobile';
+import { NavBar, Icon ,InputItem, WhiteSpace, Button,List} from 'antd-mobile';
+import store from '../../../redux/Redux'
 import M from '../../../assets/common'
 const Item = List.Item;
 const Brief = Item.Brief;
+
 
 
 class ItemName extends Component{
@@ -22,7 +24,8 @@ class ItemName extends Component{
       headers: {
       },
       data: {
-        name:this.state.user
+        name:this.state.user,
+        userid:store.getState().userid
       }
     }).then((value)=>{
       console.log(value);  

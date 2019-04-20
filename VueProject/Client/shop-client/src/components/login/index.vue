@@ -27,6 +27,7 @@
   </div>
 </template>
 <script>
+import M from '../../assets/js/common.js'
 export default {
   data(){
     return{
@@ -38,13 +39,38 @@ export default {
    mounted() {},
    methods:{
      goto(){
-       this.$router.push({
-         //path:'/list/123',
-                name:'register' 
-          //  params:{
-          //           id:123
-          //       }
+       alert(111)
+        M.ajax({
+          type: 'POST',
+          url: '/shoperlogin',
+          headers: {
+          },
+          data: {
+           phone:this.input
+          }
+        }).then((value)=>{
+          if (value.status === 200) {
+            let data = value.data.data;
+            console.log(data)
+            if(data.length>0){
+              this.$router.push("/shopcenter");
+            }else{
+
+            this.$router.push({
+            //path:'/list/123',
+                    name:'register' 
+              //  params:{
+              //           id:123
+              //       }
             })
+
+            }
+          }
+        }).catch((error)=>{
+          if (error.response && error.response.status == 400) {
+            this.msg = `${error.response.data.error}!`;
+          }
+        });
      }
    }
 }

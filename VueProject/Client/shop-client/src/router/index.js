@@ -12,8 +12,12 @@ import shop from '../components/shopcenter/shopinf/shop'
 import food from '../components/shopcenter/shopinf/food'
 import fooditem from '../components/shopcenter/shopinf/fooditem'
 
-Vue.use(Router)
+import order from '../components/shopcenter/order/index'
+import ordertype1 from '../components/shopcenter/order/ordertype1'
+import ordertype2 from '../components/shopcenter/order/ordertype2'
 
+
+Vue.use(Router)
 export default new Router({
   routes: [
     {
@@ -50,13 +54,25 @@ export default new Router({
           {
             path:"food",
             component:food,
+          },
+          {
+            path:"fooditem",
+            component:fooditem
+          }]
         },
         {
-          path:"fooditem",
-          component:fooditem
-        }]
-      },
-     ]
+          path:"order",
+          component:order,
+          children:[{
+            path:"",
+            component:ordertype1
+          },
+          {
+            path:"runorder",
+            component:ordertype2
+          }]
+        }
+     ],
     },
     
   ]

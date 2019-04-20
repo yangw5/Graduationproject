@@ -3,10 +3,12 @@ import {withRouter} from 'react-router-dom';
 import { NavBar, Icon ,List } from 'antd-mobile';
 import './css/myinf.css';
 import imgURL from './images/fenxiang.png';
-import userlogo from './images/userlogo.jpg'
+import {Saveuserid} from '../../redux/Actions';
+import store from '../../redux/Redux';
+import M from '../../assets/common';
 
 // import { SavePlace } from '../../redux/Actions';
-import store from '../../redux/Redux';
+//import store from '../../redux/Redux';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -18,11 +20,37 @@ class MyInf extends Component {
   constructor(props){
     super(props);
     this.state={
-      user:false
+      user:false,
+      userinf:{}
     }
   }
   componentWillMount(){
+
     user=store.getState().user;
+
+    M.ajax({
+      type: 'GET',
+      url: '/userinf',
+      headers: {
+      },
+      params: {
+        phone:user
+      }
+    }).then((value)=>{
+      if (value.status === 200) {
+        let data = value.data.data;
+        console.log(data.id)
+        store.dispatch(Saveuserid(data.id));
+        console.log(store.getState())
+        this.setState({
+          userinf:data
+        })
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
   }
   render() {
     return (
@@ -44,13 +72,13 @@ class MyInf extends Component {
             <div className='onlodeing'>
               <Item
                 arrow="horizontal"
-                thumb={userlogo}
+                thumb={''}
                 multipleLine
                 onClick={() => {
                   this.props.history.push({pathname:"/infitem/" + user});
                 }}
                 >
-                我是新用户 <Brief>{user}</Brief>
+                {this.state.userinf.name} <Brief>{user}</Brief>
               </Item>
             </div>
           </div>

@@ -71,7 +71,8 @@ class ItemPhone extends Component{
       headers: {
       },
       data: {
-        phone:this.state.value
+        phone:this.state.value,
+        userid:store.getState().userid
       }
     }).then((value)=>{
       console.log(value);  

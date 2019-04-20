@@ -1,8 +1,18 @@
 .adrs{
   height: 80px;
-  width: 100%;
+  width: 98%;
   background: white;
   margin-top: 10px;
+  border: 1px solid #eee;
+  margin: 10 auto;
+}
+.adrsseletced{
+  height: 80px;
+  width: 98%;
+  background: white;
+  margin-top: 10px;
+  border: 1px solid rgb(31, 21, 167);
+  margin: 10 auto;
 }
 .adrs-item{
   width: 80%;

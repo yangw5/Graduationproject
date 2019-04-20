@@ -11,7 +11,7 @@
           active-text-color="#ffd04b">
           <el-submenu index="2">
             <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1" @click="goto(true)">个人信息</el-menu-item>
+            <el-menu-item index="2-1" @click="goto(1)">个人信息</el-menu-item>
             <!-- <el-menu-item index="2-2" @click="goto(false)">店铺信息</el-menu-item> -->
             <!-- <el-menu-item index="2-2">选项2</el-menu-item>
             <el-menu-item index="2-3">选项3</el-menu-item>
@@ -22,13 +22,14 @@
               <el-menu-item index="2-4-3">选项3</el-menu-item>
             </el-submenu> -->
           </el-submenu>
-          <el-menu-item index="1">处理中心</el-menu-item>
+          <el-menu-item index="1"  @click="goto(2)">处理中心</el-menu-item>
           <el-menu-item index="3" >
             <el-badge :value="12" class="item">
               <el-button size="small">评论</el-button>
             </el-badge>
           </el-menu-item>
-          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+          <!-- <a href="https://www.ele.me" target="_blank"> -->
+          <el-menu-item index="4" @click="goto(2)" >订单管理</el-menu-item>
         </el-menu>
       </div>
       <div class="lb">
@@ -66,10 +67,11 @@ export default {
         console.log(key, keyPath);
       },
       goto(a){
-        if(a){
+        if(a === 1){
            this.$router.push({path:'/shopcenter/'})
-        }else{
-
+        }
+        else if(a === 2){
+           this.$router.push({path:'/shopcenter/order'})
         }
        
       }
@@ -114,8 +116,9 @@ export default {
 }
 .container{
   width: 100%;
-  background: #f7f7f7;
+  /* background: #f7f7f7; */
   height: 1000px;
+  overflow-y: scroll;
 }
 .Crumbs{
   margin-top: 50px;

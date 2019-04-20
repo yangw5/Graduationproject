@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
-import { NavBar, Icon ,InputItem,ActionSheet, WingBlank, WhiteSpace, Button, Toast} from 'antd-mobile';
+import { NavBar, Icon ,InputItem, Button, Toast} from 'antd-mobile';
 import './css/login.css';
-import { Saveuser } from '../../redux/Actions';
+import { Saveuser ,Saveuserid} from '../../redux/Actions';
 import store from '../../redux/Redux';
 import M from '../../assets/common'
 
@@ -12,9 +12,9 @@ class Login extends Component{
       value: '',
       hasError: true,
       value1:'获取验证码',
-      number:60
+      number:60,
+      yzm:''
     };
-
   }
  
   dataList = [
@@ -32,22 +32,30 @@ class Login extends Component{
     // this.showShareActionSheet();
     
   }
-
+//用户点击登录
   showShareActionSheet = () => {
-    
 
+
+    if(this.state.yzm !== '111111'){
+      Toast.info('验证码错误 请重新输入')
+    }else{
+      let ph=this.state.value;
+      ph=ph.replace(/\s*/g,"");
       M.ajax({
         type: 'GET',
         url: '/mysql',
         headers: {
         },
-        params: {}
+        params: {
+          phone:ph
+        }
       }).then((value)=>{
         if (value.status === 200) {
-          this.data = value.data.data;
-          store.dispatch(Saveuser(this.data.phone));
+          let data = value.data.data;
+          store.dispatch(Saveuser(ph));
+          store.dispatch(Saveuserid(data.id));
           console.log(store.getState());
-          console.log(this.data);
+          console.log(data);
           this.props.history.go(-1);
         }
       }).catch((error)=>{
@@ -55,6 +63,8 @@ class Login extends Component{
           this.msg = `${error.response.data.error}!`;
         }
       });
+    }
+
  
     // ActionSheet.showShareActionSheetWithOptions({
     //   options: this.dataList,
@@ -103,7 +113,10 @@ class Login extends Component{
           number: 60,
           value1:'获取验证码',
 	      })
-	    }
+      }
+      if(count === 55){
+        Toast.info("验证码：  111111", 1);
+      }
     },1000);
   }
   render(){
@@ -136,13 +149,21 @@ class Login extends Component{
           <InputItem
             type="digit"
             className='yzm'
+            value={this.state.yzm}
+            onChange={
+              (value)=>{
+                this.setState({
+                  yzm:value
+                })
+              }
+            }         
             placeholder="验证码 :"
           ></InputItem>
           </div>
           <br/>
           <br/>
           <span className='tips'>温馨提示:未注册的饿了么的手机账号，登录时将自动注册，且代表您已同意《用户服务协议》《隐私政策》</span>
-          <Button type="primary" onClick={this.showShareActionSheet}>立即登录</Button>
+          <Button type="primary"   onClick={this.showShareActionSheet}>立即登录</Button>
       </div>
     )
   }

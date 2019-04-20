@@ -10,6 +10,10 @@
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
+          <el-menu-item index="3" @click="goto(3)">
+            <i class="el-icon-setting"></i>
+            <span slot="title">个人中心</span>
+          </el-menu-item>
           <el-menu-item index="1" @click="goto(1)">
             <i class="el-icon-setting"></i>
             <span slot="title">店铺信息</span>
@@ -17,10 +21,6 @@
           <el-menu-item index="2"  @click="goto(2)">
             <i class="el-icon-menu"></i>
             <span slot="title">店铺设置</span>
-          </el-menu-item>
-          <el-menu-item index="3" @click="goto(3)">
-            <i class="el-icon-setting"></i>
-            <span slot="title">个人中心</span>
           </el-menu-item>
         </el-menu>
       </el-col>
@@ -69,17 +69,21 @@ export default {
 .Navigation{
   width: 10%;
   float: left;
-  height: 500px;
+  height: 800px;
   background: rgb(0, 141, 225);;
 }
 .Navigation >>> li{
   background: rgb(0, 141, 225) !important;
 }
+.Navigation >>> .el-menu{
+  border: 0px;
+}
 .ncontainer{
   width: 70%;
   float: left;
-  height: 800px;
+  height: 900px;
   background: white;
+  overflow-y: scroll !important; 
 }
 
 </style>
