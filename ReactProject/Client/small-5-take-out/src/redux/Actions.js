@@ -22,3 +22,21 @@ export function Saveshopid(txt){
     shopid:txt
    }
 }
+export function SavenavTab(txt){
+  return {
+    type:'SAVENAVTAB',
+    navTab:txt
+   }
+}
+export function Saveorderdata(txt){
+  return {
+    type:'SAVEORDERDATA',
+    orderdata:txt
+   }
+}
+export function Saveordertype(txt){
+  return {
+    type:'SAVEORDERTYPE',
+    ordertype:txt
+   }
+}

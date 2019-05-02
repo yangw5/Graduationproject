@@ -25,9 +25,7 @@ class MyInf extends Component {
     }
   }
   componentWillMount(){
-
     user=store.getState().user;
-
     M.ajax({
       type: 'GET',
       url: '/userinf',
@@ -62,7 +60,10 @@ class MyInf extends Component {
             onLeftClick={() => console.log('onLeftClick')}
             rightContent={[
               <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
-              <Icon key="1" type="ellipsis" />,
+              <Icon key="1" type="ellipsis" onClick={()=>{
+                sessionStorage.clear();
+                this.props.history.push('/login');
+              }} />,
             ]}
         ></NavBar>
       { user ?

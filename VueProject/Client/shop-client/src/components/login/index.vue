@@ -11,11 +11,9 @@
       <div class="from-item">
         <el-input v-model="input1" placeholder="验证码"></el-input>
       </div>
-      <div class="from-item">
+      <div class="from-item sss">
         <span>
-          
-      新用户登录即自动注册，并表示已同意《用户注册协议》
-      
+        新用户登录即自动注册，并表示已同意《用户注册协议》
         </span>
       </div>  
       
@@ -38,8 +36,8 @@ export default {
   },
    mounted() {},
    methods:{
+     //登录验证
      goto(){
-       alert(111)
         M.ajax({
           type: 'POST',
           url: '/shoperlogin',
@@ -50,12 +48,16 @@ export default {
           }
         }).then((value)=>{
           if (value.status === 200) {
-            let data = value.data.data;
+            let data = value.data;
             console.log(data)
-            if(data.length>0){
-              this.$router.push("/shopcenter");
+            //若用户存在，将商店信息存入vuex里面
+            if(data.data.length>0){
+               this.$store.dispatch('onFirstLoading',data.shopinf)
+               this.$router.push("/shopcenter");
             }else{
-
+            //调用  this.$store.state.userphone
+            //调用  this.$store.dispatch('onFirstLoading',false)
+            //若用户不存在，跳转进入注册地铺页面
             this.$router.push({
             //path:'/list/123',
                     name:'register' 
@@ -77,10 +79,11 @@ export default {
 </script>
 <style  scoped>
 .container{
-  min-height: 1200px;
+  min-height: 800px;
   width: 100%;
   background-color: #008de1;
   overflow: hidden;
+  background-image: url('./image/04_bg.png')
 }
 .login{
   width: 40%;
@@ -97,17 +100,21 @@ export default {
 .from-item{
   margin: 20px auto;
 }
+.sss{
+  text-align: left;
+  color: white;
+}
 /* .from-item >>> .el-input{
   padding: 20px;
   background: white;
 } */
 .from-item >>> .el-input__inner{
-  padding: 40px;
+  padding: 10px;
   background: white;
 }
 
 .from-item >>> .el-button--primary {
   width: 100%;
-  padding: 25px;
+  padding: 10px;
 }
 </style>

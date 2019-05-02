@@ -14,6 +14,7 @@ handle["/revisephone"]=requestHandlers.revisephone;//修改手机号
 handle['/getaddress']=requestHandlers.getaddress;//获取地址
 handle['/addaddress']=requestHandlers.addaddress;//新增地址
 handle['/updataaddress']=requestHandlers.updataaddress;//修改地址
+handle['/updataadtype']=requestHandlers.updataadtype//修改默认地址
 handle['/deleteaddress']=requestHandlers.deleteaddress//删除地址
 handle['/getshop']=requestHandlers.getshop;//获取的特定店铺
 handle['/getallfood']=requestHandlers.getallfood;//获取全部food
@@ -33,14 +34,20 @@ handle['/getallshop']=requestHandlers.getallshop//获取所有商店
 //商家后台接口
 handle['/shoperlogin']=requestHandlers.shoperlogin//商家验证
 handle['/shop']=requestHandlers.shop;//店铺第一次申请注册
+handle['/uploadshop']=requestHandlers.uploadshop//修改商家信息
 handle['/foodtype']=requestHandlers.foodtype//获取商品分类
 handle['/postfood']=requestHandlers.postfood//上传商品
+handle['/postfood1']=requestHandlers.postfood1//上传商品
 handle['/getfood']=requestHandlers.getfood//获取分类下的商品信息
 handle['/shopfoodtype']=requestHandlers.shopfoodtype//获取已有food类型
 handle['/upadtafood']=requestHandlers.upadtafood//修改food商品信息
 handle['/deletefood']=requestHandlers.deletefood//删除food商品信息
 handle['/getordershop']=requestHandlers.getordershop//获取订单
+handle['/updatastate']=requestHandlers.updatastate//修改订单状态
+handle['/getevaluate2']=requestHandlers.getevaluate2//商家获取评价
 
+//socket
+handle['/socket.io/']=requestHandlers.socket
 
 
 

@@ -34,7 +34,8 @@ class Search extends  Component {
           headers: {
           },
           data: {
-            nametext:value
+            nametext:value,
+            state:1
           }
         }).then((value)=>{
           if (value.status === 200) {

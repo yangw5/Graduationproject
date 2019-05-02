@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import './css/myorder.css';
-import { Button, WhiteSpace, WingBlank } from 'antd-mobile';
+import { Button, WhiteSpace, Tabs,  Badge } from 'antd-mobile';
 import store from '../../redux/Redux';
+import {Saveordertype,Saveorderdata} from '../../redux/Actions';
 import M from '../../assets/common';
 import lodeing from './img/1.jpg';
+
+const tabs = [
+  { title: <Badge text={''}>已提交</Badge> },
+  { title: <Badge text={''}>已接收</Badge> },
+  { title: <Badge dot>配送中</Badge> },
+  { title: <Badge dot>已完成</Badge> },
+  { title: <Badge dot>退单</Badge> },
+];
 
 class MyOrder extends Component {
   constructor(props){
@@ -15,7 +24,7 @@ class MyOrder extends Component {
     }
   }
   componentDidMount(){
-    this.initstate();
+    this.initstate(0);
     let  user=store.getState();
     if(user.user){
       this.setState({
@@ -23,7 +32,7 @@ class MyOrder extends Component {
       })
     }
   }
-  initstate(){
+  initstate(type){
     //获取数据
     M.ajax({
       type: 'GET',
@@ -31,7 +40,8 @@ class MyOrder extends Component {
       headers: {
       },
       params: {
-        usernumber:'15208192473'
+        usernumber:store.getState().user,
+        state:type
       }
     }).then((value)=>{  
       if (value.status === 200) {
@@ -98,13 +108,10 @@ class MyOrder extends Component {
           //  money: 12
           //  shopid: 7
           //  sl: 1
-           console.log(777777777);
            console.log(orderdata);
-           if(type){
-            this.props.history.push({ pathname:'/neworder',state:{data:orderdata,type:true} })
-           }else{
-            this.props.history.push({ pathname:'/neworder',state:{data:orderdata,type:false} })
-           }
+           store.dispatch(Saveordertype(type));
+           store.dispatch(Saveorderdata(orderdata));
+           this.props.history.push({ pathname:'/neworder',state:{data:orderdata,type:true} })
 
           }
         }).catch((error)=>{
@@ -193,9 +200,37 @@ class MyOrder extends Component {
     return (
       <div className="App">
       <div className='title'>我的订单</div>
+   
       { 
         this.state.userflog ? 
-        arrydim
+        <div>
+          <Tabs tabs={tabs}
+          initialPage={0}
+          onChange={(tab, index) => { console.log('onChange', index, tab);
+          
+        }}
+          onTabClick={(tab, index) => { console.log('onTabClick', index, tab); 
+          this.initstate(index)}}
+        >
+          <div style={{ backgroundColor: '#fff' }}>
+           {arrydim}
+          </div>
+          <div style={{ backgroundColor: '#fff' }}>
+           {arrydim}
+          </div>
+          <div style={{ backgroundColor: '#fff' }}>
+           {arrydim}
+          </div>
+          <div style={{ backgroundColor: '#fff' }}>
+           {arrydim}
+          </div>
+          <div style={{ backgroundColor: '#fff' }}>
+           {arrydim}
+          </div>
+        </Tabs>
+        <WhiteSpace />
+      </div>
+        
         :
         <div className='lodeing'>
           <img src={lodeing} alt='' />

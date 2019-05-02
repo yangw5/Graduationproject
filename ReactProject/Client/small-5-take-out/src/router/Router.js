@@ -10,6 +10,7 @@ import ItemAddress from '../pages/MyInf/InfItem/ItemAddress'
 import Address from '../pages/MyInf/InfItem/Address'
 
 import Search from '../pages/Search/Search'
+import shoptype from '../pages/Search/shoptype'
 import Login from '../pages/Login/Login'
 import Shops from '../pages/Shops/Shops'
 import neworder from '../pages/Shops/NewOrder'
@@ -26,6 +27,7 @@ const Router = () => (
             <Route exact path="/" component={MyInf}/>
             <Route  path="/V1" component={App}/>
             <Route  path="/search" component={Search}/>
+            <Route  path="/shoptype/:id" component={shoptype}/>
             <Route  path="/login" component={Login}/>
             <Route  path="/shops" component={Shops}/>
             <Route  path="/infitem/:id" component={InfItem}/>

@@ -13,6 +13,9 @@ class ItemAddress extends Component{
     }
   }
   componentDidMount(){
+    this.init()
+  }
+  init(){
     let userid=store.getState().userid;
     M.ajax({
       type:'GET',
@@ -40,15 +43,35 @@ class ItemAddress extends Component{
     console.log(value);
     this.props.history.push({ pathname:'/address',state:{raddress: value} });
   }
-  checktype(){
-
+  checktype(id){
+    let userid=store.getState().userid;
+    M.ajax({
+      type:'GET',
+      url:'/updataadtype',
+      headers: {
+      },
+      params:{
+        addressid:id,
+        userid:userid
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+        this.init()
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
   }
   render(){
     let _this = this;
     var showArr=[];
      this.state.address.map(function(value,key){
          return showArr.push(
-          <div className={value.ad_checked === 0 ? 'adrsseletced':'adrs'}  key={key}>
+          <div className={value.ad_checked === 0 ? 'adrsseletced':'adrs'}  key={key} onClick={()=>{
+            _this.checktype(value.ad_id)
+          }}>
           <div className='adrs-item'>
             <div className='adrs-item1'>{value.ad_street}</div>
             <div className='adrs-item2'>{value.ad_address}</div>

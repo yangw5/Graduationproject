@@ -42,7 +42,6 @@ function savebase64(url){
 function saveimag(url){
 
    let path= './imgs/'+ "shops/"
-
    let time=Date.now();
    let newpath= './imgs/'+ "shops/"+time+'.png';
       fs.writeFileSync(newpath,"");

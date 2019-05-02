@@ -1,6 +1,8 @@
 import React from 'react';
 import { TabBar } from 'antd-mobile'; //引入antd相关组件
 import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
+import store from '../src/redux/Redux'
+import {  SavenavTab } from '../src/redux/Actions'
 
  import HomePage from './pages/HomePage/HomePage'
  import MyInf from './pages/MyInf/MyInf'
@@ -16,13 +18,22 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
       fullScreen: false,
     };
   }
+  componentDidMount(){
+    if(store.getState().navTab===''){
 
+    }else{
+      this.setState({
+        selectedTab:store.getState().navTab
+      })
+    }
+
+  }
   renderContent(pageText) {
     return (
       <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
         <div>
             <Route  path="/V1/homepage" component={HomePage}/>
-            <Route  path="/V1/mycar" component={MyCar}/>
+            {/* <Route  path="/V1/mycar" component={MyCar}/> */}
             <Route  path="/V1/myorder" component={MyOrder}/>
             <Route  path="/V1/myinf" component={MyInf}/>
         </div>
@@ -65,13 +76,14 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
               this.setState({
                 selectedTab: 'blueTab',
               });
+              store.dispatch( SavenavTab('blueTab'));
               this.props.history.push('/v1/homepage');
             }}
             data-seed="logId"
           >
             {this.renderContent('Life')}
           </TabBar.Item>
-          <TabBar.Item
+          {/* <TabBar.Item
             icon={
               <div style={{
                 width: '22px',
@@ -94,12 +106,13 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
               this.setState({
                 selectedTab: 'redTab',
               });
+              store.dispatch( SavenavTab('redTab'));
               this.props.history.push('/v1/mycar');
             }}
             data-seed="logId1"
           >
             {this.renderContent('Koubei')}
-          </TabBar.Item>
+          </TabBar.Item> */}
           <TabBar.Item
             icon={
               <div style={{
@@ -123,6 +136,7 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
               this.setState({
                 selectedTab: 'greenTab',
               });
+              store.dispatch( SavenavTab('greenTab'));
               this.props.history.push('/v1/myorder');
             }}
           >
@@ -138,6 +152,7 @@ import {HashRouter, Route, Switch,Link,withRouter} from 'react-router-dom';
               this.setState({
                 selectedTab: 'yellowTab',
               });
+              store.dispatch( SavenavTab('yellowTab'));
               console.log(this.props);
              // this.context.router.history.push('/myinf');
              this.props.history.push('/v1/myinf');

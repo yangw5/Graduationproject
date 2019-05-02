@@ -6,20 +6,17 @@
           default-active="1-4"
           class="el-menu-vertical-demo"
           @open="handleOpen"
-          @close="handleClose"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-menu-item index="3" @click="goto(3)">
+          @close="handleClose">
+          <!-- <el-menu-item index="3" @click="goto(3)">
             <i class="el-icon-setting"></i>
             <span slot="title">个人中心</span>
-          </el-menu-item>
+          </el-menu-item> -->
           <el-menu-item index="1" @click="goto(1)">
             <i class="el-icon-setting"></i>
             <span slot="title">店铺信息</span>
           </el-menu-item>
           <el-menu-item index="2"  @click="goto(2)">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-setting"></i>
             <span slot="title">店铺设置</span>
           </el-menu-item>
         </el-menu>
@@ -54,10 +51,10 @@ export default {
     goto(a){
       switch(a){
         case 1:
-          this.$router.push({path:'/shopcenter/'});
+          this.$router.push({path:'/shopcenter/shop'});
           break;
         case 2:
-          this.$router.push({path:'/shopcenter/food'});
+          this.$router.push({path:'/shopcenter/shop/food'});
           break;
 
         }
@@ -70,20 +67,26 @@ export default {
   width: 10%;
   float: left;
   height: 800px;
-  background: rgb(0, 141, 225);;
+  border-right: 1px solid #eee;
 }
-.Navigation >>> li{
-  background: rgb(0, 141, 225) !important;
-}
+
 .Navigation >>> .el-menu{
   border: 0px;
+  width: 100%;
+
+}
+.Navigation >>> li{
+  border-bottom: 1px solid #eee;
+}
+.Navigation >>> .el-col-12{
+  width: 100%;
+
 }
 .ncontainer{
   width: 70%;
   float: left;
-  height: 900px;
+  height: 800px;
   background: white;
-  overflow-y: scroll !important; 
 }
 
 </style>

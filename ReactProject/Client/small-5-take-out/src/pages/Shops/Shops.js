@@ -1,8 +1,10 @@
 import React,{Component} from  'react';
 import { NavBar, Icon,Tabs, WhiteSpace, Badge,Modal,List,Toast } from 'antd-mobile';
 import './css/shops.css';
-import store from '../../redux/Redux';
 import M from '../../assets/common'
+import { Saveshopid,Saveordertype,Saveorderdata} from '../../redux/Actions';
+
+import store from '../../redux/Redux';
 
 import Business from './Business';
 import Foods from './Foods';
@@ -36,7 +38,8 @@ class Shops extends Component{
   }
   //获取商店信息
   initdata(){
-    let shopid=this.props.location.state.shopid;
+    let shopid='';
+    shopid=store.getState().shopid;
     M.ajax({
       type: 'GET',
       url: '/getshop',
@@ -49,7 +52,7 @@ class Shops extends Component{
       if (value.status === 200) {
         let data = value.data.data;
         this.setState({
-          shopinf:data[0],
+          shopinf:data,
         })
       }
     }).catch((error)=>{
@@ -147,6 +150,8 @@ class Shops extends Component{
     var user=store.getState();
     if(user.user){
       let data1=this.state.foodlist;
+      store.dispatch(Saveordertype(true));
+      store.dispatch(Saveorderdata(data1));
       this.props.history.push({ pathname:'/neworder',state:{data:data1,type:true} })
     }else{
       Toast.info('你尚未登录，请登录',2);

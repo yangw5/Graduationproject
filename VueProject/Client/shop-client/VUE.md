@@ -186,8 +186,74 @@
               reader.readAsDataURL(blob);
           },
           
+### vuex
+
+  * 下载引入
+
+    1. npm install vuex --save
+
+    2. 创建store.js文件 
+
+            import Vue from 'vue';
+            import Vuex from 'vuex';
+            Vue.use(Vuex);
+            const store = new Vuex.Store();
+            
+            export default store;
+
+    3. 入口文件引入并注册
+
+            import store from './store'//引入store
+ 
+            new Vue({
+              el: '#app',
+              router,
+              store,//使用store
+              template: '<App/>',
+              components: { App }
+            })
 
 
-  
+### 实现数据实时更新
+
+  1. 传统轮询(Traditional Polling)
+
+     setInterval 或者 setTimeout 实现
+
+          setInterval(function() {
+          $.get("/path/to/server", function(data, status) {
+              console.log(data);
+          });
+          }, 10000);
+
+          function poll() {
+          setTimeout(function() {
+              $.get("/path/to/server", function(data, status) {
+                  console.log(data);
+                  // 发起下一次请求
+                  poll();
+              });
+          }, 10000);
+      }
+    
+    2. 长轮询(Long Polling) 
+
+    3. 服务器发送事件（以下简称SSE）
+
+    4. WebSocket
+
+    import VueSocketio from 'vue-socket.io';
+    import socketio from 'socket.io-client';
+
+      这里有个小坑坑，我刚开始只要main.js写成以上这样就会报错
+
+      TypeError: Cannot call a class as a function
+
+      解决方法：是安装的包版本不太行(具体原因我也不清楚)
+
+      　　把node_modules删掉，在package.json中把vue-socket.io版本改成"vue-socket.io": "^2.1.1-a"
+
+      　　然后重新install
+
 
 

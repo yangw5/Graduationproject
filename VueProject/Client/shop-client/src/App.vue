@@ -19,7 +19,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 100%;
-  min-height: 1200px;
+  min-height: 800px;
   /* background-color: #008de1; */
   overflow: hidden;
   position: absolute;

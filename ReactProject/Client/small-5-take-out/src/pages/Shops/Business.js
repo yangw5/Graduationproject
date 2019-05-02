@@ -25,7 +25,7 @@ class    Business extends Component{
       }
     }).then((value)=>{
       if (value.status === 200) {
-        let data = value.data.data[0];
+        let data = value.data.data;
         console.log(data);
         this.setState({
           shopinf:data

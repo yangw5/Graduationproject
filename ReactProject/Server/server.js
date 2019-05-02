@@ -13,8 +13,27 @@
 
 
 var  http =require('http');
-
 var url = require("url");
+// var io = require('socket.io')(http);
+/*
+    *新手必读
+    *function中的socket为每个客户端单独连接的socket实例，只通知当前连接用户
+    *io.sockets 通知所有连接用户
+    *socket.broadcast 给除了自己以外的客户端广播消息
+*/
+// io.on('connection', function (socket) {
+//     for(let i=0; i<100; i++){
+//         setTimeout(()=>{
+//             io.sockets.emit('progress',i);
+//             console.log("当前进度为",i+1);
+//         },300*i)
+//     }
+// })
+
+
+// var socket=sio.listen(server)//监听http服务器
+// socket.on('connection',(socket)=>{//建立连接后的回调函数
+// })//这里的socket参数，是服务器端用于与客户端建立连接的scoket端口对象
 
 
 function start(route,handle){
@@ -55,9 +74,33 @@ function start(route,handle){
     });
 	}
 	//开启本地http服务，监听相应端口号
-	http.createServer(onRequest).listen(8888)
+	let server=http.createServer(onRequest).listen(8888)
 	console.log("Server has started.");
 	console.log("http://localhost:8888/");
+	console.log('Server running ');
+		let val={
+			value1:0,
+			value2:1
+		}
+
+
+		var io = require('socket.io').listen(server);
+		var requestHandler=require('./requestHandler');
+		// io.sockets.on('connection', (socket) => {
+		// 		console.log('链接成功'); 
+		// 		//监听msg 触发事件 接收消息
+		// 		socket.on('msg', (val) => {
+		// 			//先执行
+		// 			requestHandler.socket(val,socket)
+		// 			setInterval(()=>{//再循环
+		// 			 requestHandler.socket(val,socket)
+		// 				// console.log(index)
+		// 				// //触发前端设置 回调事件
+		// 				// socket.emit('progress', index);
+		// 			},3000)
+
+		// 		});   
+		// });
 }
 
 exports.start=start;

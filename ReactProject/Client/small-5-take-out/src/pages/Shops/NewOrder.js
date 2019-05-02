@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { NavBar, Icon,List, Switch ,Picker,InputItem, WhiteSpace, Badge } from 'antd-mobile';
 import {withRouter} from 'react-router-dom';
 import M from '../../assets/common'
+
 import store from '../../redux/Redux';
+import {Saveordertype,Saveorderdata} from '../../redux/Actions';
 import './css/NewOrder.css'
 let user=store.getState().user;
 const seasons = [
@@ -41,6 +43,7 @@ class NewOrder extends Component {
     super(props,context);
     this.state = {
       checked: false,
+      ordertype:'',
       address:'',
       foodlist:[],
       allmoney:0,
@@ -49,15 +52,19 @@ class NewOrder extends Component {
   }
   componentDidMount(){
     user=store.getState().user;
-    user='15208192473';
+    let a=store.getState().ordertype;
+    let b=store.getState().orderdata;
     this.getaddesss();
     //获取路由数据
     let money=0;
-    this.props.location.state.data.forEach(function(value,i){
+    console.log(b)
+    b.forEach(function(value,i){
       money+=value.number*value.value.money;
     })
+
     this.setState({
-      foodlist:this.props.location.state.data,
+      ordertype:a,
+      foodlist:b,
       allmoney:money
     })
 
@@ -186,6 +193,7 @@ supplement(nn){
           >外卖配送</List.Item>
           </div>
           <div className='address' onClick={()=>{
+            store.dispatch(Saveordertype(this.state.ordertype));
             this.props.history.push('/itemaddress');
           }} >
               <div className='address-inf1'>{this.state.street}</div>
@@ -251,11 +259,11 @@ supplement(nn){
         
         </div>
         <div className='addorder' >
-            <div className={ this.props.location.state.type ? 'allmoney' : 'allmoney1'}>
-              <span>{"￥" +this.state.allmoney}</span>
+            <div className={ this.state.ordertype ? 'allmoney' : 'allmoney1'}>
+              <span>{"￥" +this.state.allmoney }</span>
             </div>
             {
-              this.props.location.state.type ? <div className='orderpost'  onClick={()=>{this.orderpost()}}>提交</div> :''
+               this.state.ordertype ? <div className='orderpost'  onClick={()=>{this.orderpost()}}>提交</div> :''
             }
             
         </div>

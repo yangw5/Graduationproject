@@ -240,6 +240,40 @@ function updataaddress(response, postData,params){
   })()
   
 }
+//修改默认地址
+function updataadtype(response, postData,params){
+  console.log("Request handler 'updataadtype' was called.");
+  (async ()=>{
+      //获取用户下的默认地址
+      let udstr='SELECT address FROM USER WHERE id='+params.userid;
+      let result1 = await mysql1.FIRST(udstr,'');
+      //设置地址的ad_checked 为1
+
+      //设置默认地址
+
+
+      let str1='update address set ad_checked="'+ 0 +'"  where ad_id = "' + params.addressid +'" and ad_usernumber='+params.userid;
+      
+      let str2='update address set ad_checked="'+ 1 +'"  where ad_id = "' + result1.address +'" and ad_usernumber='+params.userid;
+      
+      let str3='update user set address="'+params.addressid+'" where id='+params.userid;
+      console.log(udstr)
+      console.log(str1)
+      console.log(str2)
+      console.log(str3)
+      let result2 = await mysql1.EXECUTE(str1,'');
+      let result3 = await mysql1.EXECUTE(str2,'');
+      let result = await mysql1.EXECUTE(str3,'');
+      var data={
+        status:200,
+        data:{
+          data: result 
+        }
+      }
+      returnjson(data,response);
+  })()
+  
+}
 //删除地址
 function deleteaddress(response, postData,params){
   console.log("Request handler 'deleteaddress' was called.");
@@ -272,26 +306,26 @@ function orderadd(response, postData,params){
         //总订单
         //用户编号  地址编号  订单状态  时间 商店编号  价格 
         let str='INSERT INTO orders (or_usernumber,or_addressid,or_state,or_foodtime,or_shopid,or_allmoney) VALUES ("'+pdata.userid+'","'+pdata.addressid+'","'+pdata.state+'","'+pdata.addtime+'","'+pdata.shopid+'","'+pdata.allmoney+'")'
-        console.log(str);
+        // console.log(str);
         let s = await mysql1.EXECUTE(str,'');
-        console.log(s)
+        // console.log(s)
         //查询id
         let strid='select or_id from orders where or_foodtime="'+pdata.addtime+'"';
-        console.log(strid);
+        // console.log(strid);
         let resault= await mysql1.ROW(strid,'');
         console.log(resault)
-        let s1=null;
+        
         for(item of fordata){
-        //订单项
-        //商品编号 商品数量  订单编号
-        let str1='INSERT INTO ordersitem ( dri_foodid,dri_number,dri_orid) VALUES ("'+item.value.id+'","'+item.value.sl+'","'+resault[0].or_id+'")';
-        console.log(str1);
-        s1 = await mysql1.EXECUTE(str1,'');
-      }
+          //订单项
+          //商品编号 商品数量  订单编号
+          let str1='INSERT INTO ordersitem ( dri_foodid,dri_number,dri_orid) VALUES ("'+item.value.id+'","'+item.value.sl+'","'+resault[0].or_id+'")';
+          s1 = await mysql1.EXECUTE(str1,'');
+        }
+      console.log(s)
       var data={
         status:200,
         data:{
-          data: s1
+          data: 'ok'
         }
       }
       returnjson(data,response);
@@ -325,7 +359,7 @@ function getorder(response, postData,params){
   console.log("Request handler 'getorder' was called.");
   (async ()=>{
     console.log(params.usernumber);
-    let str='SELECT shopname,or_foodtime,or_state,or_allmoney,or_id,or_shopid FROM orders JOIN shops ON or_shopid=id  WHERE or_usernumber= "'+ params.usernumber +'"';
+    let str='SELECT shopname,or_foodtime,or_state,or_allmoney,or_id,or_shopid FROM orders JOIN shops ON or_shopid=id  WHERE or_state= "'+ params.state +'" and or_usernumber= "'+ params.usernumber +'" ORDER BY or_foodtime DESC';
     console.log(str);
     let resault= await mysql1.ROW(str,'');
     // console.log(s);
@@ -354,7 +388,11 @@ function getordershop(response, postData,params){
     console.log(resault);
     for(let i=0;i<resault.length;i++){
       let obj={};
+      let orderid=resault[i].or_id;
       obj.allmoney=resault[i].or_allmoney;
+      obj.orderid=orderid;
+      obj.ordertime=resault[i].or_foodtime;
+      obj.ordermore=resault[i].or_more;
       let struser='SELECT name,himg,phone FROM user WHERE phone= "'+ resault[i].or_usernumber+'"';
       let ruser= await mysql1.FIRST(struser,'');//获取用户信息
       console.log(ruser);
@@ -363,8 +401,8 @@ function getordershop(response, postData,params){
       let raddress= await mysql1.FIRST(straddress,'');//获取地址信息
       console.log(raddress);
       obj.raddress=raddress;
-      let strfood='SELECT foodname,dri_number,money FROM  ordersitem JOIN foods ON dri_foodid=id WHERE dri_orid= '+ resault[i].or_id;
-      let rfood= await mysql1.ROW(strfood,'');//获取商品项信息
+      let strfood='SELECT foodname,dri_number,money,foodimg FROM  ordersitem JOIN foods ON dri_foodid=id WHERE dri_orid= '+ resault[i].or_id;
+      let rfood= await mysql1.ROW(strfood,'');//获取商品项信息 商品名 数量 单价 图片
       console.log(rfood);
       obj.rfood=rfood;
       orderitem.push(obj);
@@ -414,6 +452,24 @@ function getevaluate(response, postData,params){
     returnjson(data,response);
   })()
 }
+//商家评论获取
+function getevaluate2(response, postData,params){
+  console.log("Request handler 'getevaluate2' was called.");
+  (async ()=>{
+    let str='SELECT * FROM evaluate JOIN USER ON ev_usernumber =id where ev_shopid= "'+ params.shopid +'"';
+    console.log(str);
+    let resault= await mysql1.ROW(str,'');
+    // console.log(s);
+    var data={
+      status:200,
+      data:{
+        data: resault
+      }
+    }
+    returnjson(data,response);
+  })()
+}
+//评论订单内容 订单详情
 
 //新增评价
 function addevaluate(response, postData,params){
@@ -453,7 +509,13 @@ function searchshop(response, postData,params){
   (async ()=>{
     let pdata=JSON.parse(postData);//json转化为对象
     console.log(pdata)
-    let str='select * from shops where shopname like "%'+   pdata.nametext +'%"';
+    let str='';
+    console.log(pdata.state)
+    if(pdata.state === 0){
+      str='select * from shops where shoptype="'+pdata.type+'" and shopname like "%'+   pdata.nametext +'%"';
+    }else{
+      str='select * from shops where shopname like "%'+   pdata.nametext +'%"';
+    }
     console.log(str);
     let resault= await mysql1.ROW(str,'');
     // console.log(s);
@@ -482,14 +544,20 @@ function shoperlogin(response, postData,params){
   console.log("Request handler 'shoperlogin' was called.");
   (async ()=>{
      postData=JSON.parse(postData);//json转化为对象
+     //查询是否有该用户
     let  str='select * from shoper  where s_phone ="'+postData.phone+'"';
     console.log(str);
     let s = await mysql1.ROW(str,'');
-    console.log(s);
+    //获取该用户下的商店信息
+    let  shopstr='select * from shops where uphone ="'+postData.phone+'"'
+    console.log(shopstr);
+    let rshop = await mysql1.FIRST(shopstr,'');
+    console.log(rshop);
     var data={
       status:200,
       data:{
-        data: s
+        data: s,
+        shopinf:rshop 
       }
     }
     returnjson(data,response)
@@ -500,7 +568,7 @@ function shoperlogin(response, postData,params){
 
 //获取所以商家后台处理
 function getallshop(response, postData,params){
-  console.log("Request handler 'getshop' was called.");
+  console.log("Request handler 'getallshop' was called.");
   (async ()=>{
     let  str='select * from shops';
     console.log(str);
@@ -521,7 +589,7 @@ function getallshop(response, postData,params){
   (async ()=>{
     let  str='select * from shops where id ='+params.shopid;
     console.log(str);
-    let s = await mysql1.ROW(str,'');
+    let s = await mysql1.FIRST(str,'');
     var data={
       status:200,
       data:{
@@ -554,6 +622,29 @@ function shop(response, postData,params){
     returnjson(data,response)
   })()
 }
+
+//修改商家信息
+function uploadshop(response, postData,params){
+  console.log("Request handler 'uploadshop' was called.");
+  (async ()=>{
+    console.log(postData);
+    postData=JSON.parse(postData).data;//json转化为对象
+    let url=  saveimage.SAVEIMAGE(postData.shopimage);
+    console.log(url);
+    //let str='update shops set (shopname,shoptype,shopphone,uname,uphone,shopimage,address) VALUES ("'+pdata.shopname+'","'+pdata.shoptype+'","'+pdata.shopphone+'","'+pdata.uname+'","'+pdata.uphone+'","'+url+'","'+pdata.address+'")'
+    let str='update shops set shopname="'+ postData.shopname +'",shoptype="'+ postData.shoptype +'",shopphone="'+ postData.shopphone +'",uname="'+postData.uname +'",uphone="'+ postData.uphone +'",shopimage="'+ url +'" ,address="'+ postData.address +'"  where id= '+postData.id;
+    console.log(str)
+    let s = await mysql1.EXECUTE(str,'');
+    var data={
+      status:200,
+      data:{
+        data: s
+      }
+    }
+    returnjson(data,response)
+  })()
+}
+
 //商品分类获取
 function foodtype(response, postData,params){
   console.log("Request handler 'foodtype' was called.");
@@ -572,8 +663,27 @@ function foodtype(response, postData,params){
  }
 
  //商品上传
+ function postfood1(response, postData,params){
+  console.log("Request handler 'postfood1' was called.");
+  (async ()=>{
+    let s='';
+    let pdata=JSON.parse(postData).data;//json转化为对象
+      let url=  saveimage.SAVEIMAGE(pdata.img);
+      let str='INSERT INTO foods (foodname,foodtype,money,foodimg,fooddescribe, material,shopid) VALUES ("'+pdata.foodname+'","'+pdata.foodtype+'",'+pdata.money+',"'+url+'","'+pdata.fooddescribe+'","'+pdata. material+'",'+pdata.shopid+')'
+      console.log(str)
+      s = await mysql1.EXECUTE(str,'');
+    var data={
+      status:200,
+      data:{
+        data: s
+      }
+    }
+    returnjson(data,response)
+  })()
+}
+
  function postfood(response, postData,params){
-  console.log("Request handler 'setfood' was called.");
+  console.log("Request handler 'postfood' was called.");
   (async ()=>{
     let s='';
     let pdata=JSON.parse(postData).data;//json转化为对象
@@ -610,7 +720,7 @@ function getfood(response, postData,params){
  }
 //获取全部食物
  function getallfood(response, postData,params){
-  console.log("Request handler 'getfood' was called.");
+  console.log("Request handler 'getallfood' was called.");
   (async ()=>{
     let  str='select * from foods where shopid='+params.shopid;
     console.log(str);
@@ -663,7 +773,7 @@ function getfood(response, postData,params){
   })()
  }
  //删除food信息
- function deletefood(){
+ function deletefood(response, postData,params){
   console.log("Request handler 'deletefood' was called.");
   (async ()=>{
     let  str='delete from foods  where id = "' + params.id +'"';
@@ -679,8 +789,41 @@ function getfood(response, postData,params){
   })()
 
  }
+//商家修改订单状态
+ //订单状态改变  0 未接收  1 接收  2 派送中 3 完成  4 退单
+function updatastate(response, postData,params){
+  console.log("Request handler 'updatastate' was called.");
+  (async ()=>{
+      postData=JSON.parse(postData);//json转化为对象
+      postData=postData;
+      console.log(postData)
+      let str='update orders set or_state ="'+ postData.state +'" where or_id = "' + postData.id +'"';
+      console.log(str);
+      let result = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data: result 
+        }
+      }
+      returnjson(data,response);
+  })()
+}
  
- //
+ //socket 商家获取订单和评论
+ function socket(params,socket){
+  // console.log("Request handler 'orderslength' was called.");
+  (async ()=>{
+    let str='SELECT * FROM orders  WHERE or_shopid= "'+ params.shopid +'" AND or_state='+ params.state;
+    // console.log(str);
+    let s = await mysql1.ROW(str,'');
+    // console.log(s.length)
+    socket.emit('progress', s.length);
+
+    // return s.length;
+    // returnjson(data,response)
+  })()
+ }
 
 
 exports.start = start;
@@ -698,9 +841,11 @@ exports.getshop=getshop;
 exports.payfor=payfor;
 exports.orderadd=orderadd;
 exports.uploadeorder=uploadeorder
+exports.updataadtype=updataadtype
 exports.getorder=getorder
 exports.getorderitem=getorderitem
 exports.getevaluate=getevaluate
+exports.getevaluate2=getevaluate2
 exports.addevaluate=addevaluate
 exports.searchshop=searchshop
 exports.getallshop=getallshop
@@ -708,13 +853,17 @@ exports.getallshop=getallshop
 
 exports.shoperlogin=shoperlogin
 exports.shop=shop;
+exports.uploadshop=uploadshop
 exports.foodtype=foodtype
 exports.postfood=postfood
+exports.postfood1=postfood1
 exports.getfood=getfood
 exports.shopfoodtype=shopfoodtype
 exports.upadtafood=upadtafood
 exports.deletefood=deletefood
 exports.getallfood=getallfood
 exports.getordershop=getordershop
+exports.updatastate=updatastate
 
 
+exports.socket=socket

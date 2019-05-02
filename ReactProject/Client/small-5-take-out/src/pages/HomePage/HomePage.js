@@ -3,6 +3,7 @@ import { withRouter, } from 'react-router-dom';
 import HomeHeard from './HomeHeard';
 import { SearchBar,Tag,Accordion, List,Toast, WhiteSpace, WingBlank, Button} from 'antd-mobile';
 import './css/HomePage.css';
+import { Saveshopid } from '../../redux/Actions';
 import store from '../../redux/Redux';
 
 import M from '../../assets/common.js';
@@ -20,14 +21,15 @@ class HomePage extends Component {
     this.state = {
       user:true,
       type:[
-        '炸鸡','炸鸡','炸鸡','炸鸡','炸鸡',
-        '炸鸡','炸鸡','炸鸡','炸鸡','炸鸡'
+        '美食','水果','饮品甜品','午餐','速食简餐',
+        '汉堡披萨','米线面馆','鸭脖卤味','炸鸡炸串','包子粥店'
       ],
       data:[]
     };
   }
   componentDidMount(){
     //获取shop数据
+    let _this=this;
     M.ajax({
       type: 'GET',
       url: '/getallshop',
@@ -37,13 +39,10 @@ class HomePage extends Component {
           }
         }).then((value)=>{
           if (value.status === 200) {
-            let sdata = value.data;
-           this.setState({
-             data:sdata.data
-           })
-
-           console.log(this.state);
-           console.log(this.state.data[0].shopimage)
+            let sdata = value.data.data;
+            for(let i=0;i<sdata.length;i++){
+               _this.getdistance(sdata[i].address,sdata,i) 
+            }
           }
         }).catch((error)=>{
           if (error.response && error.response.status == 400) {
@@ -65,7 +64,7 @@ class HomePage extends Component {
   onChange1 = (key) => {
     console.log(key);
   }
-  foodinf=() =>{
+  foodinf=(index) =>{
     
     var user=store.getState();
     // M.ajax({
@@ -107,27 +106,67 @@ class HomePage extends Component {
     // });
 
     if(user.user){
-      alert("欢迎你"+user.user);
+      // alert("欢迎你"+user.user);
+      this.props.history.push('/shoptype/'+index);
     }
     else{
-      this.showToast('你尚未登录，请登录')
+      // this.showToast('你尚未登录，请登录')
+      this.props.history.push('/shoptype/'+index);
     }
     
   }
   //进入具体的商店
   gotoshop(id){
     // this.props.history.push('/shops');
+    store.dispatch(Saveshopid(id));
     this.props.history.push({ pathname:'/shops',state:{shopid: id}});
+  }
+
+  //西华  lat: 30.783022   lng: 103.960009
+ //lat: 30.67998  lng: 104.067978
+ //lat: 30.67994285  lng: 104.06792346
+  getdistance(val,sdata,i){
+    let _this=this;
+      //计算两点间的距离
+      let BMap=window.BMap;
+      var range=0;
+      // var p1=new BMap.point(30.67994285,104.06792346);
+      // var p2=new BMap.point(30.67998,104.067978);
+      // var map1 = new BMap.Map("allmap1");
+      // let range1=map1.getDistance(p1,p2).toFixed(2);//计算距离
+      // console.log(range1);
+      var pointA = new BMap.Point(30.67994285,104.06792346); // 获取用户地址
+      var myGeo = new BMap.Geocoder();
+      // 将地址解析结果显示在地图上,并调整地图视野
+      myGeo.getPoint(val, function(point){
+        if (point) {
+          var map = new BMap.Map("allmap");
+           range=map.getDistance(pointA,point).toFixed(2);//计算距离
+           range=parseInt(range)/10000000;
+           range=range.toFixed(1)
+           let time=range*50;
+           
+           sdata[i].distance=range;
+           sdata[i].time=time;
+          //  console.log(range)
+           _this.setState({
+            data:sdata
+          })
+        }
+      }, "成都市"); 
+     
   }
   render() {
     let _this=this;
     let shopitem=[];
     let shoptype=[];
 
-    this.state.type.map(function(item,key){
+    this.state.type.map(function(item,index){
       return shoptype.push(
-        <li key={key}>
-          <div className='fdtype-div' onClick={_this.foodinf}>
+        <li key={index}>
+          <div className='fdtype-div' onClick={()=>{
+            _this.foodinf(index)
+          }}>
             <img src={imgURL}  alt="饿呢" />
             <span>{ item }</span>
           </div>
@@ -163,8 +202,8 @@ class HomePage extends Component {
                   <span>夜间配送￥2</span>
                </div>
                 <div className='inf-money-v2'> 
-                  <span>25分钟 </span>
-                  <span>464m</span>
+                  <span>{value.time}分钟 </span>
+                  <span>{ value.distance +'km'}</span>
                 </div>
               </div>
             </div>

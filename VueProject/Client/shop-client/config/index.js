@@ -83,6 +83,14 @@ module.exports = {
           '^/yang': '/'
         }
       },
+      '/updatastate':{
+        target: 'http://localhost:8888/', // 接口的域名
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        //autoRewrite: true, //根据请求的主机,端口重写
+        pathRewrite: {
+          '^/updatastate': '/updatastate'
+        }
+      },
 
     },
 

@@ -30,18 +30,11 @@
           </el-form-item>
         </div>  
         <div>
-          <el-form-item label="城市 : " prop="address">
-            <!-- <el-input v-model="form.address" required="true"></el-input> -->
-            <el-cascader
-              :options="options2"
-              @active-item-change="handleItemChange"
-              :props="props"
-            ></el-cascader>
-          </el-form-item>
-        </div>
-        <div>
           <el-form-item label="门店地址: " prop="address">
-            <el-input v-model="form.address" required="true"></el-input>
+            <el-input v-model="form.address" required="true" :disabled='this.flog' @blur="this.mapshow"></el-input>
+            <div id="allmap" ref="allmap">
+
+            </div>
           </el-form-item>
         </div>
         <div>
@@ -57,7 +50,7 @@
           </el-upload>
           </el-form-item>
         </div>
-        <div>
+        <!-- <div>
           <el-form-item label="门店logo : " prop="shoplogo">
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
@@ -70,7 +63,7 @@
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </el-form-item>
-        </div>
+        </div> -->
         <div>            
           <el-form-item>
             <el-button type="primary" @click="onSubmit">提交进入下一步</el-button>
@@ -92,7 +85,7 @@ export default {
         uname: '杨文伍',
         uphone: '15208192473',
         shopimage: '',
-        address:'成都西华',
+        address:'成都市',
         shoplogo:'',
         shoptype: '外卖'
         },
@@ -122,6 +115,9 @@ export default {
       type: Function,
       default: null
     }
+  },
+  mounted(){
+    this.mapshow();
   },
   methods: {
      //提交表单
@@ -184,9 +180,26 @@ export default {
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
+      },
+      mapshow(){
+          // 百度地图API功能
+        // alert(this.form.address)
+        var map = new BMap.Map(this.$refs.allmap);
+        var point = new BMap.Point(103.9615785164,30.78);
+        map.centerAndZoom(point,12);
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        let _this=this;
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(_this.form.address, function(point){
+          if (point) {
+            map.centerAndZoom(point, 16);
+            map.addOverlay(new BMap.Marker(point));
+          }else{
+            console.log("您选择地址没有解析到结果!");
+          }
+        }, "成都市");
       }
-      
-
     }
 }
 </script>
@@ -244,6 +257,11 @@ export default {
     height: 178px;
     display: block;
   }
+  #allmap{
+  height: 500px;
+  margin-top: 20px;
+  overflow: hidden;
+}
 
 </style>
 

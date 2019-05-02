@@ -6,7 +6,7 @@ const AlipayFormData=require('alipay-sdk/lib/form').default;
 const AlipaySdk = require('alipay-sdk').default;
 // 实例化sdk
 function ant(response, postData,params){
-  let inf=postData;
+  let pdata=JSON.parse(postData);//json转化为对象
   const alipaySdk = new AlipaySdk({
     appId: '2016092600597690',
     gateway:'https://openapi.alipaydev.com/gateway.do',
@@ -20,12 +20,15 @@ function ant(response, postData,params){
   //支付成功后返回地址方法
   formData.setMethod('get')
   // 调用 setMethod 并传入 get，会返回可以跳转到支付页面的 url
-  formData.addField('returnUrl', 'http://192.168.1.136:3000/V1/order');
+  formData.addField('returnUrl', 'http://localhost:3000/#/v1/myinf');
   //返回数据
+  let time=Date.now();
+  let oid='out_trade_no'+time;
+  console.log(oid)
   formData.addField('bizContent', {
-    outTradeNo: 'out_trade_no',
+    outTradeNo: oid,
     productCode: 'FAST_INSTANT_TRADE_PAY',
-    totalAmount: '0.01',
+    totalAmount: pdata.data.allmoney,
     subject: '商品',
     body: '商品详情',
   });

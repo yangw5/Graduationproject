@@ -24,13 +24,14 @@
   justify-content:space-around; 
 }
 .fdtype li{
+  margin-top: 10px;
   width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .fdtype-div{
-  width: 44px;
+  width: 57px;
   height: 64px;
 }
 .fdtype-div span{

@@ -81,12 +81,13 @@
   </el-dialog>
   </div>
 </template>
+
 <script>
 import M from '../../../assets/js/common.js';
 export default {
   data(){
     return{
-       title:this.$route.query.type+'信息',
+       title: this.$route.query.type+'信息',
        dialogFormVisible: false,
        innerVisible: false,
        addflog:false,
@@ -156,6 +157,9 @@ export default {
         if (value.status === 200) {
           let data = value.data.data;
           this.fooditem = data;
+          this.getfooditem(this.$route.query.type);
+          this.form.name=this.$route.query.type;
+          this.gettype();
         }
       }).catch((error)=>{
         if (error.response && error.response.status == 400) {
@@ -235,6 +239,7 @@ export default {
      rfood(row){
        this.innerVisible = true;
        this.addflog=false;
+       this.imageUrl='http://localhost:8888/getimg?himg='+row.foodimg;
        this.newfood=JSON.parse(JSON.stringify(row));
      },
      //删除单项food
@@ -258,10 +263,10 @@ export default {
      deletefooddo(sid){
        M.ajax({
           type: 'GET',
-          url: '/deletefood',
+          url: '/yang/deletefood',
           headers: {
           },
-         data: {
+          params: {
            id:sid
           }
         }).then((value)=>{
@@ -310,12 +315,12 @@ export default {
  
 }
 .foodtype{
-  width: 400px;
+  width: 200px;
   float: left;
   height:200px;
   border: 2px solid #eeeeee;
   display: flex;
-  margin: 10px;
+  margin: 5px;
   justify-content: center;
   align-items: center;
 }

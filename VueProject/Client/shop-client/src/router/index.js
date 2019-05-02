@@ -7,15 +7,23 @@ import registeritem1 from '../components/login/register/registeritem1'
 import registeritem2 from '../components/login/register/registeritem2'
 
 import shopcenter from '../components/shopcenter/index'
+
+import homepage from '../components/shopcenter/homepage/index'
+
 import shopinf from '../components/shopcenter/shopinf/index'
 import shop from '../components/shopcenter/shopinf/shop'
 import food from '../components/shopcenter/shopinf/food'
 import fooditem from '../components/shopcenter/shopinf/fooditem'
 
 import order from '../components/shopcenter/order/index'
+
 import ordertype1 from '../components/shopcenter/order/ordertype1'
 import ordertype2 from '../components/shopcenter/order/ordertype2'
+import ordertype3 from '../components/shopcenter/order/ordertype3'
+import ordertype4 from '../components/shopcenter/order/ordertype4'
+import orderdata from '../components/shopcenter/order/orderdata'
 
+import comment from '../components/shopcenter/comment/index'
 
 Vue.use(Router)
 export default new Router({
@@ -44,8 +52,13 @@ export default new Router({
       path: '/shopcenter',
       name: 'shopcenter',
       component: shopcenter,
-      children:[{
+      children:[
+        {
           path:"/",
+          component:homepage,
+        },
+        {
+          path:"shop",
           component:shopinf,
           children:[{
               path:"",
@@ -70,7 +83,22 @@ export default new Router({
           {
             path:"runorder",
             component:ordertype2
+          },
+          {
+            path:"didorder",
+            component:ordertype3
+          },
+          {
+            path:"badorder",
+            component:ordertype4
+          },{
+            path:"orderdata",
+            component:orderdata,
           }]
+        },
+        {
+          path:"comment",
+          component:comment,
         }
      ],
     },

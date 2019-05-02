@@ -424,3 +424,23 @@
 ## 获取定位需要申请获取百度api的密钥
 
   > http://lbsyun.baidu.com/index.php?title=jspopular/guide/getkey
+
+  react使用百度api  
+    
+    1. 在index.js引入，赋给window 全局访问
+    
+    1. 在webpack的externals加载BMap使它可以通过require或import引入
+
+
+          module.exports = {
+          /*此处省略了entry，output,modules等配置*/
+            externals:{
+              'BMap':'BMap'
+            },
+          }
+        
+        组件引入
+
+        import BMap from 'BMap'
+        var map = new BMap.Map("allmap"); // 创建Map实例
+        //通过map调用API
