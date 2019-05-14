@@ -201,14 +201,15 @@ export default {
         } );   
       
       },
-         blobToDataURI(blob, callback) {
+      blobToDataURI(blob, callback) {
           var reader = new FileReader();
           reader.onload = function (e) {
               callback(e.target.result);
           }
           reader.readAsDataURL(blob);
       },
-       handleAvatarSuccess1(res, file) {
+      
+      handleAvatarSuccess1(res, file) {
         this.imageUrl1 = URL.createObjectURL(file.raw);
         this.form.shoplogo=this.imageUrl1;
       },

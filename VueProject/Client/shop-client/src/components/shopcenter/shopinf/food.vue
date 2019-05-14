@@ -33,6 +33,12 @@
             active-text="表格"
             inactive-text="">
           </el-switch>
+           <el-switch
+            v-model="showtype1"
+            active-text="下架商品"
+            @change='foodstypeshow'
+            inactive-text="">
+          </el-switch>
         </div>
         <div class="showtype-text">
           <el-button type="primary" size="mini" @click="addfood">新增商品</el-button>
@@ -78,12 +84,15 @@
           <el-table-column
             label="描述"
              prop='fooddescribe'
-            width="120">
+            width="180">
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <i class="el-icon-edit" @click="handleEdit(scope.$index, scope.row)" ></i>
-              <i class="el-icon-delete" @click="handleDelete(scope.$index, scope.row)"></i>
+              <i class="el-icon-edit" title="修改" @click="handleEdit(scope.$index, scope.row)" ></i>
+              <i class="el-icon-delete" title="删除" @click="handleDelete(scope.$index, scope.row)"></i>
+              <i class="el-icon-star-off"  v-if="!showtype1" title="下架" @click="handleDelete1(scope.$index, scope.row)"></i>
+              <i class="el-icon-star-on"  v-if="showtype1" title="上架" @click="handleDelete2(scope.$index, scope.row)"></i>
+             
             </template>
           </el-table-column>
         </el-table>
@@ -132,8 +141,8 @@
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <img v-if="imageUrl " :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon avatar"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="商品描述" :label-width="formLabelWidth">
@@ -212,6 +221,8 @@ export default {
         serchtext:'',//商品搜索
         allfoods:[],//所以商品数组
         showtype:true,//显示类型
+        showtype1:false,//显示类型
+        showindex:100,//显示的类型
     }
   },
   props:{
@@ -256,6 +267,7 @@ export default {
         },
         params: {
           shopid:7,
+          type:this.showtype1
         }
       }).then((value)=>{
         if (value.status === 200) {
@@ -268,6 +280,13 @@ export default {
           this.msg = `${error.response.data.error}!`;
         }
       })
+    },
+    foodstypeshow(){
+       if(this.showindex===100){
+          this.getallfoods()
+        }else{
+          this.showfoodtype(this.showindex) 
+        }
     },
     //获取已有foodtype信息
     getfoodtype(){
@@ -293,6 +312,7 @@ export default {
     },
     //获取分类下的商品
     showfoodtype(ftype){
+      this.showindex=ftype;
       if(ftype == 100){
          this.getallfoods()
       }else{
@@ -303,7 +323,9 @@ export default {
         },
         params: {
           shopid:7,
-          type:ftype
+          type:ftype,
+          state:this.showtype1
+          
         }
       }).then((value)=>{
         if (value.status === 200) {
@@ -353,7 +375,13 @@ export default {
                   type: 'success',
                   message: '删除成功!'
                 });
+              if(this.showindex===100){
+                this.getallfoods()
+              }else{
+                this.showfoodtype(this.showindex) 
               }
+            }
+
             }).catch((error)=>{
               if (error.response && error.response.status == 400) {
                 this.msg = `${error.response.data.error}!`;
@@ -368,7 +396,96 @@ export default {
           });          
         });
     },
+      //商品下架
+      handleDelete1(index, row) {
+       this.$confirm('此操作将该商品下架 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+           M.ajax({
+              type: 'POST',
+              url: '/yang/downfood',
+              headers: {
+              },
+              data: {
+                foodstate:1,
+                id:row.id
+              }
+            }).then((value)=>{
+              if (value.status === 200) {
+                let data = value.data.data;
+                this.$message({
+                  type: 'success',
+                  message: '下架成功!'
+                });
+              }
+                   console.log(111111111111)
+              console.log(this.showindex)
+              if(this.showindex === 100){
+                this.getallfoods()
+              }else{
+                this.showfoodtype(this.showindex) 
+              }
 
+            }).catch((error)=>{
+              if (error.response && error.response.status == 400) {
+                this.msg = `${error.response.data.error}!`;
+              }
+          })
+          
+        }).catch(() => {
+          
+          this.$message({
+            type: 'info',
+            message: '已取消下架'
+          });          
+        });
+    },
+    //上架
+     handleDelete2(index, row){
+        this.$confirm('此操作将该商品上架 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+           M.ajax({
+              type: 'POST',
+              url: '/yang/downfood',
+              headers: {
+              },
+              data: {
+                foodstate:0,
+                id:row.id
+              }
+            }).then((value)=>{
+              if (value.status === 200) {
+                let data = value.data.data;
+                this.$message({
+                  type: 'success',
+                  message: '上架成功!'
+                });
+              }
+              if(this.showindex===100){
+                this.getallfoods()
+              }else{
+                this.showfoodtype(this.showindex) 
+              }
+
+            }).catch((error)=>{
+              if (error.response && error.response.status == 400) {
+                this.msg = `${error.response.data.error}!`;
+              }
+          })
+          
+        }).catch(() => {
+          
+          this.$message({
+            type: 'info',
+            message: '已取消上架'
+          });          
+        });
+     },
 
     //获取分类下的food
     getfooditem(ftype){
@@ -387,12 +504,13 @@ export default {
       },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
-        
       },
-      beforeAvatarUpload(file) {
+      beforeAvatarUpload(file) { 
+        alert(file.size/1024/1024)
+        // console.log(file);
         let _this=this;
         let base64=this.blobToDataURI(file,(url)=>{
-          _this.newfood.img=url;
+          _this.newfood.foodimg=url;
           return url;
         } );   
       },
@@ -405,9 +523,6 @@ export default {
       }else{
         url='/upadtafood';//修改
       }
-      console.log(131121);
-      console.log(this.newfood);
-      return;
       M.ajax({
           type: 'POST',
           url: url,
@@ -419,11 +534,18 @@ export default {
         }).then((value)=>{
           if (value.status === 200) {
             let data = value.data.data;
-              if(this.addflog){
-                this.fooditem.push(this.newfood);
-            }
+
+            const loading = this.$loading({
+                lock: true,
+                text: '操作中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+              });
+              setTimeout(() => {
+                loading.close();
+              }, 1000);             
             this.innerVisible = false;
-            //this.foodtype=data;
+
             this.newfood={
               foodname:'',
               money:'',
@@ -431,6 +553,12 @@ export default {
               foodimg:'',
               fooddescribe:''
               };
+              if(this.showindex===100){
+                this.getallfoods()
+              }else{
+                this.showfoodtype(this.showindex) 
+              }
+             
           }
         }).catch((error)=>{
           if (error.response && error.response.status == 400) {
@@ -513,6 +641,9 @@ export default {
   height: 30px;
 }
 
+.el-icon-edit,.el-icon-delete{
+  margin-right: 20px;
+}
 
 
 
@@ -560,6 +691,7 @@ export default {
   }
   .avatar {
     width: 100px;
+    height: 100px;
     display: block;
   }
 

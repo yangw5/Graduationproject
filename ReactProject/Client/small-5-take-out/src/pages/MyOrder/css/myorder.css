@@ -29,7 +29,7 @@
 .orderitem{
   margin-top: 10px;
   height: 200px;
-  box-shadow:0px 0px 5px #393939;
+  box-shadow: 0px 0px 1px #af9898;
 }
 
 .order-title{
@@ -50,7 +50,6 @@
 .state1 :hover{
   color: blue;
 }
-
 .order-inf{
   height: 50%;
   width: 100%;
@@ -68,6 +67,7 @@
 .order-inf-text{
   height: 100%;
   float: left;
+  color: #867c7c;
 
 }
 .order-inf-text span{
@@ -86,3 +86,4 @@
 .qx :hover{
   color: blue;
 }
+

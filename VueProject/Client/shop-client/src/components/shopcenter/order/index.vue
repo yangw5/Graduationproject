@@ -20,7 +20,7 @@
         </div>
         <el-col :span="12">
           <el-menu
-            default-active="2"
+            default-active="0"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
@@ -89,13 +89,13 @@ export default {
           break;
         case 2:
           this.$router.push({path:'/shopcenter/order/orderdata', query: {
-              state: 2
+              state: 3
             }});
           // this.$router.push({path:'/shopcenter/order/didorder'});
           break;
         case 3:
           this.$router.push({path:'/shopcenter/order/orderdata',query: {
-              state: 3
+              state: 4//取消
             }});
           // this.$router.push({path:'/shopcenter/order/badorder'});
           break;

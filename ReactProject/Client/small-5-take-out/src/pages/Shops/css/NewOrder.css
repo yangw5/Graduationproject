@@ -3,7 +3,7 @@
 }
 .address{
   margin-top: 10px;
-  box-shadow: 4px 4px 21px 0 #D0D0D0;
+  box-shadow: 1px 1px 5px 0 #D0D0D0;
 }
 .address-inf1{
   padding: 10px;
@@ -59,12 +59,12 @@
 .foodmodr{
   margin-top: 20px;
   border: 1px solid #eee;
-  box-shadow: 4px 4px 21px 0 #D0D0D0;
+  /* box-shadow: 4px 4px 21px 0 #D0D0D0; */
 }
 .foodaddinf{
   margin-top: 20px;
   border: 1px solid #eee;
-  box-shadow: 4px 4px 21px 0 #D0D0D0;
+  /* box-shadow: 4px 4px 21px 0 #D0D0D0; */
 }
 .addorder{
   height: 50px;
@@ -106,4 +106,18 @@
   background: green;
   text-align: center;
   color: white;
+}
+.orderstate{
+  height: 50px;
+  font-size: 18px;
+  font-weight: 6800;
+  padding-left: 15px;
+  background: #eee;
+  line-height: 50px;
+}
+.allmap{
+  height: 200px;
+}
+.allmap1{
+  height: 200px;
 }

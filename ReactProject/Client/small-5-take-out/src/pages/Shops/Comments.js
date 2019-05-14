@@ -3,6 +3,8 @@ import { Tag } from 'antd-mobile';
 import './css/Comments.css'
 import add from './images/add.png'
 import food from './images/food.jpg'
+import xx from './images/xx.png'
+import xx1 from './images/xx1.png'
 import M from '../../assets/common'
 
 class   Comments extends Component{
@@ -80,15 +82,37 @@ class   Comments extends Component{
                 <div className='pl-containner'>
                 {
                 this.state.evlist.map(function(item,index){
+                  let px=[];
+                  for(let i=0;i<5;i++){
+                    let src=''
+                    if(i<item.ev_port){
+                      src=xx;
+                    }else{
+                      src=xx1;
+                    }
+                    px.push(
+                      <img src={src} alt='' className='xximg' />
+                    )
+                  }
                   return (
                   <div className='pl-item' key={index}>
                   <div className='pl-item-user'>
                     <div className='item-user-img'><img src={'http://localhost:8888/getimg?himg='+item.himg } alt='' /></div>
                     <div className='item-user-inf'>
-                      <span>{item.name}</span>
-                      {/* <span>星星</span> */}
+                      <div className='user-inf'>
+                        <span>{item.name}</span>
+                        <span className='xx'>{
+                      px
+                              // item.ev_port
+                           
+                        }</span>
+                      </div>
+                      <div className='evtime'>
+                        <span >{item.ev_time.split('T')[0]}</span>
+                      </div>
                       
                     </div>
+                   
                   </div>
                   <div className='pl-text'>
                     <div className='pl-text1'>
@@ -96,14 +120,16 @@ class   Comments extends Component{
                       <div className='pl-text-img'>
                         <img src={'http://localhost:8888/getimg?himg='+item.ev_img}  alt='' />
                       </div>
-                      <span className='evtime'>{item.ev_time}</span>
                     </div>
                     
                   </div>
                   <div className='shop-qus'>
-                    <div className='shop-qus1'>
-                      {/* 回复:谢谢 */}
-                    </div>
+                  {
+                    item.ev_reply ? <div className='shop-qus1'>
+                    商家回复: {item.ev_reply}
+                  </div>: ''
+                  }
+                    
                   </div>
                   </div>
             )

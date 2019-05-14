@@ -3,6 +3,8 @@ import { NavBar, Icon,Button, WhiteSpace, ImagePicker,TextareaItem } from 'antd-
 import './css/Evaluate.css';
 import M from '../../assets/common';
 import store from '../../redux/Redux';
+import xx from './img/xx.png'
+import xx1 from './img/xx1.png'
 
 class Evaluate extends  Component {
   constructor(props){
@@ -14,11 +16,33 @@ class Evaluate extends  Component {
         text:'',
         time:'',
         orderid:''
-      }
+      },
+      ports:2,
+      portsitems:[]
     }
   }
   componentDidMount(){
-    alert(store.getState().userid)
+    // alert(this.state.ports)
+    // alert(store.getState().userid)
+    let items=[];
+    for (var i = 0; i < 5; i++) {
+      let src='';
+      if(i<this.state.ports){
+          src=xx;
+      }else{
+          src=xx1;
+      }
+      let index=i;
+      items.push(
+        <span >
+          <img src={src} alt='' className='xx' onClick={()=>{
+             this.changepoart(index)
+          }} />
+        </span>);            //这里父组件Examines，嵌套了子组件<OnTask/>
+    }
+    this.setState({
+      portsitems:items
+    });
   } 
   onChange = (files, type, index) => {
     console.log(files, type, index);
@@ -49,6 +73,7 @@ class Evaluate extends  Component {
     postdata.orderid=this.props.location.state.orderid;
     postdata.files=this.state.files;
     postdata.userid=store.getState().userid;
+    postdata.prot=this.state.ports;
     alert(store.getState().userid)
     postdata.shopid=this.props.location.state.shopid;
     this.setState({
@@ -75,6 +100,37 @@ class Evaluate extends  Component {
     });
 
   }
+  changepoart(pindex){
+    // alert(this.state.ports);
+    let port=1;
+    this.setState({
+      ports: port,
+      portsitems:[]
+    },()=>{
+          // alert(this.state.ports);
+      let _this=this;
+      let items=[];
+      for (var i = 0; i < 5; i++) {
+        let src='';
+        if(i<= pindex ){
+            src=xx;
+        }else{
+            src=xx1;
+        }
+        let index=i;
+        items.push(
+          <span >
+            <img src={src} alt='' className='xx' key={i} onClick={()=>{
+              _this.changepoart(index)
+            }} />
+          </span>);            //这里父组件Examines，嵌套了子组件<OnTask/>
+      }
+      this.setState({
+        portsitems:items
+      });
+    });
+
+  }
   render(){
     return(
       <div>
@@ -92,6 +148,9 @@ class Evaluate extends  Component {
               <div className='pf'>
                 <Button type="ghost" inline size="small" style={{ marginRight: '4px' }}>满意</Button>
                 <Button type="ghost" inline size="small" style={{ marginRight: '4px' }}>不满意</Button>
+                <div className='protxx'>
+                亲，打个分呗：{ this.state.portsitems }
+                </div>
               </div>
               <div className='text'>
                 <TextareaItem

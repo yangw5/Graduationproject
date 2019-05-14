@@ -3,7 +3,7 @@
     <div class="Navigation">
        <el-col :span="12">
         <el-menu
-          default-active="1-4"
+          default-active="1"
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose">
@@ -17,7 +17,7 @@
           </el-menu-item>
           <el-menu-item index="2"  @click="goto(2)">
             <i class="el-icon-setting"></i>
-            <span slot="title">店铺设置</span>
+            <span slot="title">商品设置</span>
           </el-menu-item>
         </el-menu>
       </el-col>
@@ -83,7 +83,7 @@ export default {
 
 }
 .ncontainer{
-  width: 70%;
+  width: 80%;
   float: left;
   height: 800px;
   background: white;

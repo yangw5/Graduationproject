@@ -14,6 +14,10 @@
   background-color: #108ee9;
   color: #ffffff;
   border: 0px;
+  z-index: 1 !important;
+}
+.mylist .am-list-item{
+  z-index: 1 !important;
 }
 .onlodeing .am-list-item .am-list-line .am-list-content{
   color: #ffffff;
@@ -76,4 +80,5 @@
 }
 .my-list .am-list-item .am-list-line .am-list-content{
   color: #000;
+
 }

@@ -3,7 +3,7 @@
     <div class="order-title">
       <div class="title-title">
         <h1>
-          订单管理
+          订单管理/未接单
         </h1>
       </div>
       <div class="title-inf">
@@ -31,7 +31,7 @@
           </el-date-picker>
         </div>
         <div class="block" style="float:right">
-            <el-button type="primary" size="mini">搜索</el-button>
+            <el-button type="primary" size="mini" @click="searchordershop">搜索</el-button>
             <el-button type="success" size="mini">导出</el-button>
         </div>
         <div class="block"  style="float:right">
@@ -44,11 +44,11 @@
             <div class="cl-3" style=" text-align: left;">
               <span style="margin-left:10px">菜单</span>
             </div>
-            <div class="cl-1">买家</div>
+            <div class="cl-2">买家</div>
             <div class="cl-1">支付方式</div>
             <div class="cl-1">交易金额</div>
             <div class="cl-1">下单时间</div>
-            <div class="cl-2">备注</div>
+            <div class="cl-1">备注</div>
             <div class="cl-1">状态</div>
           </div>
           <div v-for="(orderitem,index) in orderlist" :key='index' >
@@ -61,7 +61,6 @@
                 <span @click="handleRowHandle(orderitem)">查看详情 -</span>
                 <span>备注 -</span>
                 <span>标记</span>
-
               </div>
             </div>
              <div class="order-item" >
@@ -76,7 +75,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="cl-1 item-address">
+                <div class="cl-2 item-address">
                   <div>{{orderitem.raddress.ad_name}}</div>
                   <div>{{orderitem.raddress.ad_address + orderitem.raddress.ad_street}}</div>
                   <div>{{orderitem.raddress.ad_phone}}</div>
@@ -93,7 +92,7 @@
                    {{orderitem.ordertime.split(".")[0].split('T')[1]}}
                   </div>
                 </div>
-                <div class="cl-2">
+                <div class="cl-1">
                  {{orderitem.ordermore ? orderitem.ordermore : '无 '}}
                 </div>
                 <div class="cl-1">
@@ -180,7 +179,7 @@
         width="50%"
         :before-close="handleClose">
         <div class="orderitem">
-          <orderitem  :porderlist='porderlist'></orderitem>
+          <orderitem  :porderlist='porderlist' @fatherMethod="fatherMethod"></orderitem>
         </div>
         <span slot="footer" class="dialog-footer">
           <!-- <el-button  size="mini" @click="dialogVisible = false">取 消</el-button>
@@ -269,7 +268,31 @@ export default {
             this.msg = `${error.response.data.error}!`;
           }
       })
-    },  
+    },
+    //订单查询
+    searchordershop(){
+      M.ajax({
+          type: 'GET',
+          url: '/yang/searchordershop',
+          headers: {
+          },
+          params: {
+            shopid:this.$store.state.usershop.id,
+            state:0,
+            searchtext:this.input
+          }
+        }).then((value)=>{
+          if (value.status === 200) {
+            this.orderlist = value.data.data;
+            console.log(this.orderlist);
+
+          }
+        }).catch((error)=>{
+          if (error.response && error.response.status == 400) {
+            this.msg = `${error.response.data.error}!`;
+          }
+      })
+    },
     updatastate(a,b){
       M.ajax({
           type: 'POST',
@@ -301,6 +324,11 @@ export default {
           }
       })
     },
+    fatherMethod() {
+      this.dialogVisible = false;
+      this.getorder();
+      
+      },
     handleRowHandle(orderitem){
       this.porderlist.length=0;
       this.porderlist.push(orderitem);
@@ -485,16 +513,19 @@ export default {
 }
 .item-name img{
   height: 29px;
-  border-radius: 10px;
+  border-radius: 1px;
 }
 .order-item .cl-1,.cl-2,.cl-3,.cl-4,.cl-5,.cl-6,.cl-6，.cl-7，.cl-8，.cl-9{
   border-right: 1px solid #eee;
   margin-right: -1px;
   text-align: center;
 }
+.item-address {
+  height: auto;
+}
 .item-address div{
   height: 27px;
-   line-height: 27px;
+  line-height: 27px;
 }
 .paytype span{
   background: rgb(64, 158, 255);

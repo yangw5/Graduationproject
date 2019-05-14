@@ -22,8 +22,10 @@ let user = sessionStorage.getItem('user') ? sessionStorage.getItem('user'): '';
 let userid= sessionStorage.getItem('userid')?sessionStorage.getItem('userid'):'';
 let shopid= sessionStorage.getItem('shopid')?sessionStorage.getItem('shopid'):'';
 let navTab= sessionStorage.getItem('navTab')?sessionStorage.getItem('navTab'):'';
+let navTab2= sessionStorage.getItem('navTab2')?sessionStorage.getItem('navTab2'):'';
 let orderdata= sessionStorage.getItem('orderdata') ? JSON.parse(sessionStorage.getItem('orderdata')): {};
 let ordertype= sessionStorage.getItem('ordertype')?sessionStorage.getItem('ordertype'):'';
+let orderstate= sessionStorage.getItem('orderstate')?sessionStorage.getItem('orderstate'):'';
 
 /*初始化状态树*/
 const initValue={
@@ -33,8 +35,11 @@ const initValue={
   userid:userid,//用户id
   shopid:shopid,//商店id
   navTab:navTab,//选择tab
+  navTab2:navTab2,//选择tab
   orderdata:orderdata,//订单数据
-  ordertype:ordertype//订单操作类型
+  ordertype:ordertype,//订单操作类型
+  orderstate:orderstate//订单操作类型
+  
 };
 
 const changepalce= (state=initValue,action)=>{ //接收一个state和action
@@ -76,6 +81,12 @@ const changepalce= (state=initValue,action)=>{ //接收一个state和action
               navTab:action.navTab
             });
           }
+          case 'SAVENAVTAB2':{
+            sessionStorage.setItem('navTab2',action.navTab2); // 存入一个值
+            return Object.assign({}, state, {
+              navTab2:action.navTab2
+            });
+          }
           case 'SAVEORDERDATA':{
             sessionStorage.setItem('orderdata',JSON.stringify(action.orderdata)); // 存入一个值
             return Object.assign({}, state, {
@@ -86,6 +97,12 @@ const changepalce= (state=initValue,action)=>{ //接收一个state和action
             sessionStorage.setItem('ordertype',action.ordertype); // 存入一个值
             return Object.assign({}, state, {
               ordertype:action.ordertype
+            });
+          }
+          case 'SAVEORDERSTATE':{
+            sessionStorage.setItem('orderstate',action.orderstate); // 存入一个值
+            return Object.assign({}, state, {
+              orderstate:action.orderstate
             });
           }
         default:

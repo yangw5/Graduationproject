@@ -1,8 +1,8 @@
 import React,{Component} from  'react';
-import { NavBar, Icon,Tabs, WhiteSpace, Badge,Modal,List,Toast } from 'antd-mobile';
+import { NavBar, Icon,Tabs, WhiteSpace, Badge,Modal,List,Toast,NoticeBar } from 'antd-mobile';
 import './css/shops.css';
 import M from '../../assets/common'
-import { Saveshopid,Saveordertype,Saveorderdata} from '../../redux/Actions';
+import { Saveshopid,Saveordertype,Saveorderdata,Saveorderstate} from '../../redux/Actions';
 
 import store from '../../redux/Redux';
 
@@ -29,12 +29,30 @@ class Shops extends Component{
       foodlist:[],
       showclass:true,
       moneyok:false,
-      modal2:false
+      modal2:false,
+      shopitentype:0,
     }
 
   }
   componentDidMount(){
     this.initdata();
+    //判断是否有订单
+    alert(store.getState().orderstate)
+    if(store.getState().orderstate === 100){
+      this.pddata();
+    }else{
+     // 
+    }
+  }
+  pddata(){
+    //获取数据
+    let b=store.getState().orderdata || [];
+    console.log(b);
+    this.setState({
+      foodlist:b
+    })
+    //计算总价
+    this.getdata(b)
   }
   //获取商店信息
   initdata(){
@@ -51,12 +69,13 @@ class Shops extends Component{
     }).then((value)=>{
       if (value.status === 200) {
         let data = value.data.data;
+        console.log(data)
         this.setState({
           shopinf:data,
         })
       }
     }).catch((error)=>{
-      if (error.response && error.response.status == 400) {
+      if (error.response && error.response.status === 400) {
         this.msg = `${error.response.data.error}!`;
       }
   })
@@ -152,6 +171,7 @@ class Shops extends Component{
       let data1=this.state.foodlist;
       store.dispatch(Saveordertype(true));
       store.dispatch(Saveorderdata(data1));
+      store.dispatch(Saveorderstate(100))
       this.props.history.push({ pathname:'/neworder',state:{data:data1,type:true} })
     }else{
       Toast.info('你尚未登录，请登录',2);
@@ -172,7 +192,7 @@ class Shops extends Component{
         icon={<Icon type="left" />}
         onLeftClick={() =>this.props.history.go(-1)}
         rightContent={[
-          <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
+          <Icon key="0" type="search" style={{ marginRight: '16px' }}  onClick={()=>{ this.props.history.push('/searchfood');}}/>,
           <Icon key="1" type="ellipsis" />,
         ]}
       > {this.state.shopinf.shopname}</NavBar>
@@ -183,8 +203,8 @@ class Shops extends Component{
           </p>
         </div>
         <div className='shops-inf'>
-          <span>评价</span>
-          <span>月售</span>
+          <span>评价 {this.state.shopinf.count2}</span>
+          <span>总售 {this.state.shopinf.count}</span>
           <span>蜂鸟快送约23分钟</span>
         </div>
         <div className='shops-discount'>
@@ -198,14 +218,24 @@ class Shops extends Component{
           <span>满25减2</span>
           <span>满25减2</span>
           <span style={{color:'rgb(179, 151, 151)',fontSize:'6px'}}>6个优惠</span>
-        </div>    
+        </div>
+        <div className='newinf'>
+        <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }}>
+        {this.state.shopinf.shop_more} 
+        </NoticeBar> 
+        </div>  
       </div>
       { 
         this.state.shopinf.id === undefined ? '':
         <div className='shops-sel' >
         <Tabs tabs={tabs}
           initialPage={0}
-          onChange={(tab, index) => { console.log('onChange', index, tab); }}
+          onChange={(tab, index) => { 
+            this.setState({
+              shopitentype:index
+            })
+            console.log('onChange', index, tab); 
+          }}
           onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
         >
           <div style={{ height: '370px', backgroundColor: '#fff' }}>
@@ -223,7 +253,10 @@ class Shops extends Component{
         </div>
 
       }
-      <div className='shop-cart'>
+      {
+          this.state.shopitentype === 0  ? 
+          
+          <div className='shop-cart'>
       <div className='cart-inf'>
         <div className='shop-money'>
           <div className='shop-inf-number'>
@@ -279,7 +312,7 @@ class Shops extends Component{
             : ''
           }
         </Modal>
-          </div>
+          </div >
           <div className='shop-inf-money'>
             <span>{"￥"+this.state.total}</span>
             <span style={{ color:'#b7abab',fontSize:'12px'}}>另需配送费1元/可自取</span>
@@ -290,6 +323,12 @@ class Shops extends Component{
         </div>
       </div>
      </div>
+          
+          : ""
+      
+      }
+
+      
     </div>
     )
   }

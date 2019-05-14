@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
 import './css/myorder.css';
-import { Button, WhiteSpace, Tabs,  Badge } from 'antd-mobile';
+import { Button, WhiteSpace, Tabs,  Badge,Toast ,Modal} from 'antd-mobile';
 import store from '../../redux/Redux';
-import {Saveordertype,Saveorderdata} from '../../redux/Actions';
+import {Saveordertype,Saveorderdata,Saveshopid,SavenavTab2,Saveorderstate} from '../../redux/Actions';
 import M from '../../assets/common';
 import lodeing from './img/1.jpg';
+import no from './img/no.jpg';
+
+const alert = Modal.alert;
 
 const tabs = [
   { title: <Badge text={''}>已提交</Badge> },
@@ -46,6 +49,7 @@ class MyOrder extends Component {
     }).then((value)=>{  
       if (value.status === 200) {
        let data = value.data.data;
+       console.log(data)
        this.setState({
          orderlist:data
        })
@@ -63,8 +67,9 @@ class MyOrder extends Component {
     this.props.history.push({ pathname:'/evaluate',state:{orderid:value.or_id,shopid:value.or_shopid} })
     // this.props.history.push('/evaluate');
   }
-  gotoorderinf(value,type){
+  gotoorderinf(value,type,state){
         //获取某一项订单数据数据
+        store.dispatch(Saveshopid(value.or_shopid));
         M.ajax({
           type: 'GET',
           url: '/getorderitem',
@@ -110,8 +115,10 @@ class MyOrder extends Component {
           //  sl: 1
            console.log(orderdata);
            store.dispatch(Saveordertype(type));
+          store.dispatch(Saveorderstate(state))
            store.dispatch(Saveorderdata(orderdata));
-           this.props.history.push({ pathname:'/neworder',state:{data:orderdata,type:true} })
+           //跳转到订单详情，
+           this.props.history.push({ pathname:'/neworder',state:{data:orderdata,type:true,state:1} })
 
           }
         }).catch((error)=>{
@@ -121,8 +128,22 @@ class MyOrder extends Component {
         });
   
   }
+  //是否确认
+ showAlert(id,e){
+  e.stopPropagation();
+    const alertInstance = alert('取消订单', '你是认真的吗???', [
+      { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
+      { text: '确定', onPress: () => this.addorder(id,e)},
+    ]);
+    setTimeout(() => {
+      // 可以调用close方法以在外部close
+      console.log('auto close');
+      alertInstance.close();
+    }, 500000);
+  };
+
+
   addorder(id,e){
-    e.stopPropagation();
     M.ajax({
       type: 'POST',
       url: '/uploadeorder',
@@ -135,8 +156,10 @@ class MyOrder extends Component {
     }).then((value)=>{  
       if (value.status === 200) {
        let data = value.data.data;
-        alert('已取消订单')
-        this.initstate();
+       Toast.loading('取消订单中...', 1, () => {
+          this.initstate();
+      });
+        
   
       }
     }).catch((error)=>{
@@ -146,6 +169,12 @@ class MyOrder extends Component {
     });
   }
   render() {
+    let noorder=  
+      <div className='lodeing'>
+        <img src={no} alt='' />
+        <span className='tips'>暂无订单</span>
+      </div>
+
     let _this=this;
     let arrydim=[];
     this.state.orderlist.map(function(value,index){
@@ -172,26 +201,28 @@ class MyOrder extends Component {
         
       }
       return  arrydim.push(
-        <div className='orderitem' key={index} onClick={()=>{this.gotoorderinf(value,false)}}>
+        <div className='orderitem' key={index} onClick={()=>{this.gotoorderinf(value,false,value.or_state)}}>
         <div className='order-title'>
         <span className='order-shopname'>{value.shopname}</span>
         <span className='state'>{a1}</span>
         {
-          value.or_state === 0 ? <span className='state state1' onClick={(e)=>{this.addorder(value.or_id,e)}}>取消订单</span> : ''
+          value.or_state === 0 ? <span className='state state1' onClick={(e)=>{this.showAlert(value.or_id,e)}}>取消订单</span> : ''
         }
         </div>
         <div className='order-inf'>
           <div className='order-shop-img'>
-            <img src={lodeing} alt='' />
+            <img src={'http://localhost:8888/getimg?himg='+value.shopimage} alt='' />
           </div>
           <div className='order-inf-text'>
-            <span>下单时间：{value.or_foodtime}</span>
+            <span>下单时间：{value.or_foodtime.split(".")[0].split('T')[0]+' '+value.or_foodtime.split(".")[0].split('T')[1]}</span>
             <span>总价：￥{value.or_allmoney}</span>
           </div>
         </div>
-        <div className='order-do'>
-        <Button  inline size="small" style={{ marginRight: '4px' }}    onClick={(e)=>{_this.gotoshop(value,e)}} >评价</Button>
-        <Button  inline size="small" style={{ marginRight: '4px' }}  onClick={()=>{this.gotoorderinf(value,true)}} >再来一单</Button>
+        <div className='order-do'>{
+          value.or_state === 3 ?    <Button  inline size="small" style={{ marginRight: '4px' }}    onClick={(e)=>{_this.gotoshop(value,e)}} >评价</Button> : ''
+        }
+     
+        <Button  inline size="small" style={{ marginRight: '4px' }}  onClick={()=>{this.gotoorderinf(value,true,value.or_state)}} >再来一单</Button>
         </div>
       </div>
       )
@@ -205,27 +236,28 @@ class MyOrder extends Component {
         this.state.userflog ? 
         <div>
           <Tabs tabs={tabs}
-          initialPage={0}
+          initialPage={0|| store.getState().navTab2}
           onChange={(tab, index) => { console.log('onChange', index, tab);
           
         }}
           onTabClick={(tab, index) => { console.log('onTabClick', index, tab); 
+          store.dispatch(SavenavTab2(index));
           this.initstate(index)}}
         >
           <div style={{ backgroundColor: '#fff' }}>
-           {arrydim}
+           { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
           <div style={{ backgroundColor: '#fff' }}>
-           {arrydim}
+          { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
           <div style={{ backgroundColor: '#fff' }}>
-           {arrydim}
+          { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
           <div style={{ backgroundColor: '#fff' }}>
-           {arrydim}
+          { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
           <div style={{ backgroundColor: '#fff' }}>
-           {arrydim}
+             { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
         </Tabs>
         <WhiteSpace />

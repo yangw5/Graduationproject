@@ -33,7 +33,6 @@ function ant(response, postData,params){
     body: '商品详情',
   });
 
-
   alipaySdk.exec( 'alipay.trade.wap.pay',
   {},
   { formData: formData }).then(result => {

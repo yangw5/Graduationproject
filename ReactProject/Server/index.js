@@ -26,7 +26,10 @@ handle['/getorderitem']=requestHandlers.getorderitem//订单项的获取
 handle['/getevaluate']=requestHandlers.getevaluate//获取评价
 handle['/addevaluate']=requestHandlers.addevaluate//新增评价
 handle['/searchshop']=requestHandlers.searchshop//查询商店
+handle['/searchfood']=requestHandlers.searchfood//查询商品
 handle['/getallshop']=requestHandlers.getallshop//获取所有商店
+handle['/shopdata']=requestHandlers.shopdata//商家首页数据搜索
+handle['/shopcomment']=requestHandlers.shopcomment//商家回复
 
 
 
@@ -42,7 +45,9 @@ handle['/getfood']=requestHandlers.getfood//获取分类下的商品信息
 handle['/shopfoodtype']=requestHandlers.shopfoodtype//获取已有food类型
 handle['/upadtafood']=requestHandlers.upadtafood//修改food商品信息
 handle['/deletefood']=requestHandlers.deletefood//删除food商品信息
+handle['/downfood']=requestHandlers.downfood//下架food商品信息
 handle['/getordershop']=requestHandlers.getordershop//获取订单
+handle['/searchordershop']=requestHandlers.searchordershop//查询订单
 handle['/updatastate']=requestHandlers.updatastate//修改订单状态
 handle['/getevaluate2']=requestHandlers.getevaluate2//商家获取评价
 

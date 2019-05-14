@@ -47,14 +47,55 @@ class NewOrder extends Component {
       address:'',
       foodlist:[],
       allmoney:0,
-      user:''
+      user:'',
+      shopinf:'',
+      orderstate:'',
     };
   }
+  componentDidUpdate(){
+    if(this.state.checked){
+
+    }else{
+      this.map();
+    }
+    // this.map();
+  }
   componentDidMount(){
+    //获取商家名称
+    this.getshop()
     user=store.getState().user;
-    let a=store.getState().ordertype;
-    let b=store.getState().orderdata;
+    let a=store.getState().ordertype;//订单类型 查看 还是再来一单
+    let b=store.getState().orderdata;//订单数据
+    let c= store.getState().orderstate;//订单状态
+    let stateorder='';
+    switch(c){
+      case 0:
+      stateorder='订单已提交';
+        break;
+      case 1:
+      stateorder='订单已接收';
+        break;
+      case 2:
+      stateorder='订单派送中';
+        break;
+      case 3:
+      stateorder='订单已完成';
+        break;
+      case 4:
+      stateorder='订单已退单';
+        break;
+      default:
+      stateorder='订单详情';
+        break;
+    }
+    this.setState(
+      {
+        orderstate:stateorder
+      }
+    )
+
     this.getaddesss();
+
     //获取路由数据
     let money=0;
     console.log(b)
@@ -67,8 +108,44 @@ class NewOrder extends Component {
       foodlist:b,
       allmoney:money
     })
+    this.map();
 
   }
+  //获取商家名称
+  getshop(){
+    M.ajax({
+      type: 'GET',
+      url: '/getshop',
+      headers: {
+      },
+      params: {
+        shopid:store.getState().shopid,
+      }
+    }).then((value)=>{
+      if (value.status === 200) {
+        let data = value.data.data;
+        console.log(data)
+        this.setState({
+          shopinf:data,
+        })
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status == 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+  })
+
+  }
+  //地图
+  map(){
+    let BMap=window.BMap;
+    var map = new BMap.Map("allmap1"); // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11); // 初始化地图,设置中心点坐标和地图级别
+    map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
+    map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+  }
+
   //获取地址
   getaddesss(){
     let that=this;
@@ -178,6 +255,11 @@ supplement(nn){
             onLeftClick={() =>this.props.history.go(-1)}
           ></NavBar>
         </div>
+        <div className='orderstate'>
+          {
+            _this.state.orderstate+'>'
+          }
+        </div>
         <div >
           <div>
             <List.Item
@@ -190,20 +272,33 @@ supplement(nn){
                 });
               }}
             />}
-          >外卖配送</List.Item>
+          >{ this.state.checked ?  '外卖配送' : '到店自取' }</List.Item>
           </div>
-          <div className='address' onClick={()=>{
-            store.dispatch(Saveordertype(this.state.ordertype));
-            this.props.history.push('/itemaddress');
-          }} >
-              <div className='address-inf1'>{this.state.street}</div>
-              <div className='address-inf2'>{this.state.name} {this.state.sex ? '(先生)':'(女士)'} {this.state.phone}</div>
-          </div>
+          {
+            this.state.checked ?  
+            <div className='address' onClick={()=>{
+              store.dispatch(Saveordertype(this.state.ordertype));
+              this.props.history.push('/itemaddress');
+            }} >
+                <div className='address-inf1'>{this.state.street}</div>
+                <div className='address-inf2'>{this.state.name} {this.state.sex ? '(先生)':'(女士)'} {this.state.phone}</div>
+            </div> : 
+            <div className='allmap' >
+             <div id='allmap1' className='allmap1' >
+              </div>
+            </div>
+
+          }
+         
           
         </div>
         <div className='foodmodr' >
           <ul>
-            <li className='shopname'>华莱士</li>
+            <li className='shopname' onClick={
+              ()=>{
+                this.props.history.push({ pathname:'/shops',state:{shopid: store.getState().shopid,}});
+              }
+            }>{this.state.shopinf.shopname}</li>
             {
               _this.state.foodlist.map(function(value,index){
              

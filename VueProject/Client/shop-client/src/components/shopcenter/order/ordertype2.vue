@@ -3,11 +3,11 @@
     <div class="order-title">
       <div class="title-title">
         <h1>
-          订单管理
+          订单管理/配送中
         </h1>
       </div>
       <div class="title-inf">
-        <span>配送数量：</span><span class="rinf"> 1</span>
+        <span>配送数量：</span><span class="rinf"> {{orderlist.length}}</span>
       </div>
     </div>
     <div class="fg"></div>
@@ -35,7 +35,7 @@
               <el-table-column type="expand">
                 <template slot-scope="props">
                   <div>
-                    <ordermap :value="props"></ordermap>
+                    <ordermap :pvalue="props"></ordermap>
                   </div>
                 </template>
               </el-table-column>
@@ -154,7 +154,7 @@ export default {
           },
           params: {
             shopid:this.$store.state.usershop.id,
-            state:0
+            state:1
           }
         }).then((value)=>{
           if (value.status === 200) {
@@ -169,6 +169,15 @@ export default {
       })
     },  
     updatastate(a,b){
+      alert(a)
+      let text=''
+      if(a === 1){
+        text='接单中...'
+      }else if(a === 4){
+        text='退单中...'
+      }else{
+
+      }
       M.ajax({
           type: 'POST',
           url: '/yang/updatastate',
@@ -180,6 +189,16 @@ export default {
           }
         }).then((value)=>{
           if (value.status === 200) {
+
+            const loading = this.$loading({
+              lock: true,
+              text: text,
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            setTimeout(() => {
+              loading.close();
+            }, 500);
             this.getorder();
           }
         }).catch((error)=>{

@@ -28,6 +28,12 @@ export function SavenavTab(txt){
     navTab:txt
    }
 }
+export function SavenavTab2(txt){
+  return {
+    type:'SAVENAVTAB2',
+    navTab2:txt
+   }
+}
 export function Saveorderdata(txt){
   return {
     type:'SAVEORDERDATA',
@@ -38,5 +44,11 @@ export function Saveordertype(txt){
   return {
     type:'SAVEORDERTYPE',
     ordertype:txt
+   }
+}
+export function Saveorderstate(txt){
+  return {
+    type:'SAVEORDERSTATE',
+    orderstate:txt
    }
 }

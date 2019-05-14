@@ -44,7 +44,20 @@ class Address extends Component{
     });
   }
   inputchange2=(e)=>{
-    alert(e.target.getAttribute('class'));
+    let name=e.target.getAttribute('class');
+    if(name==='man'){
+      this.setState({
+        sex:1
+      });
+    }
+    if(name==='woman'){
+      this.setState({
+        sex:0
+      });
+    }
+    alert(this.state.sex);
+
+    
 
   }
   inputchange3=(value)=>{
@@ -135,8 +148,8 @@ class Address extends Component{
             >联系人</InputItem>
             </div>
             <div className='address-item usersex'>
-              <span ref='man' className='man'  onClick={this.inputchange2}>先生</span>
-              <span ref='woman' className='woman' onClick={this.inputchange2}>女士</span>
+              <span ref='man' className='man' style={  this.state.sex ? {color:"blue"} : {} } onClick={this.inputchange2}>先生</span>
+              <span ref='woman' className='woman' style={ !this.state.sex ? {color:"blue"} : {} }  onClick={this.inputchange2}>女士</span>
             </div>
             <div className='address-item'>
             <InputItem

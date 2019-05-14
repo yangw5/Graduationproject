@@ -9,7 +9,7 @@
         <span>{{item.ruser.name}}</span>
       </div>
       <div class="action">
-        <el-button type="success" size="mini" @click="updatastate(2,item.orderid)">接单</el-button>
+        <el-button type="success" size="mini" @click="updatastate(1,item.orderid)">接单</el-button>
         <el-button type="danger" size="mini" @click="updatastate(4,item.orderid)">拒绝</el-button>
       </div>
     </div>
@@ -102,6 +102,14 @@ export default {
       })
     },  
     updatastate(a,b){
+      let text=''
+      if(a === 1){
+        text='接单中...'
+      }else if(a === 4){
+        text='退单中...'
+      }else{
+
+      }
       M.ajax({
           type: 'POST',
           url: '/yang/updatastate',
@@ -113,7 +121,18 @@ export default {
           }
         }).then((value)=>{
           if (value.status === 200) {
-            this.getorder();
+            // this.getorder();
+              const loading = this.$loading({
+              lock: true,
+              text: text,
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            setTimeout(() => {
+              loading.close();
+            }, 500);
+            this.$emit('fatherMethod');
+            //this.$parent.fatherMethod();
           }
         }).catch((error)=>{
           if (error.response && error.response.status == 400) {
@@ -181,9 +200,9 @@ export default {
 }
 
 .fooditem{
-  padding: 5px;
+  padding: 10px;
   height: 20px;
-  line-height: 30px;
+  line-height: 40px;
   border-bottom: 1px dotted wheat
 }
 .orderul{
@@ -196,9 +215,11 @@ export default {
 }
 .span0{
   width: 10%
+
 }
 .span0 img{
   width: 100%;
+  height: 30px;
 }
 .span1{
   width: 30%;

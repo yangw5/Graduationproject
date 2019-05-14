@@ -4,43 +4,43 @@
         <div class="orderdata" style="background:rgb(148,166,170)" >
           <div class="title" style="background:rgb(165,184,186)">
             <div>今日</div>
-            <div>共55笔</div>
+            <div>共{{timedata[0].count}}笔</div>
           </div>
           <div class="dataitem" >
             <div>交易金额（元）</div>
-            <div class="dataitem-money">5550</div>
+            <div class="dataitem-money">{{timedata[0].allmoney  ?  timedata[0].allmoney : 0}}</div>
           </div>
           <div class="dataitem" >
             <div>店铺应收（元）</div>
-            <div class="dataitem-money">2131</div>
+            <div class="dataitem-money">{{timedata[0].allmoney  ?  timedata[0].allmoney : 0}}</div>
           </div>
         </div>
         <div  class="orderdata" style="background:rgb(0,195,139)">
           <div class="title"  style="background:rgb(0,206,153)">
             <div>昨日</div>
-            <div>共55笔</div>
+            <div>共{{timedata[1].count}}笔</div>
           </div>
           <div class="dataitem" >
             <div>交易金额（元）</div>
-            <div class="dataitem-money">5550</div>
+            <div class="dataitem-money">{{timedata[1].allmoney ?  timedata[1].allmoney : 0}}</div>
           </div>
           <div class="dataitem" >
             <div>店铺应收（元）</div>
-            <div class="dataitem-money">2131</div>
+            <div class="dataitem-money">{{timedata[1].allmoney  ?  timedata[1].allmoney : 0}}</div>
           </div>
         </div>
         <div  class="orderdata" style="background:rgb(56,149,210)">
           <div class="title" style="background:rgb(97,167,207)">
             <div>本周</div>
-            <div>共55笔</div>
+            <div>共{{timedata[2].count}}笔</div>
           </div>
           <div class="dataitem" >
             <div>交易金额（元）</div>
-            <div class="dataitem-money">5550</div>
+            <div class="dataitem-money">{{timedata[2].allmoney  ?  timedata[2].allmoney : 0}}</div>
           </div>
           <div class="dataitem" >
             <div>店铺应收（元）</div>
-            <div class="dataitem-money">2131</div>
+            <div class="dataitem-money">{{timedata[2].allmoney  ?  timedata[2].allmoney : 0}}</div>
           </div>
         </div>
       </div>
@@ -55,8 +55,8 @@
                <el-radio-group v-model="radio1" size="mini">
                 <el-radio label="1" border>今天</el-radio>
                 <el-radio label="2" border >昨天</el-radio>
-                <el-radio label="3" border >最近7天</el-radio>
-                <el-radio label="4" border >最近30天</el-radio>
+                <el-radio label="3" border >最近一周</el-radio>
+                <el-radio label="4" border >最近一月</el-radio>
               </el-radio-group>
            </div>
          </div>
@@ -75,17 +75,21 @@
            </div>
          </div>
          <div class='charsdata'>
-           <div class="chars" id="chart_example" :style="{width: '300px', height: '300px'}"></div>
-           <div  class="chars" id="chart_example1" :style="{width: '300px', height: '300px'}"></div>
+           <div class="chars" ref="chart_example" :style="{width: '300px', height: '300px'}"></div>
+           <div  class="chars" ref="chart_example1" :style="{width: '300px', height: '300px'}"></div>
          </div>
       </div>
   </div>
 </template>
 <script>
   import echarts from 'echarts'
+	import M from '../../../assets/js/common.js';
   export default {
     data() {
       return {
+				timedata:[{ allmoney: 0, count: 0 },
+									{ allmoney: 0, count: 0 },
+									{ allmoney: 0, count: 0 } ],
           radio1: '1',options: [{
           value: '选项1',
           label: '黄金糕'
@@ -106,14 +110,41 @@
         value: '饼状图'
       }
     },
+		beforeMount(){
+			
+		},
     mounted() {
-     this.echarinit()
+			this.getshopdata()
+			this.echarinit()
+			
     },
     methods: {
+			getshopdata(){
+				 M.ajax({
+				    type: 'POST',
+				    url: '/yang/shopdata',
+				    headers: {
+				    },
+				    data: {
+							shopid:7
+				    }
+				  }).then((value)=>{
+				    if (value.status === 200) {
+				      let data = value.data.data;
+				      this.timedata=data;
+							console.log(this.timedata)
+				    }
+				  }).catch((error)=>{
+				    if (error.response && error.response.status == 400) {
+				      this.msg = `${error.response.data.error}!`;
+				    }
+				  })
+			},
       echarinit(){
+
       let this_ = this;
-      let myChart = echarts.init(document.getElementById('chart_example'));
-       let myChart1 = echarts.init(document.getElementById('chart_example1'));
+      let myChart = echarts.init(this.$refs.chart_example);
+       let myChart1 = echarts.init(this.$refs.chart_example1);
       let option1= {
             xAxis: {
                 type: 'category',
@@ -130,8 +161,8 @@
         };
       let option = {
             title : {
-                text: '某站点用户访问来源',
-                subtext: '纯属虚构',
+                text: '销售比例',
+                subtext: '',
                 x:'center'
             },
             tooltip : {
@@ -141,20 +172,17 @@
             legend: {
                 orient: 'vertical',
                 left: 'left',
-                data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                data: ['外面配送','店面自取']
             },
             series : [
                 {
-                    name: '访问来源',
+                    name: '外面配送',
                     type: 'pie',
                     radius : '55%',
                     center: ['50%', '60%'],
                     data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:234, name:'联盟广告'},
-                        {value:135, name:'视频广告'},
-                        {value:1548, name:'搜索引擎'}
+                        {value:335, name:'外面配送'},
+                        {value:310, name:'店面自取'}
                     ],
                     itemStyle: {
                         emphasis: {
@@ -255,6 +283,7 @@
 }
 .charsdata{
   /* width: 100%; */
+	margin-top: 20px;
 }
 .chars{
   float: left;

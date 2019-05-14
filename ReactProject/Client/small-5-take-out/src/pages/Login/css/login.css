@@ -1,5 +1,5 @@
 .register{
-  margin-top: 20px;
+  margin: 20px 0px;
 }
 .register :after{
   clear: both;
@@ -26,10 +26,19 @@
   width: 100%;
   display: block;
   float: left;
+  border-bottom: 1px solid #eee;
 }
-.tips{
-  display: block;
+.yzm .am-input-control{
+  border-bottom: 1px solid #eee !important;
+}
+.logintext .tips{
+  display:inline-block;
   margin-top: 20px ;
   margin-bottom: 20px;
   margin-left: 15px;
+  color: #77778b;
+}
+.demoTitle:before,
+.demoTitle:after {
+  border-bottom: none;
 }

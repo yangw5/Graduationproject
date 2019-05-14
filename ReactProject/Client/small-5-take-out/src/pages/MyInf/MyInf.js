@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom';
-import { NavBar, Icon ,List } from 'antd-mobile';
+import { NavBar, Icon ,List,Toast,Modal } from 'antd-mobile';
 import './css/myinf.css';
 import imgURL from './images/fenxiang.png';
 import {Saveuserid} from '../../redux/Actions';
@@ -9,7 +9,7 @@ import M from '../../assets/common';
 
 // import { SavePlace } from '../../redux/Actions';
 //import store from '../../redux/Redux';
-
+const alert = Modal.alert;
 const Item = List.Item;
 const Brief = Item.Brief;
 let user=store.getState().user;
@@ -37,12 +37,12 @@ class MyInf extends Component {
     }).then((value)=>{
       if (value.status === 200) {
         let data = value.data.data;
-        console.log(data.id)
+        console.log(data)
         store.dispatch(Saveuserid(data.id));
-        console.log(store.getState())
         this.setState({
           userinf:data
         })
+        console.log(this.state.userinf)
       }
     }).catch((error)=>{
       if (error.response && error.response.status === 400) {
@@ -61,8 +61,27 @@ class MyInf extends Component {
             rightContent={[
               <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
               <Icon key="1" type="ellipsis" onClick={()=>{
-                sessionStorage.clear();
-                this.props.history.push('/login');
+                if(user){
+
+                
+                alert('退出', '确认退出页面???', [
+                  { text: '取消', onPress: () => console.log('cancel') },
+                  {
+                    text: '确定',
+                    onPress: () =>
+                      new Promise((resolve) => {
+                        Toast.info('退出中', 1);
+                        setTimeout(resolve, 1000);
+                      }).then(
+                        function(){
+                          sessionStorage.clear()
+                          window.location.reload(); 
+                          // this.props.history.push('/homepage');
+                        }
+                      ),
+                  },
+                ])
+              }
               }} />,
             ]}
         ></NavBar>
@@ -73,7 +92,7 @@ class MyInf extends Component {
             <div className='onlodeing'>
               <Item
                 arrow="horizontal"
-                thumb={''}
+                thumb={"http://localhost:8888/getimg?himg="+this.state.userinf.himg}
                 multipleLine
                 onClick={() => {
                   this.props.history.push({pathname:"/infitem/" + user});
@@ -108,7 +127,7 @@ class MyInf extends Component {
               </li>
             </ul>
         </div>
-        <div>
+        <div className="mylist">
           <List  className="my-list">
             <Item
                 arrow="horizontal"
@@ -154,7 +173,6 @@ class MyInf extends Component {
               thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
               multipleLine
               onClick={() => {
-                alert("走，登录去");
                   this.props.history.push('/login');
               }}
               >
@@ -219,6 +237,7 @@ class MyInf extends Component {
                 加盟合作 
               </Item>
             </List>
+            
         </div>
         </div>
         }

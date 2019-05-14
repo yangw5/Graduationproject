@@ -99,7 +99,7 @@ function userinf(response, postData,params){
   (async ()=>{
     // console.log(params.phone);
     // let str='select * from user where phone= "'+ params.phone +'"';
-    let str='SELECT * FROM USER  JOIN  address ON address.ad_usernumber=user.id WHERE user.phone= "'+ params.phone +'" AND ad_checked = "true" ';
+    let str='SELECT * FROM USER  JOIN  address ON address.ad_usernumber=user.id WHERE user.phone= "'+ params.phone +'" AND ad_checked = true ';
     let s = await mysql1.FIRST(str,'');
     console.log(str);
     // console.log(s);
@@ -359,7 +359,7 @@ function getorder(response, postData,params){
   console.log("Request handler 'getorder' was called.");
   (async ()=>{
     console.log(params.usernumber);
-    let str='SELECT shopname,or_foodtime,or_state,or_allmoney,or_id,or_shopid FROM orders JOIN shops ON or_shopid=id  WHERE or_state= "'+ params.state +'" and or_usernumber= "'+ params.usernumber +'" ORDER BY or_foodtime DESC';
+    let str='SELECT shopname,shopimage,or_foodtime,or_state,or_allmoney,or_id,or_shopid FROM orders JOIN shops ON or_shopid=id  WHERE or_state= "'+ params.state +'" and or_usernumber= "'+ params.usernumber +'" ORDER BY or_foodtime DESC';
     console.log(str);
     let resault= await mysql1.ROW(str,'');
     // console.log(s);
@@ -416,6 +416,64 @@ function getordershop(response, postData,params){
     returnjson(data,response);
   })()
 }
+
+//商家订单查询
+function searchordershop(response, postData,params){
+  console.log("Request handler 'searchordershop ' was called.");
+  (async ()=>{
+
+    postData=JSON.parse(postData);//json转化为对象
+    let orderitem=[];
+    //查询地址
+    //查询用户
+    //查询商品单项
+    //获取总价
+    console.log(postData.shopid);//获取商店id 并且 获取到订单类型state
+    console.log(postData.time)
+    // let str='',
+    //let str='SELECT * FROM orders  WHERE or_shopid= "'+ params.shopid +'" AND or_state='+ params.state +' AND or_id like "%'+   params.searchtext +'%"';
+    //只看今天
+    
+    //str='SELECT * FROM orders  WHERE or_shopid= "'+ postData.shopid +'" AND or_state='+ postData.state +' AND or_id like "%'+  postData.searchtext +'%"';
+
+    //时间查询
+    let str='SELECT * FROM orders  WHERE or_shopid= "'+ postData.shopid +'" AND or_state='+ postData.state +' AND or_id like "%'+ postData.searchtext +'%" and or_foodtime > "' +postData.time[0]+'" and or_foodtime <"' +postData.time[1]+'" ';
+    console.log(str);
+
+    let resault= await mysql1.ROW(str,'');//数据库查询到 用户id  订单id  地址id
+    console.log(resault);
+    for(let i=0;i<resault.length;i++){
+      let obj={};
+      let orderid=resault[i].or_id;
+      obj.allmoney=resault[i].or_allmoney;
+      obj.orderid=orderid;
+      obj.ordertime=resault[i].or_foodtime;
+      obj.ordermore=resault[i].or_more;
+      let struser='SELECT name,himg,phone FROM user WHERE phone= "'+ resault[i].or_usernumber+'"';
+      let ruser= await mysql1.FIRST(struser,'');//获取用户信息
+      console.log(ruser);
+ 
+      obj.ruser=ruser;
+      let straddress='SELECT * FROM address WHERE ad_id= "'+ resault[i].or_addressid+'"';
+      let raddress= await mysql1.FIRST(straddress,'');//获取地址信息
+      console.log(raddress);
+      obj.raddress=raddress;
+      let strfood='SELECT foodname,dri_number,money,foodimg FROM  ordersitem JOIN foods ON dri_foodid=id WHERE dri_orid= '+ resault[i].or_id;
+      let rfood= await mysql1.ROW(strfood,'');//获取商品项信息 商品名 数量 单价 图片
+      console.log(rfood);
+      obj.rfood=rfood;
+      orderitem.push(obj);
+    }
+    var data={
+      status:200,
+      data:{
+        data: orderitem
+      }
+    }
+    returnjson(data,response);
+  })()
+}
+
 
 //订单项的获取
 function getorderitem(response, postData,params){
@@ -488,7 +546,7 @@ function addevaluate(response, postData,params){
         // text:'',
         // time:'',
         // orderid:''
-        let str='INSERT INTO evaluate (ev_Ordersnumber,ev_inf,ev_img,ev_time,ev_shopid,ev_usernumber) VALUES ("'+pdata.orderid+'","'+pdata.text+'","'+url+'","'+pdata.time+'","'+pdata.shopid+'","'+pdata.userid+'")'
+        let str='INSERT INTO evaluate (ev_Ordersnumber,ev_inf,ev_img,ev_time,ev_shopid,ev_usernumber,ev_port) VALUES ("'+pdata.orderid+'","'+pdata.text+'","'+url+'","'+pdata.time+'","'+pdata.shopid+'","'+pdata.userid+'""'+pdata.port+'")'
         console.log(str);
         let s = await mysql1.EXECUTE(str,'');
  
@@ -528,7 +586,25 @@ function searchshop(response, postData,params){
     returnjson(data,response);
   })()
 }
-
+//查询商品
+function searchfood(response, postData,params){
+  console.log("Request handler 'searchfood' was called.");
+  (async ()=>{
+    let pdata=JSON.parse(postData);//json转化为对象
+    console.log(pdata)
+    let str='select * from foods where shopid="'+pdata.shopid+'" and food_state='+0+' and foodname like "%'+   pdata.nametext +'%"';
+    console.log(str);
+    let resault= await mysql1.ROW(str,'');
+    // console.log(s);
+    var data={
+      status:200,
+      data:{
+        data: resault
+      }
+    }
+    returnjson(data,response);
+  })()
+}
 //返回json数据
 function returnjson(data,response){
   response.writeHead(200, {"Content-Type": "application/json"});
@@ -564,15 +640,110 @@ function shoperlogin(response, postData,params){
   })()
 }
 
+//获取时间
+function GetDateStr(AddDayCount){
+  var dd = new Date();
+  dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+  var y = dd.getFullYear();
+  var m = dd.getMonth()+1;//获取当前月份的日期
+  var d = dd.getDate();
+  let time=[];
+  time[0]=y+"-"+m+"-"+d+' 00:00:00';
+  time[1]=y+"-"+m+"-"+d+' 23:59:59';
+  return time;
 
+}	//获取周
+function getMon() {
+    var now = new Date();
+    var nowTime = now.getTime() ;
+    var day = now.getDay();
+    var oneDayTime = 24*60*60*1000 ;
+    var MondayTime = nowTime - (day-1)*oneDayTime ;//显示周一
+    var SundayTime =  nowTime + (7-day)*oneDayTime ;//显示周日
+    let time=[];
+      time[0]=formatDate(MondayTime)+' 00:00:00';
+      time[1]=formatDate(SundayTime)+' 23:59:59';
+    return time;
+  }
+  //时间戳转化yy-mm-dd
+  function formatDate(date) {
+    var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+
+}
+
+//商家首页数据获取
+function shopdata(response, postData,params){
+  console.log("Request handler 'shopdata' was called.");
+  (async ()=>{
+    console.log(postData);
+    postData=JSON.parse(postData);//json转化为对象
+    let time=[];
+    //获取今天数据
+    time= GetDateStr(0);
+    let  str1=' SELECT SUM(or_allmoney) as allmoney ,COUNT(*) AS count   FROM  orders  WHERE or_shopid= '+postData.shopid+' AND  or_foodtime > "' +time[0]+'" and or_foodtime <"' +time[1]+'" ';
+    console.log(str1)
+    //获取昨天数据
+    time= GetDateStr(-1);
+    let  str2=' SELECT SUM(or_allmoney) as allmoney ,COUNT(*) AS count    FROM  orders  WHERE or_shopid= '+postData.shopid+' AND   or_foodtime > "' +time[0]+'" and or_foodtime <"' +time[1]+'" ';
+    //周的时间
+    time=getMon();
+    let  str3=' SELECT SUM(or_allmoney) as allmoney ,COUNT(*) AS count   FROM  orders  WHERE or_shopid= '+postData.shopid+' AND   or_foodtime > "' +time[0]+'" and or_foodtime <"' +time[1]+'" ';
+
+    let s1 = await mysql1.FIRST(str1,'');
+    let s2 = await mysql1.FIRST(str2,'');
+    let s3 = await mysql1.FIRST(str3,'');
+    let timedata=[s1,s2,s3];
+
+    console.log(timedata);
+    var data={
+      status:200,
+      data:{
+        data: timedata
+      }
+    }
+    returnjson(data,response)
+  })()
+}
+
+//商家评论回复
+function shopcomment(response, postData,params){
+  console.log("Request handler 'shopcomment' was called.");
+  (async ()=>{
+    console.log(postData);
+    postData=JSON.parse(postData);//json转化为对象
+    let str='update evaluate set ev_reply ="'+ postData.reply +'"  where ev_id= '+postData.id;
+    console.log(str)
+    let s = await mysql1.EXECUTE(str,'');
+    var data={
+      status:200,
+      data:{
+        data: s
+      }
+    }
+    returnjson(data,response)
+  })()
+}
 
 //获取所以商家后台处理
 function getallshop(response, postData,params){
   console.log("Request handler 'getallshop' was called.");
   (async ()=>{
+    //获取商家信息 包括 名称 图片 
     let  str='select * from shops';
-    console.log(str);
     let s = await mysql1.ROW(str,'');
+    for(let i=0;i<s.length;i++){
+      let  count='select COUNT(*) as count from  orders where or_shopid='+s[i].id;//获取订单数量
+      let s1 = await mysql1.ROW(count,'');
+      s[i].count=s1[0].count;
+    }
+    console.log(str);
     var data={
       status:200,
       data:{
@@ -588,8 +759,14 @@ function getallshop(response, postData,params){
   console.log("Request handler 'getshop' was called.");
   (async ()=>{
     let  str='select * from shops where id ='+params.shopid;
-    console.log(str);
     let s = await mysql1.FIRST(str,'');
+    let  count='select COUNT(*) as count from  orders where or_shopid='+s.id;//获取订单数量
+    let s1 = await mysql1.FIRST(count,'');
+    s.count=s1.count;
+
+    let  count2='SELECT  COUNT(*) AS count  FROM   evaluate WHERE ev_shopid = '+s.id; //获取评价数量
+    let s2 = await mysql1.FIRST(count2,'');
+    s.count2=s2.count;
     var data={
       status:200,
       data:{
@@ -668,7 +845,7 @@ function foodtype(response, postData,params){
   (async ()=>{
     let s='';
     let pdata=JSON.parse(postData).data;//json转化为对象
-      let url=  saveimage.SAVEIMAGE(pdata.img);
+      let url=  saveimage.SAVEIMAGE(pdata.foodimg);
       let str='INSERT INTO foods (foodname,foodtype,money,foodimg,fooddescribe, material,shopid) VALUES ("'+pdata.foodname+'","'+pdata.foodtype+'",'+pdata.money+',"'+url+'","'+pdata.fooddescribe+'","'+pdata. material+'",'+pdata.shopid+')'
       console.log(str)
       s = await mysql1.EXECUTE(str,'');
@@ -706,8 +883,10 @@ function foodtype(response, postData,params){
 function getfood(response, postData,params){
   console.log("Request handler 'getfood' was called.");
   (async ()=>{
-    let  str='select * from foods where shopid='+params.shopid+' AND foodtype="'+params.type+'"';
+    let state =0||params.state;
+    let  str='select * from foods where shopid='+params.shopid+' AND foodtype="'+params.type+'"and food_state='+state;
     console.log(str);
+
     let s = await mysql1.ROW(str,'');
     var data={
       status:200,
@@ -722,7 +901,8 @@ function getfood(response, postData,params){
  function getallfood(response, postData,params){
   console.log("Request handler 'getallfood' was called.");
   (async ()=>{
-    let  str='select * from foods where shopid='+params.shopid;
+    let state =0||params.type;
+    let  str='select * from foods where shopid='+params.shopid +' and food_state='+state;
     console.log(str);
     let s = await mysql1.ROW(str,'');
     var data={
@@ -758,7 +938,9 @@ function getfood(response, postData,params){
   console.log("Request handler 'upadtafood' was called.");
   (async ()=>{
        postData=JSON.parse(postData).data;//json转化为对象
-      let url= saveimage.SAVEIMAGE( postData.foodimg);
+       console.log(postData);
+      let url= saveimage.SAVEIMAGE(postData.foodimg);
+      console.log(postData);
       //foodname,foodtype,money,foodimg,fooddescribe, material,shopid
       let str='update foods set foodname="'+ postData.foodname +'",foodtype="'+ postData.foodtype +'",money="'+ postData.money +'",foodimg="'+ url +'",fooddescribe="'+ postData.fooddescribe +'",material="'+ postData.material +'"  where id= '+postData.id;
       console.log(str);
@@ -789,6 +971,24 @@ function getfood(response, postData,params){
   })()
 
  }
+  //下架food信息
+  function downfood(response, postData,params){
+    console.log("Request handler 'downfood' was called.");
+    (async ()=>{
+      postData=JSON.parse(postData);//json转化为对象
+      let  str='update foods  set food_state ='+postData.foodstate+' where id = "' + postData.id +'"';
+      console.log(str);
+      let result = await mysql1.EXECUTE(str,'');
+      var data={
+        status:200,
+        data:{
+          data:result
+        }
+      }
+      returnjson(data,response)
+    })()
+  
+   }
 //商家修改订单状态
  //订单状态改变  0 未接收  1 接收  2 派送中 3 完成  4 退单
 function updatastate(response, postData,params){
@@ -848,6 +1048,7 @@ exports.getevaluate=getevaluate
 exports.getevaluate2=getevaluate2
 exports.addevaluate=addevaluate
 exports.searchshop=searchshop
+exports.searchfood=searchfood
 exports.getallshop=getallshop
 
 
@@ -861,9 +1062,13 @@ exports.getfood=getfood
 exports.shopfoodtype=shopfoodtype
 exports.upadtafood=upadtafood
 exports.deletefood=deletefood
+exports.downfood=downfood
 exports.getallfood=getallfood
 exports.getordershop=getordershop
 exports.updatastate=updatastate
+exports.searchordershop=searchordershop
+exports.shopdata=shopdata
+exports.shopcomment=shopcomment
 
 
 exports.socket=socket

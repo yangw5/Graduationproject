@@ -40,6 +40,7 @@ class HomePage extends Component {
         }).then((value)=>{
           if (value.status === 200) {
             let sdata = value.data.data;
+            console.log(sdata)
             for(let i=0;i<sdata.length;i++){
                _this.getdistance(sdata[i].address,sdata,i) 
             }
@@ -50,6 +51,24 @@ class HomePage extends Component {
           }
     });
   }
+ sortby(name){
+	return function(o1,o2){
+		var value1 = o1[name];
+    var value2 = o2[name];
+    if (!isNaN(Number(value1)) && !isNaN(Number(value2))) {
+      value1 = Number(value1);
+      value2 = Number(value2);
+  }
+		if(value1 < value2){
+			return 1;
+		} else if(value1 > value2){
+			return -1;
+		} else {
+			return 0;
+		}
+	};
+}
+
   //轻提示
   showToast(value) {
     Toast.info(value, 1);
@@ -104,7 +123,7 @@ class HomePage extends Component {
     //         this.msg = `${error.response.data.error}!`;
     //       }
     // });
-
+//进入商家详情
     if(user.user){
       // alert("欢迎你"+user.user);
       this.props.history.push('/shoptype/'+index);
@@ -142,8 +161,8 @@ class HomePage extends Component {
         if (point) {
           var map = new BMap.Map("allmap");
            range=map.getDistance(pointA,point).toFixed(2);//计算距离
-           range=parseInt(range)/10000000;
-           range=range.toFixed(1)
+           range=parseFloat(range)/10000000;
+          //  range=range.toFixed(1)
            let time=range*50;
            
            sdata[i].distance=range;
@@ -189,7 +208,7 @@ class HomePage extends Component {
               <div className='inf-number'>
                 <div className='inf-number-v1'>
                   <img  src={xx} alt='' /><span className='px'> 4.6</span>
-                  <span>月售2012</span>
+                  <span>总售 {value.count}</span>
                 </div>
                 <div className='inf-number-v2'> 
                   <span className='v2-sp1'>准时送达</span>
@@ -248,8 +267,32 @@ class HomePage extends Component {
                 </Accordion.Panel>
               </Accordion>
             </div>
-            <div className='shop-title-item '>距离</div>
-            <div className='shop-title-item '>销量</div>
+            <div className='shop-title-item '
+             onClick={
+              ()=>{
+                let a=this.state.data;
+                a.sort(this.sortby('distance'));
+                console.log(a)
+                 a.reverse();
+                // console.log(a)
+                this.setState({
+                  data:a
+                })
+              }
+            }
+            >距离</div>
+            <div className='shop-title-item ' onClick={
+              ()=>{
+                let a=this.state.data;
+                a.sort(this.sortby('count'));
+                console.log(a)
+                // a.reverse();
+                // console.log(a)
+                this.setState({
+                  data:a
+                })
+              }
+            }>销量</div>
             <div className='shop-title-item shop-title-item-l'>筛选</div>
 
           </div>

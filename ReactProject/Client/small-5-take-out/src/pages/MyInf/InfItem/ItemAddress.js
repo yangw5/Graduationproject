@@ -39,8 +39,9 @@ class ItemAddress extends Component{
       }
     });
   }
-  updataaddress(key,value,e){
-    console.log(value);
+  updataaddress(e,value){
+    console.log(e);
+    e.stopPropagation();
     this.props.history.push({ pathname:'/address',state:{raddress: value} });
   }
   checktype(id){
@@ -85,7 +86,7 @@ class ItemAddress extends Component{
             </div>
           </div>
           <div className='adre-do'>
-            <Icon onClick={(e)=>{_this.updataaddress(e,value,key)}} type="ellipsis" size='xs' />
+            <Icon onClick={(e)=>{_this.updataaddress(e,value)}} type="ellipsis" size='xs' />
           </div>
         </div>
          )

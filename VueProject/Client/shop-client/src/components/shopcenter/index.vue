@@ -127,7 +127,10 @@ export default {
   mounted(){
     // this.$socket.emit('emit_method', val);
     //emit发送
-
+		let a=this.getMon();
+		//this.GetDateStr(-1);
+		console.log(a);
+		
   },
   methods:{
       handleSelect(key, keyPath) {
@@ -164,8 +167,46 @@ export default {
       },
       getlength(){
         this.$socket.emit('msg', this.data);
-      }
-  }
+      },
+			GetDateStr(AddDayCount) {
+				var dd = new Date();
+				dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期
+				var y = dd.getFullYear();
+				var m = dd.getMonth()+1;//获取当前月份的日期
+				var d = dd.getDate();
+				let time=[];
+				time[0]=y+"-"+m+"-"+d+' 00:00:00';
+				time[1]=y+"-"+m+"-"+d+' 23:59:59';
+				return time;
+			
+			},
+			getMon() {
+        var now = new Date();
+        var nowTime = now.getTime() ;
+        var day = now.getDay();
+        var oneDayTime = 24*60*60*1000 ;
+        var MondayTime = nowTime - (day-1)*oneDayTime ;//显示周一
+        var SundayTime =  nowTime + (7-day)*oneDayTime ;//显示周日
+				let time=[];
+				time[0]=this.formatDate(MondayTime)+' 00:00:00';
+				time[1]=this.formatDate(SundayTime);
+				return time;
+        },
+				
+// 格式化时间方法，结果类型 yy-mm-dd
+formatDate(date) {
+    var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+ 
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+
+}
+		
+},
 }
 
 </script>

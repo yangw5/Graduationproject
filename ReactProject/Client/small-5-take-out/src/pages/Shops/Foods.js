@@ -1,10 +1,19 @@
 import React,{Component} from  'react';
 import Rxports from '../../assets/common.js'
+import { ActionSheet,Modal, WhiteSpace,WingBlank,List, Button, Toast } from 'antd-mobile';
 import M from '../../assets/common'
 import './css/foods.css'
 import propTypes from 'prop-types'
 import add from './images/add.png'
 import reduce from './images/reduce.png'
+
+const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent);
+let wrapProps;
+if (isIPhone) {
+  wrapProps = {
+    onTouchStart: e => e.preventDefault(),
+  };
+}
 
 
 class   Foods extends Component{
@@ -12,6 +21,8 @@ class   Foods extends Component{
     super(props);
     this.state={
       index:0,
+      modal2: false,
+      food:{},
       foodstype:[
       ],//食物类型
       fooditem:[
@@ -80,7 +91,8 @@ initfood(){
     headers: {
     },
     params: {
-      shopid:this.props.postshopid
+      shopid:this.props.postshopid,
+      type:0
     }
   }).then((value)=>{
     if (value.status === 200) {
@@ -193,7 +205,8 @@ forarray(item ,type){
 }
 
 //添加到购物车
-addShoppingCart(item){
+addShoppingCart(item,e){
+  e.stopPropagation();
   this.forarray(item,true)
   let fooditem={
     value:{},
@@ -227,7 +240,8 @@ addShoppingCart(item){
   console.log(this.state.foodcar);
 }
 //从购物车移除
-deleteShoppingCart(item){
+deleteShoppingCart(item,e){
+  e.stopPropagation();
   this.forarray(item,false)
   let cpdata=this.state.foodcar;//获取购物车
   let flog = false ;
@@ -254,6 +268,44 @@ deleteShoppingCart(item){
   this.props.getdata(this.state.foodcar);
   console.log(this.state.foodcar);
 }
+foodshow(item){
+  this.showModal(item)
+  // this.showActionSheet(item);
+  
+}
+showModal(value) {
+  // alert(this.state.modal2)
+  // e.preventDefault(); // 修复 Android 上点击穿透
+  console.log(value)
+  this.setState({
+    food:value,
+    modal2: true,
+  });
+  // console.log(this.state.food);
+}
+onClose = key => () => {
+  this.setState({
+    modal2: false,
+  });
+}
+
+showActionSheet = (item) => {
+  
+  const BUTTONS = ['Operation1', 'Operation2', 'Operation2', 'Delete', 'Cancel'];
+  ActionSheet.showActionSheetWithOptions({
+    options: BUTTONS,
+    cancelButtonIndex: BUTTONS.length - 1,
+    destructiveButtonIndex: BUTTONS.length - 2,
+    // title: 'title',
+    message: item.foodname,
+    maskClosable: true,
+    'data-seed': 'logId',
+    wrapProps,
+  },
+  (buttonIndex) => {
+    this.setState({ clicked: BUTTONS[buttonIndex] });
+  });
+}
 //父组件数据
 static propTypes = {
   getdata: propTypes.func.isRequired,
@@ -275,7 +327,10 @@ static propTypes = {
         {
           value.data.map(function(item,i){
             return(
-              <div className='item-food' key={i} >
+              <div className='item-food' key={i}  onClick={()=>{
+                console.log(item);
+                _this.foodshow(item)
+              }}>
                 <div className='food-img'>
                   <img src={'http://localhost:8888/getimg?himg='+item.foodimg} alt=''   />
                 </div>
@@ -287,11 +342,11 @@ static propTypes = {
                   <div className='AA'>
                     <span className='food-price'>{item.money}</span>
                     
-                    <img className='add' src={add} alt='' onClick={()=>{_this.addShoppingCart(item)}}/>
+                    <img className='add' src={add} alt='' onClick={(e)=>{_this.addShoppingCart(item,e)}}/>
                    {
                      item.sl === 0 ? '' :  <div className='BB'>
                      <span className='sl'> {item.sl} </span> 
-                     <img className='delete' src={reduce} alt='' onClick={()=>{_this.deleteShoppingCart(item)}}/>
+                     <img className='delete' src={reduce} alt='' onClick={(e)=>{_this.deleteShoppingCart(item,e)}}/>
                      </div>
                    }
                    
@@ -329,6 +384,22 @@ static propTypes = {
       <ul>
       {shopitem}
       </ul>
+        <Modal
+          popup
+          visible={this.state.modal2}
+          onClose={this.onClose('modal2')}
+          animationType="slide-up"
+          // afterClose={() => { alert('afterClose'); }}
+        >
+              <img className='foodimg'  src={'http://localhost:8888/getimg?himg='+this.state.food.foodimg}  alt='' />
+              <div>
+                <div className='foodname'>{this.state.food.foodname} <div className='foodmoney'>{this.state.food.money}￥</div></div>
+                <div className='foodinf'>原材料：{this.state.food.material}</div>
+                <div className='foodinf'>说明：{this.state.food.fooddescribe}</div>
+              </div> 
+              <br/>
+              {/* <Button type="primary" onClick={this.onClose('modal2')}>买入</Button> */}
+        </Modal>
        </div>
      </div>
     </div>

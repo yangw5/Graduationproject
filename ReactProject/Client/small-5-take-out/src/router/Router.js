@@ -15,7 +15,10 @@ import Login from '../pages/Login/Login'
 import Shops from '../pages/Shops/Shops'
 import neworder from '../pages/Shops/NewOrder'
 import Remarks  from '../pages/Shops/Remarks'
+import searchfood from '../pages/Shops/searchfood'
 import Evaluate from '../pages/MyOrder/Evaluate'
+
+
 // import MyCar from '../pages/MyCar/MyCar'
 // import MyOrder from '../pages/MyOrder/MyOrder'
 import App from '../App'
@@ -30,6 +33,7 @@ const Router = () => (
             <Route  path="/shoptype/:id" component={shoptype}/>
             <Route  path="/login" component={Login}/>
             <Route  path="/shops" component={Shops}/>
+            <Route  path="/searchfood" component={searchfood}/>
             <Route  path="/infitem/:id" component={InfItem}/>
             <Route  path="/itemname" component={ItemName}/>
             <Route  path="/itemphone" component={ItemPhone}/>
