@@ -47,7 +47,7 @@ import {  SavenavTab } from '../src/redux/Actions'
 
   render() {
     return (
-      <div style={this.state.fullScreen ? { position: 'fixed', height: '100%', width: '100%', top: 0 } : { height: 667 }}>
+      <div style={this.state.fullScreen ? { position: 'fixed', height: '100%', width: '100%', top: 0 } : { height: '100%' }}>
 
         <TabBar
           unselectedTintColor="#949494"

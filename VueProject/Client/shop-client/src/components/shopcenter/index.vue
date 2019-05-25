@@ -92,7 +92,8 @@ export default {
       data:{},
       value1:0,//留言数量
       value2:0,//订单数量
-      address:'首页'
+      address:'首页',
+      flag:false
     }
   },
   //（socket.on）绑定事件放在sockets中
@@ -107,6 +108,13 @@ export default {
       // this.value1=res
       // alert(this.value2)
        this.value2=res
+       if( this.value2>0){
+         this.flag=true;
+         if(this.flag ==true){
+          //  this.open()
+         }else{
+         }
+       }
       // if(this.value2 !==res){
       //   alert(this.value2)
       //   this.value2=res
@@ -128,13 +136,27 @@ export default {
     // this.$socket.emit('emit_method', val);
     //emit发送
 		let a=this.getMon();
-		//this.GetDateStr(-1);
+    //this.GetDateStr(-1);
+    if(this.flag ==true){
+         this.open()
+         }
 		console.log(a);
 		
   },
   methods:{
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+      },
+       open() {
+        const h = this.$createElement;
+        this.$notify({
+          title: '提示',
+          message: h('i', { style: 'color: teal'}, '你有未处理订单'),
+          duration: 0,
+          // onClose:()=>{
+          //   this.flag=false;
+          // }
+        });
       },
       goto(a){
         if(a === 1){//首页

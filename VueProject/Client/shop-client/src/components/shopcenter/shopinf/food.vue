@@ -206,7 +206,7 @@ export default {
        foodtype:[],
         form: {
           name: '',
-          shopid:7,
+          shopid:this.$store.state.usershop.id,
           fooditem:[]
         },
         newfood:{//
@@ -266,7 +266,7 @@ export default {
         headers: {
         },
         params: {
-          shopid:7,
+          shopid:this.$store.state.usershop.id,
           type:this.showtype1
         }
       }).then((value)=>{
@@ -296,7 +296,7 @@ export default {
         headers: {
         },
         params: {
-          shopid:7,
+          shopid:this.$store.state.usershop.id,
         }
       }).then((value)=>{
         if (value.status === 200) {
@@ -322,7 +322,7 @@ export default {
         headers: {
         },
         params: {
-          shopid:7,
+          shopid:this.$store.state.usershop.id,
           type:ftype,
           state:this.showtype1
           
@@ -420,7 +420,7 @@ export default {
                   message: '下架成功!'
                 });
               }
-                   console.log(111111111111)
+              console.log(111111111111)
               console.log(this.showindex)
               if(this.showindex === 100){
                 this.getallfoods()
@@ -517,7 +517,7 @@ export default {
     //添加还是修改
      foodok:function(){
       let  url='';
-      this.newfood.shopid=7;
+      this.newfood.shopid=this.$store.state.usershop.id;
       if(this.addflog){
         url='/yang/postfood1';//增加
       }else{
@@ -545,7 +545,8 @@ export default {
                 loading.close();
               }, 1000);             
             this.innerVisible = false;
-
+            this.getfoodtype()//更新类型
+            this.showindex=this.newfood.foodtype;
             this.newfood={
               foodname:'',
               money:'',
@@ -553,7 +554,7 @@ export default {
               foodimg:'',
               fooddescribe:''
               };
-              if(this.showindex===100){
+              if(this.showindex===100){//根据类型更新商品
                 this.getallfoods()
               }else{
                 this.showfoodtype(this.showindex) 

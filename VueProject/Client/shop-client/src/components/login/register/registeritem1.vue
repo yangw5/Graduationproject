@@ -23,9 +23,8 @@
         </div>
         <div>
           <el-form-item label="门店分类:">
-            <el-select v-model="form.shoptype" placeholder="请选择活门店分类">
-              <el-option label="快餐" value="快餐"></el-option>
-              <el-option label="外卖" value="外卖"></el-option>
+            <el-select v-model="form.shoptype" placeholder="请选择活门店分类" :disabled='this.flog'>
+              <el-option  size="mini" v-for="(value,index) in shoptype"  :key="index" :value="value" ></el-option>
             </el-select>
           </el-form-item>
         </div>  
@@ -79,15 +78,19 @@ export default {
       imageUrl:'',
       dialogImageUrl: '',
       dialogVisible: false,
+      shoptype:[
+        '美食','水果','饮品甜品','午餐','速食简餐',
+        '汉堡披萨','米线面馆','鸭脖卤味','炸鸡炸串','包子粥店'
+      ],
       form: {
-        shopname: '叫了只鸡',
-        shopphone:'15208192473',
-        uname: '杨文伍',
-        uphone: '15208192473',
+        shopname: '',
+        shopphone:this.$store.state.userphone,
+        uname: '',
+        uphone: this.$store.state.userphone,
         shopimage: '',
         address:'成都市',
         shoplogo:'',
-        shoptype: '外卖'
+        shoptype: ''
         },
         //表单规则
          rules: {
@@ -122,6 +125,7 @@ export default {
   methods: {
      //提交表单
       onSubmit() {
+        this.form.shoptype=this.shoptype.indexOf(this.form.shoptype)
         this.switchcp(this.form);
 
       },

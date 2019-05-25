@@ -68,10 +68,11 @@ export default {
     
   },
   mounted:function(){
-    // console.log(1111222);
-    // console.log(this.porderlist);
+    console.log(1111222);
+    console.log(this.porderlist);
     this.orderlist=[];
     this.orderlist=this.porderlist;
+    console.log(this.porderlist)
     // this.getorder();
   },
   methods: {

@@ -26,8 +26,8 @@
         </div>
         <div>
           <el-form-item label="门店分类:">
-            <el-select v-model="shoptype[form.shoptype]" placeholder="请选择活门店分类" :disabled='this.flog'>
-              <el-option  size="mini" v-for="(value,index) in shoptype"  :key="index" :value="value"></el-option>
+            <el-select v-model="form.shoptype" placeholder="请选择活门店分类" :disabled='this.flog'>
+              <el-option  size="mini" v-for="(value,index) in shoptype"  :key="index" :value="value" ></el-option>
             </el-select>
           </el-form-item>
         </div>  
@@ -146,6 +146,7 @@ export default {
         let data = value.data.data;
         console.log(data)
         this.form=data;
+        this.form.shoptype=this.shoptype[this.form.shoptype];
         this.mapshow();
         this.imageUrl='http://localhost:8888/getimg?himg='+this.form.shopimage
         // console.log(2222222222)
@@ -160,7 +161,6 @@ export default {
      //提交表单
       onSubmit() {
         this.switchcp(this.form);
-
       },
       //地址选择
        handleItemChange(val) {
@@ -235,6 +235,10 @@ export default {
         }, "成都市");
       },
       resave(){
+        
+        this.form.shoptype=this.shoptype.indexOf(this.form.shoptype)
+        // alert(this.form.shoptype)
+        // return;
         console.log(this.form)
         this.form.id=this.$store.state.usershop.id;
         //修改商店信息

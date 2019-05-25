@@ -41,17 +41,18 @@
 .fdtype-div img{
   width: 44px;
   height: 44px;
+  border-radius: 50px;
 }
 
 
 .shop-title{
   width: 100%;
-  height: 40px;
+  height: 46px;
   margin-top: 10px;
   line-height: 40px;
   font-size: 12px;
   float: left;
-  border-top: 1px solid #eeeeee;
+  border-top: 2px solid #eeeeee;
   border-bottom: 1px solid #eeeeee;
 
 }
@@ -66,6 +67,7 @@
 .title-search{
   margin-top: 10; 
   width: 115px;
+  height: 40px !important;
   margin-bottom: 10 ;
   font-size: 12px;
   float: left;
@@ -112,10 +114,22 @@
 }
 
 /* shop-list */
-.shop-item{
-
+.shop-list{
+  float: left;
+  overflow: scroll;
+}
+.am-tabs-tab-bar-wrap {
+  flex-shrink: 0;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }
 
+.shopitemtitle{
+  margin-top: 10px;
+  float: left;
+  width: 100%;
+}
 
 .shop-item{
   width: 100%;
@@ -173,6 +187,7 @@
 .inf-number-v1  .px{
   color: rgb(254, 80, 1);
   padding-right: 5px;
+  font-size: 16px;
 }
 .inf-number-v2{
   width: 40%;
@@ -225,7 +240,7 @@
   text-align: center;
   color: #ee541c;
   padding: 5px;
-  background-color: #f4c8b8;
+  background-color: #fce2d9;
 }
 .yh-inf{
   width: 100%;
@@ -233,7 +248,7 @@
 .yh-inf span{
   margin-top: 5px;
   color: red;
-  border: 1px solid #f2a5a5;
+  border: 1px solid #e7c9c9;
   float: left;
   padding: 5px;
   margin-right: 5px;

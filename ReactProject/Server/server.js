@@ -39,10 +39,10 @@ var url = require("url");
 function start(route,handle){
 	function onRequest(request, response) {
 
-		response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
-		response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
-		response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
-		response.setHeader('Access-Control-Allow-Credentials', true)
+		// response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+		// response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+		// response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
+		// response.setHeader('Access-Control-Allow-Credentials', true)
 
 		var postData = "";
 		var params = url.parse(request.url, true).query//get 获取数据对象
@@ -86,21 +86,21 @@ function start(route,handle){
 
 		var io = require('socket.io').listen(server);
 		var requestHandler=require('./requestHandler');
-		// io.sockets.on('connection', (socket) => {
-		// 		console.log('链接成功'); 
-		// 		//监听msg 触发事件 接收消息
-		// 		socket.on('msg', (val) => {
-		// 			//先执行
-		// 			requestHandler.socket(val,socket)
-		// 			setInterval(()=>{//再循环
-		// 			 requestHandler.socket(val,socket)
-		// 				// console.log(index)
-		// 				// //触发前端设置 回调事件
-		// 				// socket.emit('progress', index);
-		// 			},3000)
+		io.sockets.on('connection', (socket) => {
+				console.log('链接成功'); 
+				//监听msg 触发事件 接收消息
+				socket.on('msg', (val) => {
+					//先执行
+					requestHandler.socket(val,socket)
+					setInterval(()=>{//再循环
+					 requestHandler.socket(val,socket)
+						// console.log(index)
+						// //触发前端设置 回调事件
+						// socket.emit('progress', index);
+					},3000)
 
-		// 		});   
-		// });
+				});   
+		});
 }
 
 exports.start=start;

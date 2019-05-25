@@ -38,9 +38,11 @@ componentDidMount(){
   this.initfoodtype();
 }
 componentWillReceiveProps(nextProps) {
-
+  if(nextProps.pcarfood.length===0){//清空购物车 数据初始化
+    this.initfoodtype();
+    return;
+  }
   //父组件向下 props 子组件更新
-  
   let cpfooditem=JSON.parse(JSON.stringify(this.state.fooditem))
   for(let i=0;i<cpfooditem.length;i++){
     for(let j=0;j<cpfooditem[i].data.length;j++){

@@ -72,7 +72,7 @@ class Search extends  Component {
               <div className='sinf-number'>
                 <div className='sinf-number-v1'>
                   <img  src={xx} alt='' /><span className='px'> 4.6</span>
-                  <span>月售2012</span>
+                  <span>月售  2012</span>
                 </div>
                 <div className='sinf-number-v2'> 
                   <span className='sv2-sp1'>准时送达</span>

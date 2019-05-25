@@ -8,8 +8,21 @@ import store from '../../redux/Redux';
 
 import M from '../../assets/common.js';
 
+import ft10 from './images/foodtype/foodtype10.png';
+import ft1 from './images/foodtype/foodtype1.png';
+import ft2 from './images/foodtype/foodtype2.png';
+import ft3 from './images/foodtype/foodtype3.png';
+import ft4 from './images/foodtype/foodtype4.png';
+import ft5 from './images/foodtype/foodtype5.png';
+import ft6 from './images/foodtype/foodtype6.jpg';
+import ft7 from './images/foodtype/foodtype7.png';
+import ft8 from './images/foodtype/foodtype8.png';
+import ft9 from './images/foodtype/foodtype9.png';
 
-import imgURL from './images/fenxiang.png';
+
+
+
+import imgURL from './images/foodtype.png';
 import imgURL1 from './images/shop.jpg';
 import lodeing from './images/1.jpg';
 import xx from './images/xx.png'
@@ -21,8 +34,38 @@ class HomePage extends Component {
     this.state = {
       user:true,
       type:[
-        '美食','水果','饮品甜品','午餐','速食简餐',
-        '汉堡披萨','米线面馆','鸭脖卤味','炸鸡炸串','包子粥店'
+        {
+          name:'美食',
+          img:ft1
+        },   {
+          name:'水果',
+          img:ft2
+        }, {
+          name:'饮品甜品',
+          img:ft3
+        }, {
+          name:'午餐',
+          img:ft4
+        }, {
+          name:'速食简餐',
+          img:ft5
+        }, {
+          name: '汉堡披萨',
+          img:ft6
+        }, {
+          name: '米线面馆',
+          img:ft7
+        }, {
+          name:'鸭脖卤味',
+          img:ft8
+        }, {
+          name:'炸鸡炸串',
+          img:ft9
+        },{
+          name: '包子粥店',
+          img:ft10
+        },
+
       ],
       data:[]
     };
@@ -162,7 +205,7 @@ class HomePage extends Component {
           var map = new BMap.Map("allmap");
            range=map.getDistance(pointA,point).toFixed(2);//计算距离
            range=parseFloat(range)/10000000;
-          //  range=range.toFixed(1)
+           range=range.toFixed(1)
            let time=range*50;
            
            sdata[i].distance=range;
@@ -186,8 +229,8 @@ class HomePage extends Component {
           <div className='fdtype-div' onClick={()=>{
             _this.foodinf(index)
           }}>
-            <img src={imgURL}  alt="饿呢" />
-            <span>{ item }</span>
+            <img src={item.img}  alt="饿呢" />
+            <span>{ item.name }</span>
           </div>
       </li>
       )
@@ -246,7 +289,7 @@ class HomePage extends Component {
         </div>
       <div className="home-container">
         <div className="home-search">
-          <SearchBar placeholder="星选好点8元红包" onFocus={this.goto} maxLength={8} />
+          <SearchBar placeholder="搜索你喜欢的店铺啦" onFocus={this.goto} maxLength={8} />
         </div>
         <div>
           <ul className="fdtype">
@@ -254,6 +297,8 @@ class HomePage extends Component {
           </ul>
         </div>
         <div className='shop-list'>
+        <div className='shopitemtitle'>
+
         <p style={{float:'left',fontSize:'21px',marginTop:'20px',marginLeft:'10px',fontWeight:'800'}}>推荐商家</p>
           <div className=' shop-title'>
             <div className='title-search shop-title-item'>
@@ -296,7 +341,9 @@ class HomePage extends Component {
             <div className='shop-title-item shop-title-item-l'>筛选</div>
 
           </div>
-          <div className="tag-container">
+          </div>
+
+          {/* <div className="tag-container">
             <Tag data-seed="logId">首单立减</Tag>
             <Tag >减满优惠</Tag>
             <Tag onChange={this.onChange}>品质联盟</Tag>
@@ -309,9 +356,11 @@ class HomePage extends Component {
               }}
             >
               品质联盟
-            </Tag>           */}
+            </Tag>           
              <Tag onChange={this.onChange}>新店</Tag>
-          </div>
+          </div> 
+          */}
+
           { this.state.user ?
             <div className='shop-list'>
             {shopitem}

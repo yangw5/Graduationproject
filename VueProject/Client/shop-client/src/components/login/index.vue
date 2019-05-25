@@ -52,11 +52,13 @@ export default {
             console.log(data)
             //若用户存在，将商店信息存入vuex里面
             if(data.data.length>0){
-               this.$store.dispatch('onFirstLoading',data.shopinf)
+               this.$store.dispatch('onFirstLoading2',data.shopinf)
                this.$router.push("/shopcenter");
             }else{
             //调用  this.$store.state.userphone
             //调用  this.$store.dispatch('onFirstLoading',false)
+            this.$store.dispatch('onFirstLoading',this.input);
+            // alert(this.$store.state.userphone);
             //若用户不存在，跳转进入注册地铺页面
             this.$router.push({
             //path:'/list/123',

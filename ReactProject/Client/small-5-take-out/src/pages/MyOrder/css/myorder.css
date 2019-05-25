@@ -16,9 +16,16 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+.ordertype .am-tabs-tab-bar-wrap{
+  position: relative;
+}
+/* .am-tabs-tab-bar-wrap{
+  position: relative;
+} */
 
-
-
+/* .am-tabs-content-wrap .am-tabs-tab-bar-wrap{
+  position: fixed;
+} */
 .title{
   height:50px;
   text-align: center;
@@ -30,6 +37,7 @@
   margin-top: 10px;
   height: 200px;
   box-shadow: 0px 0px 1px #af9898;
+  background: white;
 }
 
 .order-title{
@@ -61,7 +69,7 @@
 }
 .order-shop-img img{
   height: 80px;
-  width: 100px;
+  width: 80px;
   padding: 10px;
 }
 .order-inf-text{

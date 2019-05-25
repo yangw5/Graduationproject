@@ -42,7 +42,7 @@ class NewOrder extends Component {
   constructor(props,context) {
     super(props,context);
     this.state = {
-      checked: false,
+      checked: true,
       ordertype:'',
       address:'',
       foodlist:[],
@@ -67,7 +67,8 @@ class NewOrder extends Component {
     let a=store.getState().ordertype;//订单类型 查看 还是再来一单
     let b=store.getState().orderdata;//订单数据
     let c= store.getState().orderstate;//订单状态
-    let stateorder='';
+
+    let stateorder='';//判断订单类型
     switch(c){
       case 0:
       stateorder='订单已提交';
@@ -93,8 +94,12 @@ class NewOrder extends Component {
         orderstate:stateorder
       }
     )
-
-    this.getaddesss();
+    if(stateorder ==='订单详情'){ //判断订单类型
+      this.getaddesss();
+    }else{
+      this.getorderaddesss(b[0].addressid);
+    }
+   
 
     //获取路由数据
     let money=0;
@@ -108,7 +113,12 @@ class NewOrder extends Component {
       foodlist:b,
       allmoney:money
     })
-    this.map();
+    
+    if(this.state.checked){
+
+    }else{
+      this.map();
+    }
 
   }
   //获取商家名称
@@ -145,8 +155,39 @@ class NewOrder extends Component {
     map.setCurrentCity("北京"); // 设置地图显示的城市 此项是必须设置的
     map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
   }
-
-  //获取地址
+  //获取订单地址
+  getorderaddesss(addressid){
+    console.log(addressid)
+    let that=this;
+    M.ajax({
+      type: 'GET',
+      url: '/getaddressitem',
+      headers: {
+      },
+      params: {
+        addressid:addressid
+      }
+    }).then((value)=>{  
+      if (value.status === 200) {
+       let data = value.data.data[0];
+       console.log(data);
+       //获取送货地址
+       that.setState({
+         id:data.ad_id,
+         name:data.ad_name,
+         sex:data.ad_sex,
+         phone:data.ad_phone,
+         address:data.ad_address,
+         street:data.ad_street,
+       })
+      }
+    }).catch((error)=>{
+      if (error.response && error.response.status === 400) {
+        this.msg = `${error.response.data.error}!`;
+      }
+    });
+  }
+  //获取默认送餐地址
   getaddesss(){
     let that=this;
     //获取数据
@@ -212,6 +253,7 @@ supplement(nn){
     //子组件获取food信息
     //获取 地址id
     //获取时间
+    //是否有地址
     var todaydate = new Date();
     var end_time = this.format(todaydate,'-');
     console.log(end_time)

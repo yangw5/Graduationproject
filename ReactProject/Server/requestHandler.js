@@ -99,7 +99,7 @@ function userinf(response, postData,params){
   (async ()=>{
     // console.log(params.phone);
     // let str='select * from user where phone= "'+ params.phone +'"';
-    let str='SELECT * FROM USER  JOIN  address ON address.ad_usernumber=user.id WHERE user.phone= "'+ params.phone +'" AND ad_checked = true ';
+    let str='SELECT * FROM USER  JOIN  address ON address.ad_usernumber=user.id WHERE user.phone= "'+ params.phone +'" AND ad_checked = false ';
     let s = await mysql1.FIRST(str,'');
     console.log(str);
     // console.log(s);
@@ -118,12 +118,14 @@ function userinf(response, postData,params){
 }
 
 //图片上传
-function upload(response, postData) {
+function upload(response, postData,params) {
   console.log("Request handler 'upload' was called.");
   // response.write("You've sent the text: "+postData.data);
   // console.log(img.data);
       (async ()=>{
+        // console.log(postData);
         let img=JSON.parse(postData);//json转化为对象
+        console.log(img.userid);
         let url= await saveimage.SAVEBASE64(img.data);
         // console.log(url);
         let str='update user set himg="'+ url +'" where id= '+img.userid
@@ -183,6 +185,24 @@ function getimg(response, postData,params){
     readImg.GETIMG(path,response);
   })();
 
+}
+
+//获取特定地址项
+function getaddressitem(response, postData,params){
+  console.log("Request handler 'getaddressitem' was called.");
+  (async ()=>{
+    let str='select * from address where ad_id='+params.addressid;
+    console.log(str);
+    let resault= await mysql1.ROW(str,'');
+    // console.log(s);
+    var data={
+      status:200,
+      data:{
+        data: resault
+      }
+    }
+    returnjson(data,response);
+  })()
 }
 
 //获取地址
@@ -359,7 +379,7 @@ function getorder(response, postData,params){
   console.log("Request handler 'getorder' was called.");
   (async ()=>{
     console.log(params.usernumber);
-    let str='SELECT shopname,shopimage,or_foodtime,or_state,or_allmoney,or_id,or_shopid FROM orders JOIN shops ON or_shopid=id  WHERE or_state= "'+ params.state +'" and or_usernumber= "'+ params.usernumber +'" ORDER BY or_foodtime DESC';
+    let str='SELECT shopname,shopimage,or_foodtime,or_state,or_allmoney,or_id,or_shopid,or_addressid FROM orders JOIN shops ON or_shopid=id  WHERE or_state= "'+ params.state +'" and or_usernumber= "'+ params.usernumber +'" ORDER BY or_foodtime DESC';
     console.log(str);
     let resault= await mysql1.ROW(str,'');
     // console.log(s);
@@ -787,8 +807,11 @@ function shop(response, postData,params){
     let pdata=JSON.parse(postData).data;//json转化为对象
     let url=  saveimage.SAVEIMAGE(pdata.shopimage);
     console.log(url);
+    password='123456';
+    let str1='INSERT INTO shoper (s_phone,s_possword) VALUES ("'+pdata.uphone+'", "'+password+'")';
     let str='INSERT INTO shops (shopname,shoptype,shopphone,uname,uphone,shopimage,address) VALUES ("'+pdata.shopname+'","'+pdata.shoptype+'","'+pdata.shopphone+'","'+pdata.uname+'","'+pdata.uphone+'","'+url+'","'+pdata.address+'")'
     console.log(str)
+    let s1 = await mysql1.EXECUTE(str1,'');
     let s = await mysql1.EXECUTE(str,'');
     var data={
       status:200,
@@ -920,7 +943,7 @@ function getfood(response, postData,params){
  function shopfoodtype(response, postData,params){
   console.log("Request handler 'shopfoodtype' was called.");
   (async ()=>{
-    let  str='select DISTINCT foodtype from foods where shopid='+params.shopid;
+    let  str='select DISTINCT foodtype from foods where shopid='+params.shopid+' and food_state='+0;
     console.log(str);
     let s = await mysql1.ROW(str,'');
     var data={
@@ -958,7 +981,8 @@ function getfood(response, postData,params){
  function deletefood(response, postData,params){
   console.log("Request handler 'deletefood' was called.");
   (async ()=>{
-    let  str='delete from foods  where id = "' + params.id +'"';
+    // let  str='delete from foods  where id = "' + params.id +'"';
+    let  str='update foods  set food_state ='+2+' where id = "' + postData.id +'"';
     console.log(str);
     let s = await mysql1.EXECUTE(str,'');
     var data={
@@ -989,6 +1013,26 @@ function getfood(response, postData,params){
     })()
   
    }
+   //商品查询
+   function searchfood1(response, postData,params){
+    console.log("Request handler 'searchfood1' was called.");
+    (async ()=>{
+      let pdata=JSON.parse(postData);//json转化为对象
+      console.log(pdata)
+      let str='select * from foods where shopid="'+pdata.shopid+'" and food_state='+0+' and foodname like "%'+   pdata.nametext +'%"';
+      console.log(str);
+      let resault= await mysql1.ROW(str,'');
+      // console.log(s);
+      var data={
+        status:200,
+        data:{
+          data: resault
+        }
+      }
+      returnjson(data,response);
+    })()
+  }
+
 //商家修改订单状态
  //订单状态改变  0 未接收  1 接收  2 派送中 3 完成  4 退单
 function updatastate(response, postData,params){
@@ -1034,6 +1078,7 @@ exports.getimg=getimg;
 exports.revisename=revisename;
 exports.revisephone=revisephone;
 exports.getaddress=getaddress;
+exports.getaddressitem=getaddressitem
 exports.addaddress=addaddress;
 exports.updataaddress=updataaddress;
 exports.deleteaddress=deleteaddress;

@@ -8,7 +8,11 @@ class    Business extends Component{
   constructor(props){
     super(props);
     this.state={
-      shopinf:{}
+      shopinf:{},
+      shoptype:[
+        '美食','水果','饮品甜品','午餐','速食简餐',
+        '汉堡披萨','米线面馆','鸭脖卤味','炸鸡炸串','包子粥店'
+      ],
     }
   }
   componentDidMount(){
@@ -55,10 +59,10 @@ class    Business extends Component{
                   
                 }}
               >商家名称</Item>
-              <Item extra={this.state.shopinf.shoptype}
+              <Item extra={this.state.shoptype[this.state.shopinf.shoptype]}
                arrow="horizontal" 
               >商家品类 </Item>
-                <Item extra={'四川省成都市郫县西华大学'}
+              <Item extra={this.state.shopinf.address}
                arrow="horizontal" 
               >商家地址 </Item>
               <Item extra={this.state.shopinf.uphone}

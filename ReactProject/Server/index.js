@@ -12,6 +12,7 @@ handle["/userinf"] = requestHandlers.userinf;//个人信息
 handle["/revisename"]=requestHandlers.revisename;//修改用户名
 handle["/revisephone"]=requestHandlers.revisephone;//修改手机号
 handle['/getaddress']=requestHandlers.getaddress;//获取地址
+handle['/getaddressitem']=requestHandlers.getaddressitem//获取特定的地址项
 handle['/addaddress']=requestHandlers.addaddress;//新增地址
 handle['/updataaddress']=requestHandlers.updataaddress;//修改地址
 handle['/updataadtype']=requestHandlers.updataadtype//修改默认地址

@@ -37,7 +37,7 @@ class Shops extends Component{
   componentDidMount(){
     this.initdata();
     //判断是否有订单
-    alert(store.getState().orderstate)
+    // alert(store.getState().orderstate)
     if(store.getState().orderstate === 100){
       this.pddata();
     }else{
@@ -281,6 +281,7 @@ class Shops extends Component{
                 <div className='fooditem inf-title'>
                   <span className='inf-title1'>已选商品</span>
                   <span className='inf-title2' onClick={()=>{
+
                     this.setState({
                       foodlist:[],
                       total:0

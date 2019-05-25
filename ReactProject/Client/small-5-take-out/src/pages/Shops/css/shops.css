@@ -52,14 +52,13 @@
 
 .shops-sel{
   /* border-top: 1px solid #eee; */
-  height: 414px;
 }
 
 .shop-cart{
   width: 100%;
   background: #625f5f;
   position: absolute;
-  bottom: -1px;
+  bottom: 0px;
   z-index: 10000;
 }
 .cart-yh{
@@ -187,4 +186,8 @@
 }
 .am-modal-popup-slide-up{
   bottom: 50px;
+}
+
+.shops-sel .am-tabs-tab-bar-wrap{
+  position: relative;
 }

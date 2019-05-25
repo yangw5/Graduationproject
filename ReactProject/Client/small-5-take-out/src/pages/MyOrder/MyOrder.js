@@ -67,16 +67,16 @@ class MyOrder extends Component {
     this.props.history.push({ pathname:'/evaluate',state:{orderid:value.or_id,shopid:value.or_shopid} })
     // this.props.history.push('/evaluate');
   }
-  gotoorderinf(value,type,state){
+  gotoorderinf(value1,type,state){
         //获取某一项订单数据数据
-        store.dispatch(Saveshopid(value.or_shopid));
+        store.dispatch(Saveshopid(value1.or_shopid));
         M.ajax({
           type: 'GET',
           url: '/getorderitem',
           headers: {
           },
           params: {
-            orderid:value.or_id
+            orderid:value1.or_id
           }
         }).then((value)=>{  
           if (value.status === 200) {
@@ -97,7 +97,8 @@ class MyOrder extends Component {
                 money: data[i].money,
                 shopid: data[i].shopid,
                 sl: data[i].dri_number
-              }
+              },
+              addressid:value1.or_addressid
             };
             orderdata.push(obj);
            }
@@ -234,7 +235,7 @@ class MyOrder extends Component {
    
       { 
         this.state.userflog ? 
-        <div>
+        <div className='ordertype'>
           <Tabs tabs={tabs}
           initialPage={0|| store.getState().navTab2}
           onChange={(tab, index) => { console.log('onChange', index, tab);
@@ -244,19 +245,19 @@ class MyOrder extends Component {
           store.dispatch(SavenavTab2(index));
           this.initstate(index)}}
         >
-          <div style={{ backgroundColor: '#fff' }}>
+          <div style={{ backgroundColor: '#eee' }}>
            { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
-          <div style={{ backgroundColor: '#fff' }}>
+          <div style={{ backgroundColor: '#eee' }}>
           { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
           <div style={{ backgroundColor: '#fff' }}>
           { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
-          <div style={{ backgroundColor: '#fff' }}>
+          <div style={{ backgroundColor: '#eee' }}>
           { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
-          <div style={{ backgroundColor: '#fff' }}>
+          <div style={{ backgroundColor: '#eee' }}>
              { this.state.orderlist.length>0 ? arrydim : noorder}
           </div>
         </Tabs>

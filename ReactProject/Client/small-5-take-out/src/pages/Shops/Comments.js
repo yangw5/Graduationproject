@@ -74,7 +74,7 @@ class   Comments extends Component{
                   <div className="tag-container">
                     <Tag data-seed="logId">全部</Tag>
                     <Tag selected>最新</Tag>
-                    <Tag disabled>好评</Tag>
+                    <Tag selected>好评</Tag>
                     <Tag onChange={this.onChange}>差评</Tag>
                     <Tag disabled>图片</Tag>
                   </div>
