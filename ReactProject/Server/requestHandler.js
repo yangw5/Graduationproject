@@ -341,14 +341,17 @@ function orderadd(response, postData,params){
           let str1='INSERT INTO ordersitem ( dri_foodid,dri_number,dri_orid) VALUES ("'+item.value.id+'","'+item.value.sl+'","'+resault[0].or_id+'")';
           s1 = await mysql1.EXECUTE(str1,'');
         }
-      console.log(s)
+        console.log(111111111111111)
+      console.log(s1)
       var data={
         status:200,
         data:{
-          data: 'ok'
+          data: s1
         }
       }
-      returnjson(data,response);
+      console.log(2222222222222222)
+      console.log(data)
+      // returnjson(data,response);
 
   })()
 }
@@ -402,8 +405,14 @@ function getordershop(response, postData,params){
     //查询用户
     //查询商品单项
     //获取总价
+    let str='';
+    if(params.state==100){
+      str='SELECT * FROM orders  WHERE or_shopid= "'+ params.shopid +'"';
+      console.log(str)
+    }else{
+      str='SELECT * FROM orders  WHERE or_shopid= "'+ params.shopid +'" AND or_state='+ params.state;
+    }
     console.log(params.shopid);//获取商店id 并且 获取到订单类型state
-    let str='SELECT * FROM orders  WHERE or_shopid= "'+ params.shopid +'" AND or_state='+ params.state;
     let resault= await mysql1.ROW(str,'');//数据库查询到 用户id  订单id  地址id
     console.log(resault);
     for(let i=0;i<resault.length;i++){

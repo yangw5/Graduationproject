@@ -110,7 +110,7 @@ class Shops extends Component{
       value.forEach(element => {
         sl=sl+element.value.money*element.number;
       });
-      sl=sl+1;
+      sl=sl;
     }
     
     this.setState({

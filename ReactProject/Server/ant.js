@@ -20,7 +20,7 @@ function ant(response, postData,params){
   //支付成功后返回地址方法
   formData.setMethod('get')
   // 调用 setMethod 并传入 get，会返回可以跳转到支付页面的 url
-  formData.addField('returnUrl', 'http://localhost:3000/#/v1/myinf');
+  formData.addField('returnUrl', 'http://localhost:3000/#/v1/myorder');
   //返回数据
   let time=Date.now();
   let oid='out_trade_no'+time;
@@ -47,8 +47,8 @@ function ant(response, postData,params){
     var json = JSON.stringify(data);//对象转化为字符串
     response.write(json);
     response.end();
-  }).catch(err=>{
-    console.log(err);
+  }).catch(err1=>{
+    console.log(err1);
   })
 
 }

@@ -4,13 +4,17 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {//要设置的全局访问的state对象
     userphone:'',
-    usershop:{}//店铺信息
+    usershop:{},//店铺信息
+    ordertype:0//订单类型
   },
   mutations: {//自定义改变state初始值的方法，这里面的参数除了state之外还可以再传额外的参数(变量或对象);
     updateFirstLoadingState (state,flag) {
       state.userphone=flag
     },
     updateFirstLoadingState2 (state,flag) {
+      state.usershop=flag
+    },
+    updateordertype (state,flag) {
       state.usershop=flag
     },
   },
@@ -20,6 +24,9 @@ const store = new Vuex.Store({
     },
     onFirstLoading2 (context,flag) {
       context.commit('updateFirstLoadingState2',flag);
+    },
+    onOrdertype (context,flag) {
+      context.commit('updateordertype',flag);
     },
   },
   getter: {},//实时监听state值的变化(最新状态)

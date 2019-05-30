@@ -8,7 +8,7 @@
       <div class="username">
         <span>{{item.ruser.name}}</span>
       </div>
-      <div class="action">
+      <div class="action"  v-if='! $route.query.state !=0' >
         <el-button type="success" size="mini" @click="updatastate(1,item.orderid)">接单</el-button>
         <el-button type="danger" size="mini" @click="updatastate(4,item.orderid)">拒绝</el-button>
       </div>
@@ -71,9 +71,12 @@ export default {
     console.log(1111222);
     console.log(this.porderlist);
     this.orderlist=[];
+    // alert(this.$route.query.state)
     this.orderlist=this.porderlist;
     console.log(this.porderlist)
     // this.getorder();
+   
+    
   },
   methods: {
     // 已知商店id

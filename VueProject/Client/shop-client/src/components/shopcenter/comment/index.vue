@@ -205,6 +205,7 @@ export default {
   width: 90%;
   margin: 10px auto;
   height: 900px;
+  /* overflow-y: auto; */
   /* background: rgb(0, 141, 225);; */
 }
 .time {

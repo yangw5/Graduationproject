@@ -12,7 +12,7 @@ const alert = Modal.alert;
 
 const tabs = [
   { title: <Badge text={''}>已提交</Badge> },
-  { title: <Badge text={''}>已接收</Badge> },
+  { title: <Badge text={''}>配送中</Badge> },
   { title: <Badge dot>配送中</Badge> },
   { title: <Badge dot>已完成</Badge> },
   { title: <Badge dot>退单</Badge> },

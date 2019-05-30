@@ -101,7 +101,7 @@ export default {
           break;
         case 4:
           this.$router.push({path:'/shopcenter/order/orderdata',query: {
-              state: 0
+              state: 100
             }});
           break;
         }

@@ -40,7 +40,7 @@
     </div>
 
     <div class="fg"></div>
-    <div class="ordertype" v-if="this.$route.query.state === 0">
+    <div class="ordertype" v-if="this.$route.query.state === 0 || 100">
       <el-button type="success" size="mini" @click="showcheck(1)">交易成功</el-button>
       <el-button type="danger" size="mini" @click="showcheck(2)">交易失败</el-button>
       <el-button type="primary" size="mini" @click="showcheck(3)">只看今天</el-button>
@@ -110,17 +110,17 @@
       </el-table>
     </div>
     <el-dialog
-        title="订单编号111"
+        title="订单编号"
         :visible.sync="dialogVisible"
         width="50%"
         :before-close="handleClose">
         <div class="orderitem">
           <orderitem  :porderlist='porderlist'></orderitem>
         </div>
-        <span slot="footer" class="dialog-footer">
+        <!-- <span slot="footer" class="dialog-footer">
           <!-- <el-button  size="mini" @click="dialogVisible = false">取 消</el-button>
-          <el-button   size="mini" type="primary" @click="dialogVisible = false">确 定</el-button> -->
-        </span>
+          <el-button   size="mini" type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span> -->
       </el-dialog>
   </div>
 </template>
@@ -259,6 +259,12 @@ watch: {
       
       if(a==3){
         this.searchordershop(3);
+      }else if(a==1){
+        this.state=3;
+         this.getorder('');
+      }else{
+        this.state=4;
+         this.getorder('');
       }
     },
     updatastate(a,b){   
